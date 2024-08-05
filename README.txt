@@ -1,0 +1,1 @@
+This README.txt should be read before using the Safety Application
