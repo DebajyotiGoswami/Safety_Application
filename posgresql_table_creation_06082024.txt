@@ -1,0 +1,131 @@
+-- FOLLOWING QUERIES SHOULD BE EXECUTED IN THE GIVEN ORDER
+-- TO EXECUTE INDIVIDUAL QUERY OUT OF THE GIVEN ORDER, CHECK CONSTRAINTS
+
+CREATE TABLE safety_schema.Network_Types (
+    network_type_id INT PRIMARY KEY,
+    network_type_name VARCHAR(255) NOT NULL  -- HT or LT
+);
+
+CREATE TABLE safety_schema.Asset_Types (
+    asset_type_id INT PRIMARY KEY,
+    network_type_id INT NOT NULL,              -- HT or LT
+    asset_name VARCHAR(255) NOT NULL,     -- DTR, Conductor, Pole, PTR etc
+    FOREIGN KEY (network_type_id) REFERENCES safety_schema.Network_Types(network_type_id)
+);
+
+CREATE TABLE safety_schema.Problems (
+    problem_id INT PRIMARY KEY,           -- 101, 305
+    asset_type_id INT NOT NULL,           -- Conductor , Pole
+    network_type_id INT NOT NULL,		   -- LT, HT
+    description VARCHAR(255) NOT NULL,      -- Inadequate Spacers, HT Pole tilted
+    FOREIGN KEY (asset_type_id) REFERENCES safety_schema.Asset_Types(asset_type_id),
+    FOREIGN KEY (network_type_id) REFERENCES safety_schema.Network_Types(network_type_id)
+);
+
+CREATE TABLE safety_schema.Solutions (
+    solution_id SERIAL PRIMARY KEY,   -- 323, 324
+    problem_id INT NOT NULL,      -- 101 i.e. inadequate spacers
+    solution_description TEXT NOT NULL,  -- Spacers Installed, converted to cable
+    FOREIGN KEY (problem_id) REFERENCES safety_schema.Problems(problem_id)
+);
+
+CREATE TABLE safety_schema.Offices (
+    office_code INT PRIMARY KEY,     --3332103
+    office_name VARCHAR(255) NOT NULL,  -- Chakdaha West CCC
+    office_type VARCHAR(50) NOT NULL CHECK (office_type IN ('CCC', 'Division', 'Region', 'Zone', 'Safety_Cell'))
+);
+
+CREATE TABLE safety_schema.Users (
+    erp_id INT PRIMARY KEY,       -- 90012345
+    emp_name VARCHAR(255) NOT NULL,  -- Amit Das
+    designation VARCHAR(255) NOT NULL,   -- AE(E)
+    office_code INT NOT NULL,
+    FOREIGN KEY (office_code) REFERENCES safety_schema.Offices(office_code)
+);
+
+CREATE TABLE safety_schema.Login (
+    user_id INT PRIMARY KEY NOT NULL,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    last_login TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES safety_schema.Users(erp_id)
+);
+
+
+CREATE TABLE safety_schema.OTP (
+    otp_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    otp_code VARCHAR(6) NOT NULL,
+	mob_no VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES safety_schema.Users(erp_id)
+);
+
+CREATE TABLE safety_schema.Role_Assignment (
+    inspection_id SERIAL PRIMARY KEY,      -- auto generated i.e. 312
+    assigned_by_erp_id INT NOT NULL,	-- DM i.e. 90009977
+    assigned_on DATE NOT NULL DEFAULT CURRENT_DATE,   
+    inspection_from_date DATE NOT NULL,     -- 01.09.2024
+    inspection_to_date DATE NOT NULL,        --04.09.2024
+    office_code_to_inspect INT NOT NULL,    --3332103
+    location VARCHAR(255),
+    FOREIGN KEY (assigned_by_erp_id) REFERENCES safety_schema.Users(erp_id),
+	FOREIGN KEY (office_code_to_inspect) REFERENCES safety_schema.Offices(office_code)
+);
+
+
+CREATE TABLE safety_schema.Inspection_Team (
+    inspection_team_id SERIAL PRIMARY KEY,   --- 31201, 31202
+    inspection_id INT NOT NULL,                -- 312
+    user_id INT NOT NULL,                      -- 90012345, 90012645
+    is_team_leader BOOLEAN NOT NULL DEFAULT FALSE,  -- True, False
+    FOREIGN KEY (inspection_id) REFERENCES safety_schema.Role_Assignment(inspection_id),
+    FOREIGN KEY (user_id) REFERENCES safety_schema.Users(erp_id)
+);
+
+CREATE TABLE safety_schema.Vulnerabilities (
+    vulnerability_id SERIAL PRIMARY KEY, -- auto generated 987, 988
+    inspection_id INT NOT NULL,   -- 312
+	inspection_team_id SERIAL NOT NULL,   -- which member of the team is entering
+    problem_id INT NOT NULL,     --101, 305 i.e. Inadequate Spacers, HT Pole tilted
+    location_remarks TEXT,         -- “In front of school”, “Water logged paddy field”
+    problem_remarks TEXT,          -- Additional detailed descriptions – not mandatory
+    status_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Tracks status changes
+    latitude DECIMAL(9,6),
+    longitude DECIMAL(9,6),
+    gis_id VARCHAR(255),
+    images TEXT NOT NULL, -- URLs or identifiers for images
+    assigned_office_code INT NOT NULL, -- to be entered by user . for LT, CCC and for HT, Division
+    allotment_status VARCHAR(50) NOT NULL CHECK (allotment_status IN ('assigned', 'in progress', 'resolved')),          -- default is ‘assigned’
+	FOREIGN KEY (inspection_team_id) REFERENCES safety_schema.Inspection_Team(inspection_team_id),
+    FOREIGN KEY (inspection_id) REFERENCES safety_schema.Role_Assignment(inspection_id),
+    FOREIGN KEY (problem_id) REFERENCES safety_schema.Problems(problem_id),
+    FOREIGN KEY (assigned_office_code) REFERENCES safety_schema.Offices(office_code) -- Linking to the Offices table
+);
+
+CREATE TABLE safety_schema.Rectification (
+    rectification_id SERIAL PRIMARY KEY,
+    vulnerability_id INT NOT NULL,        -- action taken iro 987, no row for v_id 988
+    solution_id INT,  			  --  1022
+    rectification_date DATE NOT NULL,    
+    rectification_status VARCHAR(255) NOT NULL CHECK (rectification_status IN ('assigned', 'in progress', 'completed')),            -- completed
+    rectification_type VARCHAR(255) NOT NULL,  -- if rectification can be choose from drop down  ,
+    rectified_by VARCHAR(255) NOT NULL,   -- vendor id or erp id
+    rectification_remarks TEXT,                -- detailed remarks
+    images TEXT NOT NULL,
+    latitude DECIMAL(9,6),
+    longitude DECIMAL(9,6),
+    FOREIGN KEY (vulnerability_id) REFERENCES safety_schema.Vulnerabilities(vulnerability_id),
+    FOREIGN KEY (solution_id) REFERENCES safety_schema.Solutions(solution_id)  -- Linking to the Solutions table
+);
+
+-- -- CHECK THE CREATED TABLES NAME 
+-- SELECT * 
+-- FROM information_schema.tables
+-- where table_schema= 'safety_schema'; 
+
+
+
+
