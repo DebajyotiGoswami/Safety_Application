@@ -1,0 +1,415 @@
+devmobvs#1$
+
+
+As desired, the RFC has been developed and deployed in SAP-ISU pre-production system with following specifications
+
+Name of RFC: YZRFCCON_DTLS
+Import Parameters: CON_ID
+Export Parameters with table output(YZCON_MASTER)
+NAME1
+NAME2
+CCC_NAME
+CON_CATG
+CON_TYPE
+TARIFF
+CON_CLS
+LAST_PAY_DT
+LAST_PAY_AMT
+UNIT
+PERIOD
+UNIT1
+PERIOD1
+OSD
+
+
+SELECT * FROM information_schema.tables WHERE table_schema = 'public';
+
+"mobappdb"	"public"	"h_reg_mobs"
+"mobappdb"	"public"	"dev_otp"
+"mobappdb"	"public"	"h_dev_otp"
+"mobappdb"	"public"	"dev_info"
+"mobappdb"	"public"	"h_dev_info"
+"mobappdb"	"public"	"reg_cons"
+"mobappdb"	"public"	"reg_mobs"
+"mobappdb"	"public"	"h_reg_cons"
+
+
+"dev_info"	"dev_id"	"nextval('dev_info_dev_id_seq'::regclass)"	
+"dev_info"	"xuuid"		32
+"dev_info"	"mob_no"		
+"dev_info"	"dev_uuid"		
+"dev_info"	"dev_mac"		
+"dev_info"	"dev_ip"		
+"dev_info"	"dev_agent"		
+"dev_info"	"cr_dt"		
+"dev_info"	"dev_name"		30
+"dev_info"	"dev_os_name"		30
+"dev_info"	"dev_os_version"		10
+"dev_info"	"devmodel"		20
+
+
+
+SELECT
+	*
+FROM
+	information_schema.columns
+WHERE
+	table_schema = 'public'
+	AND table_name = 'dev_info';
+
+
+INSERT INTO dev_info(xuuid, mob_no, dev_uuid, dev_mac, dev_ip, dev_agent, cr_dt, dev_name, dev_os_name, dev_os_version, devmodel)
+Select xuuid, mob_no, dev_uuid, dev_mac, dev_ip, dev_agent, now(),dev_name, dev_os_name, dev_os_version, devmodel from dev_info_bef_otp where xuuid='ABC' and is_recent is NULL;
+
+
+
+
+
+ALTER TABLE t_dev_info
+ADD COLUMN dev_name varchar(30) NOT NULL,
+ADD COLUMN dev_OS_Name varchar(30) NOT NULL,
+ADD COLUMN dev_Os_Version varchar(10) NOT NULL,
+ADD COLUMN devModel varchar(20) NOT NULL;
+
+
+ALTER TABLE h_dev_info
+ADD COLUMN dev_name varchar(30),
+ADD COLUMN dev_OS_Name varchar(30),
+ADD COLUMN dev_Os_Version varchar(10),
+ADD COLUMN devModel varchar(20);
+
+ALTER TABLE reg_cons 
+ADD COLUMN mob_no varchar(10);
+
+
+ALTER TABLE reg_mobs
+ADD COLUMN dev_uuid varchar(50);
+
+ALTER TABLE h_reg_cons 
+ADD COLUMN mob_no varchar(10);
+
+ALTER TABLE reg_mobs
+ADD COLUMN dev_uuid varchar(50);
+
+
+ALTER TABLE dev_info_bef_otp 
+ALTER COLUMN dev_mac TYPE varchar(17);
+
+ALTER TABLE dev_info_bef_otp 
+ADD COLUMN is_recent char(1);
+
+ALTER TABLE dev_info_bef_otp 
+ALTER COLUMN dev_ip TYPE varchar(15);
+
+ALTER TABLE dev_info_bef_otp 
+ALTER COLUMN xuuid TYPE varchar(50);
+
+ALTER TABLE reg_cons  
+ALTER COLUMN con_id TYPE varchar(12);
+ALTER COLUMN dev_id TYPE varchar(50);
+ALTER COLUMN inst_no TYPE varchar(15);
+
+
+
+CREATE INDEX index_name
+ON table_name (column_name);
+
+
+CREATE TABLE public.dev_info_bef_otp
+(
+    dev_id integer NOT NULL DEFAULT nextval('dev_info_bef_otp_dev_id_seq'::regclass),
+    xuuid character varying(50) COLLATE pg_catalog."default",
+    mob_no character varying(10) COLLATE pg_catalog."default",
+    dev_uuid text COLLATE pg_catalog."default",
+    dev_mac character varying(17) COLLATE pg_catalog."default",
+    dev_ip character varying(15) COLLATE pg_catalog."default",
+    dev_agent text COLLATE pg_catalog."default",
+    cr_dt timestamp without time zone,
+    dev_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_version character varying(10) COLLATE pg_catalog."default",
+    devmodel character varying(20) COLLATE pg_catalog."default"
+	CONSTRAINT dev_info_pk PRIMARY KEY (dev_id)
+        USING INDEX TABLESPACE tbs_mobapp
+)
+
+
+CREATE TABLE public.dev_info
+(
+    dev_id integer NOT NULL DEFAULT nextval('dev_info_dev_id_seq'::regclass),
+    xuuid character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    mob_no bigint NOT NULL,
+    dev_uuid text COLLATE pg_catalog."default" NOT NULL,
+    dev_mac macaddr NOT NULL,
+    dev_ip cidr NOT NULL,
+    dev_agent text COLLATE pg_catalog."default" NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    dev_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_version character varying(10) COLLATE pg_catalog."default",
+    devmodel character varying(20) COLLATE pg_catalog."default",
+    CONSTRAINT dev_info_pk PRIMARY KEY (dev_id)
+        USING INDEX TABLESPACE tbs_mobapp
+)
+
+TABLESPACE tbs_mobapp;
+
+ALTER TABLE public.dev_info
+    OWNER to mobapp;
+
+-- Index: ix_dev_info
+
+-- DROP INDEX public.ix_dev_info;
+
+CREATE UNIQUE INDEX ix_dev_info
+    ON public.dev_info USING btree
+    (xuuid COLLATE pg_catalog."default", mob_no)
+    TABLESPACE tbs_imobapp;
+
+CREATE TABLE public.dev_info
+(
+    dev_id integer NOT NULL DEFAULT nextval('dev_info_dev_id_seq'::regclass),
+    xuuid character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    mob_no bigint NOT NULL,
+    dev_uuid text COLLATE pg_catalog."default" NOT NULL,
+    dev_mac macaddr NOT NULL,
+    dev_ip cidr NOT NULL,
+    dev_agent text COLLATE pg_catalog."default" NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    dev_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_version character varying(10) COLLATE pg_catalog."default",
+    devmodel character varying(20) COLLATE pg_catalog."default",
+    CONSTRAINT dev_info_pk PRIMARY KEY (dev_id)
+        USING INDEX TABLESPACE tbs_mobapp
+)
+
+CREATE TABLE serv_accss
+(
+    xuuid character varying(50) NOT NULL,
+    ref_no character varying(10) NOT NULL,
+    mob_no character varying(10) NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    dev_name character varying(30),
+    dev_os_name character varying(30) NOT NULL,
+    dev_os_version character varying(10) NOT NULL, 
+    service_id int NOT NULL,
+    service_name character varying(20) NOT NULL
+)
+
+CREATE UNIQUE INDEX ix_serv_accss_mob_no
+    ON public.serv_accss USING btree
+    (mob_no)
+    TABLESPACE tbs_imobapp;
+
+CREATE UNIQUE INDEX ix_serv_accss_ref_no
+    ON public.serv_accss USING btree
+    (ref_no)
+    TABLESPACE tbs_imobapp;
+
+TABLESPACE tbs_mobapp;
+
+ALTER TABLE public.dev_info
+    OWNER to mobapp;
+
+-- Index: ix_dev_info
+
+-- DROP INDEX public.ix_dev_info;
+
+CREATE UNIQUE INDEX ix_dev_info
+    ON public.dev_info USING btree
+    (xuuid COLLATE pg_catalog."default", mob_no)
+    TABLESPACE tbs_imobapp;
+
+CREATE TABLE public.dev_otp
+(
+    xuuid character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    mob_no bigint NOT NULL,
+    otp integer NOT NULL,
+    sms_id character varying(100) COLLATE pg_catalog."default",
+    cr_dt timestamp without time zone NOT NULL,
+    CONSTRAINT dev_otp_pk PRIMARY KEY (xuuid)
+        USING INDEX TABLESPACE tbs_mobapp
+)
+
+
+create table 
+TABLESPACE tbs_mobapp;
+
+ALTER TABLE public.dev_otp
+    OWNER to mobapp;
+
+CREATE TABLE public.h_dev_info
+(
+    dev_id bigint NOT NULL,
+    xuuid character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    mob_no bigint NOT NULL,
+    dev_uuid text COLLATE pg_catalog."default" NOT NULL,
+    dev_mac macaddr NOT NULL,
+    dev_ip cidr NOT NULL,
+    dev_agent text COLLATE pg_catalog."default" NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    tr_dt timestamp without time zone NOT NULL,
+    dev_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_name character varying(30) COLLATE pg_catalog."default",
+    dev_os_version character varying(10) COLLATE pg_catalog."default",
+    devmodel character varying(20) COLLATE pg_catalog."default"
+)
+
+TABLESPACE tbs_hmobapp;
+
+ALTER TABLE public.h_dev_info
+    OWNER to mobapp;
+
+-- Index: ix_h_dev_info
+
+-- DROP INDEX public.ix_h_dev_info;
+
+CREATE INDEX ix_h_dev_info
+    ON public.h_dev_info USING btree
+    (mob_no)
+    TABLESPACE tbs_hmobapp;
+
+CREATE TABLE public.dev_otp
+(
+    xuuid character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    mob_no bigint NOT NULL,
+    otp integer NOT NULL,
+    sms_id character varying(100) COLLATE pg_catalog."default",
+    cr_dt timestamp without time zone NOT NULL,
+    CONSTRAINT dev_otp_pk PRIMARY KEY (xuuid)
+        USING INDEX TABLESPACE tbs_mobapp
+)
+
+TABLESPACE tbs_mobapp;
+
+ALTER TABLE public.dev_otp
+    OWNER to mobapp;
+
+
+CREATE TABLE public.h_dev_otp
+(
+    xuuid character varying(32) COLLATE pg_catalog."default" NOT NULL,
+    mob_no bigint NOT NULL,
+    otp integer NOT NULL,
+    sms_id character varying(100) COLLATE pg_catalog."default",
+    cr_dt timestamp without time zone NOT NULL
+)
+
+TABLESPACE tbs_hmobapp;
+
+ALTER TABLE public.h_dev_otp
+    OWNER to mobapp;
+
+-- Index: ix_h_dev_otp
+
+-- DROP INDEX public.ix_h_dev_otp;
+
+CREATE INDEX ix_h_dev_otp
+    ON public.h_dev_otp USING btree
+    (xuuid COLLATE pg_catalog."default", mob_no)
+    TABLESPACE tbs_hmobapp;
+
+
+CREATE TABLE public.reg_cons
+(
+    con_id bigint NOT NULL,
+    inst_no bigint NOT NULL,
+    con_nm character varying(40) COLLATE pg_catalog."default" NOT NULL,
+    dev_id bigint NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    mob_no character varying(10) COLLATE pg_catalog."default",
+    CONSTRAINT reg_cons_pk PRIMARY KEY (con_id, dev_id)
+        USING INDEX TABLESPACE tbs_mobapp,
+    CONSTRAINT reg_cons_dev_id_fkey FOREIGN KEY (dev_id)
+        REFERENCES public.dev_info (dev_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE tbs_mobapp;
+
+ALTER TABLE public.reg_cons
+    OWNER to mobapp;
+
+
+CREATE TABLE public.reg_mobs
+(
+    con_id bigint NOT NULL,
+    mob_no bigint NOT NULL,
+    appv integer NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    dev_uuid character varying(50) COLLATE pg_catalog."default",
+    CONSTRAINT reg_mob_pk PRIMARY KEY (con_id)
+        USING INDEX TABLESPACE tbs_mobapp
+)
+
+TABLESPACE tbs_mobapp;
+
+ALTER TABLE public.reg_mobs
+    OWNER to mobapp;
+
+
+CREATE TABLE public.h_reg_cons
+(
+    con_id bigint NOT NULL,
+    dev_id bigint NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    tr_dt timestamp without time zone NOT NULL,
+    mob_no character varying(10) COLLATE pg_catalog."default"
+)
+
+TABLESPACE tbs_hmobapp;
+
+ALTER TABLE public.h_reg_cons
+    OWNER to mobapp;
+
+-- Index: ix_h_reg_cons
+
+-- DROP INDEX public.ix_h_reg_cons;
+
+CREATE INDEX ix_h_reg_cons
+    ON public.h_reg_cons USING btree
+    (con_id)
+    TABLESPACE tbs_hmobapp;
+
+CREATE TABLE public.h_reg_mobs
+(
+    con_id bigint NOT NULL,
+    mob_no bigint NOT NULL,
+    appv integer NOT NULL,
+    cr_dt timestamp without time zone NOT NULL,
+    tr_dt timestamp without time zone NOT NULL,
+    dev_uuid character varying(50) COLLATE pg_catalog."default"
+)
+
+TABLESPACE tbs_hmobapp;
+
+ALTER TABLE public.h_reg_mobs
+    OWNER to mobapp;
+
+-- Index: ix_h_reg_mob
+
+-- DROP INDEX public.ix_h_reg_mob;
+
+CREATE INDEX ix_h_reg_mob
+    ON public.h_reg_mobs USING btree
+    (con_id)
+    TABLESPACE tbs_hmobapp;
+
+insert into dev_otp select * from h_dev_otp where mob_no='90909090'
+
+
+select * from dev_otp where mob_no='9474813396'
+
+delete from h_dev_otp where xuuid='dadf702664e10e4e6482fd2636c21e26'
+
+ALTER TABLE h_dev_otp
+ALTER COLUMN mob_no TYPE varchar(10);
+
+ALTER TABLE h_reg_cons 
+ADD COLUMN emailid varchar(40);
+
+SELECT datname,usename,query FROM pg_stat_activity ;
+
+pg_ctl start
