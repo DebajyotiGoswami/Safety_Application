@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Inspection Assignment</title>
+    
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/inspection_navigation.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Safety Inspection</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="contacts.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+  
+    <!-- Inspection Assignment Form -->
+    <div class="container mt-5">
+        <div class="form-container">
+            <h2 class="text-center mb-4">Assign New Inspection</h2>
+            <div class="col-md-12 bs-linebreak">
+  	</div>
+            <form id="assignmentForm">
+                <div class="mb-3">
+                    <label for="officeCode" class="form-label">Office Code</label>
+                    <input type="text" class="form-control" id="officeCode" value="<%= officeCode %>" readonly>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="numOfEmployee" class="form-label">Number of Team Members</label>
+                    <input type="text" class="form-control" id="numOfEmployee" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="erpId" class="form-label required">Name of the employee</label>
+                    <select class="form-control" id="erpId" required>
+                        <option value="" disabled selected>Select ERP ID</option>
+                        <% for (String erpId : erpIds) { %>
+                            <option value="<%= erpId %>"><%= erpId %></option>
+                        <% } %>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="fromDate" class="form-label required">From Date</label>
+                    <input type="date" class="form-control" id="fromDate" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="toDate" class="form-label required">To Date</label>
+                    <input type="date" class="form-control" id="toDate" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="officeName" class="form-label required">Office Name</label>
+                    <select class="form-control" id="officeName" required>
+                        <option value="" disabled selected>Select Office Name</option>
+                        <% for (String officeName : officeNames) { %>
+                            <option value="<%= officeName %>"><%= officeName %></option>
+                        <% } %>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="remarks" class="form-label">Remarks</label>
+                    <textarea class="form-control" id="remarks" rows="3" placeholder="Enter remarks"></textarea>
+                </div>
+                
+                <!-- Center the Submit Button -->
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Assign Inspection</button>
+                </div>
+                
+            </form>
+            <div id="successMessage" class="alert alert-success">
+                Inspection assigned successfully!
+            </div>
+        </div>
+    </div>
+  
+    <!-- Footer -->
+    <footer class="text-center text-lg-start mt-5">
+    <div class="text-center p-3">
+        © 2024 IT&C Cell, WBSEDCL
+    </div>
+    </footer>
+
+    <!-- Link to Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript to handle form submission
+        document.getElementById('assignmentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Display success message
+            document.getElementById('successMessage').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* styles.css */
+
+/* Additional custom styles for index.jsp */
+.login-container {
+	max-width: 400px;
+	margin: 100px auto;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+	box-shadow: none;
+	border-color: #007bff;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.btn-primary:hover {
+	background-color: #0056b3;
+	border-color: #0056b3;
+}
+
+.header-title {
+	margin-bottom: 30px;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background-color: #007bff;
+	text-align: center;
+	padding: 10px 0;
+}
