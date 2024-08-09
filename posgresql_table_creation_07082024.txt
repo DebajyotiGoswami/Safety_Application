@@ -1,81 +1,84 @@
 -- FOLLOWING QUERIES SHOULD BE EXECUTED IN THE GIVEN ORDER
 -- TO EXECUTE INDIVIDUAL QUERY OUT OF THE GIVEN ORDER, CHECK CONSTRAINTS
 ---------------------------------------------------------------
--- Office Table
+-- 1. Office Table
 
 CREATE TABLE safety_schema.Office (
-    office_code INT PRIMARY KEY,     --3332103
-    office_name VARCHAR(255) NOT NULL,  -- Chakdaha West CCC
-    office_type VARCHAR(50) NOT NULL CHECK (office_type IN ('CCC', 'Division', 'Region', 'Zone', 'Safety_Cell')),
+    office_code VARCHAR(10) PRIMARY KEY,     --3332103
+    office_name VARCHAR(60) NOT NULL,  -- Chakdaha West CCC
+    office_type VARCHAR(20) NOT NULL CHECK (office_type IN ('CCC', 'Division', 'Region', 'Zone', 'Safety_Cell')),
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     create_by INT NOT NULL,
     active BOOLEAN DEFAULT TRUE
 );
 
 ----------------------------------------------------------------
--- Roles Table
+-- 2. Roles Table
 CREATE TABLE safety_schema.Roles (
-    role_id SERIAL PRIMARY KEY,         -- serially generated 1, 2, 3 ...
-    role_name VARCHAR(50) NOT NULL,    -- 'assignee', 'inspector', 'rectifier', 'admin'
-    description TEXT NOT NULL,
+    role_id VARCHAR(2) PRIMARY KEY,         -- serially generated 1, 2, 3 ...
+    role_name VARCHAR(20) NOT NULL,    -- 'assignee', 'inspector', 'rectifier', 'admin'
+    description VARCHAR(50) NOT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    create_by INT NOT NULL,
+    create_by VARCHAR(10) NOT NULL,
     active BOOLEAN DEFAULT TRUE
 );
 
-------------------------------------------------------------------
--- Users Table
-CREATE TABLE safety_schema.Users (
-    erp_id INT PRIMARY KEY,       -- 90012345
-    role_id INT NOT NULL,
-    emp_name VARCHAR(255) NOT NULL,  -- Amit Das
-    designation VARCHAR(255) NOT NULL,   -- AE(E)
-    office_code INT NOT NULL,
-    FOREIGN KEY (office_code) REFERENCES safety_schema.Office(office_code),
-    FOREIGN KEY (role_id) REFERENCES safety_schema.roles(role_id)
+-----------------------------------------------------------------
+-- 3. STELL Table
+CREATE TABLE safety_schema.STELL(
+	stell VARCHAR(10) NOT NULL,
+	stell_desc VARCHAR(50) NOT NULL,
+	role_id VARCHAR(10) NOT NULL,
+	role_description VARCHAR(50) NOT NULL,
+	create_by VARCHAR(10) NOT NULL,
+	create_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	stell_valid_flag VARCHAR(1) NOT NULL,
+	role_valid_flag VARCHAR(1) NOT NULL,
+	PRIMARY KEY (stell, role_id),
+	FOREIGN KEY (role_id) REFERENCES safety_schema.roles(role_id)
 );
 -----------------------------------------------------------------------
--- Asset_Type Table
+-- 4. Asset_Type Table
 CREATE TABLE safety_schema.Asset_Type (
-    asset_type_id SERIAL PRIMARY KEY,
+    asset_type_id VARCHAR(10) PRIMARY KEY,
     network_type VARCHAR(5) NOT NULL,     -- HT or LT
     asset_name VARCHAR(50) NOT NULL,     -- DTR, Conductor, Pole, PTR etc
-    create_by INT NOT NULL,
+    create_by VARCHAR(10) NOT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    active BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (create_by) REFERENCES safety_schema.Users(erp_id)
+    active BOOLEAN DEFAULT TRUE
+    -- FOREIGN KEY (create_by) REFERENCES safety_schema.Users(erp_id)
 );
 
 ---------------------------------------------------------------------------
--- Problems Table
+-- 5. Problems Table
 CREATE TABLE safety_schema.Problems (
-    problem_id INT PRIMARY KEY,           -- 101, 305
-    asset_type_id INT NOT NULL,           -- Conductor , Pole
+    problem_id VARCHAR(10) PRIMARY KEY,           -- 101, 305
+    asset_type_id VARCHAR(10) NOT NULL,           -- Conductor , Pole
     description VARCHAR(255) NOT NULL,      -- Inadequate Spacers, HT Pole tilted
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    create_by INT NOT NULL,
+    create_by VARCHAR(10) NOT NULL,
     active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (asset_type_id) REFERENCES safety_schema.Asset_Type(asset_type_id)
 );
 
 ----------------------------------------------------------------------------
--- Solutions Table
+-- 6. Solutions Table
 CREATE TABLE safety_schema.Solutions (
-    solution_id SERIAL PRIMARY KEY,   -- 323, 324
-    problem_id INT NOT NULL,      -- 101 i.e. inadequate spacers
-    solution_description TEXT NOT NULL,  -- Spacers Installed, converted to cable
+    solution_id VARCHAR(10) PRIMARY KEY,   -- 323, 324
+    problem_id VARCHAR(10) NOT NULL,      -- 101 i.e. inadequate spacers
+    solution_description VARCHAR(255) NOT NULL,  -- Spacers Installed, converted to cable
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    create_by INT NOT NULL,
+    create_by VARCHAR(10) NOT NULL,
     active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (problem_id) REFERENCES safety_schema.Problems(problem_id)
 );
 ------------------------------------------------------------------------------
--- Login Table
+-- 7. Login Table
 CREATE TABLE safety_schema.Login (
-    erp_id INT PRIMARY KEY NOT NULL,
-    emp_name VARCHAR(255) NOT NULL,
-    designation VARCHAR(255) NOT NULL,
-    office_code INT NOT NULL,
+    erp_id VARCHAR(10) PRIMARY KEY NOT NULL,
+    emp_name VARCHAR(50) NOT NULL,
+    designation VARCHAR(50) NOT NULL,
+    office_code VARCHAR(10) NOT NULL,
     device_id VARCHAR(255) NOT NULL,
     user_agent VARCHAR(255) NOT NULL,
     ip_address VARCHAR(255) NOT NULL,
@@ -84,77 +87,98 @@ CREATE TABLE safety_schema.Login (
     otp_verified BOOLEAN
 );
 --------------------------------------------------------------------------
--- OTP Table
+-- 8. OTP Table
 CREATE TABLE safety_schema.OTP (
-    dev_id INT PRIMARY KEY,
-    erp_id INT NOT NULL,
-    otp_code VARCHAR(6) NOT NULL,
+    dev_id VARCHAR(20) PRIMARY KEY,
+    erp_id VARCHAR(10) NOT NULL,
+    otp_code VARCHAR(10) NOT NULL,
     mob_no VARCHAR(10) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    sms_id INT NOT NULL,
+    sms_id VARCHAR(10) NOT NULL,
     sms_text VARCHAR(255) NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (erp_id) REFERENCES safety_schema.Users(erp_id)
+    used BOOLEAN DEFAULT FALSE
+    -- FOREIGN KEY (erp_id) REFERENCES safety_schema.Users(erp_id)
 );
 -------------------------------------------------------------------------
--- Team_Assignment
+-- 9. Team_Assignment
 CREATE TABLE safety_schema.Team_Assignment (
-    inspection_id SERIAL NOT NULL,      -- auto generated i.e. 312
-    emp_assigned_to INT NOT NULL,
-    emp_assigned_by INT NOT NULL,       -- DM i.e. 90009977
-    rectified_by INT,
-    assigned_from_off INT NOT NULL,
+    inspection_id VARCHAR(10) NOT NULL,      -- auto generated i.e. 312
+    emp_assigned_to VARCHAR(10) NOT NULL,
+    emp_assigned_by VARCHAR(10) NOT NULL,       -- DM i.e. 90009977
+    rectified_by VARCHAR(10),
+    assigned_from_off VARCHAR(10) NOT NULL,
     assigned_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE,   
     inspection_from_date DATE NOT NULL,     -- 01.09.2024
     inspection_to_date DATE NOT NULL,        --04.09.2024
-    office_code_to_inspect INT NOT NULL,    --3332103 (ccc) or 3332000 (div)
+    office_code_to_inspect VARCHAR(10) NOT NULL,    --3332103 (ccc) or 3332000 (div)
     status VARCHAR(255) NOT NULL,
     primary key(inspection_id, emp_assigned_to)
 );
 
 ----------------------------------------------------------------------------
+-- 10. Vulnerabilities Table
 CREATE TABLE safety_schema.Vulnerabilities (
-    site_id SERIAL PRIMARY KEY, -- auto generated 987, 988
-    inspection_id INT NOT NULL,   -- 312
-    inspection_by INT NOT NULL,
-    problem_id INT NOT NULL,     --101, 305 i.e. Inadequate Spacers, HT Pole tilted
-    location_remarks TEXT,         -- “In front of school”, “Water logged paddy field”
-    problem_remarks TEXT,          -- Additional detailed descriptions – not mandatory
+    site_id VARCHAR(10) PRIMARY KEY, -- auto generated 987, 988
+    inspection_id VARCHAR(10) NOT NULL,   -- 312
+    inspection_by VARCHAR(10) NOT NULL,
+    problem_id VARCHAR(10) NOT NULL,     --101, 305 i.e. Inadequate Spacers, HT Pole tilted
+    location_remarks VARCHAR(255),         -- “In front of school”, “Water logged paddy field”
+    problem_remarks VARCHAR(255),          -- Additional detailed descriptions – not mandatory
     latitude DECIMAL(9,6),
     longitude DECIMAL(9,6),
-    gis_id VARCHAR(255),
-    assigned_office_code INT NOT NULL, -- to be entered by user . for LT, CCC and for HT, Division
+    gis_id VARCHAR(50),
+    assigned_office_code VARCHAR(10) NOT NULL, -- to be entered by user . for LT, CCC and for HT, Division
     present_status VARCHAR(50) NOT NULL, --CHECK (allotment_status IN ('assigned', 'in progress', 'resolved')),          -- default is ‘assigned’
-    solution_id INT NOT NULL,
+    solution_id VARCHAR(10) NOT NULL,
     rectification_date TIMESTAMP NOT NULL,
-    rectified_by INT NOT NULL,
+    rectified_by VARCHAR(10) NOT NULL,
     rectification_remarks VARCHAR(255) NOT NULL,
     FOREIGN KEY (problem_id) REFERENCES safety_schema.Problems(problem_id),
     FOREIGN KEY (assigned_office_code) REFERENCES safety_schema.Office(office_code) -- Linking to the Offices table
 );
 --------------------------------------------------------------------------------
+-- 11. Images table
 CREATE TABLE safety_schema.Images(
-    inspection_id INT NOT NULL,
-    site_id INT NOT NULL,
+    inspection_id VARCHAR(10) NOT NULL,
+    site_id VARCHAR(10) NOT NULL,
     inspection_image VARCHAR(255) NOT NULL,
     rectification_image VARCHAR(255) NOT NULL
 );
 -------------------------------------------------------------------------------------
+-- 12. Rectification_History table
 CREATE TABLE safety_schema.Rectifications_History (
-    history_id SERIAL PRIMARY KEY,
-    site_id INT NOT NULL,
-	   problem_id INT NOT NULL,
-	   inspection_id INT NOT NULL,
+    history_id VARCHAR(10) PRIMARY KEY,
+    site_id VARCHAR(10) NOT NULL,
+    problem_id VARCHAR(10) NOT NULL,
+    inspection_id VARCHAR(10) NOT NULL,
     previous_status VARCHAR(255),
     new_status VARCHAR(255),
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_by INT,
-    change_details TEXT,
+    updated_by VARCHAR(10),
+    change_details VARCHAR(255),
     FOREIGN KEY (site_id) REFERENCES safety_schema.Vulnerabilities (site_id ),
-    FOREIGN KEY (problem_id) REFERENCES safety_schema.problems (problem_id ),
-    FOREIGN KEY (updated_by) REFERENCES safety_schema.Users(erp_id)
+    FOREIGN KEY (problem_id) REFERENCES safety_schema.problems (problem_id )
+    -- FOREIGN KEY (updated_by) REFERENCES safety_schema.Users(erp_id)
 );
 
+------------------------------------------------------------------
+-- Users Table ( this table is not required )
+CREATE TABLE safety_schema.Users (
+    erp_id INT PRIMARY KEY,       -- 90012345
+    role_id INT NOT NULL,
+    role_desc VARCHAR(50) NOT NULL,
+    emp_name VARCHAR(255) NOT NULL,  -- Amit Das
+    designation VARCHAR(255) NOT NULL,   -- AE(E)
+    office_code INT NOT NULL,
+    stell_id INT NOT NULL,
+    stell_desc VARCHAR(50) NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    create_by INT NOT NULL,
+    active VARCHAR(1) NOT NULL,
+    FOREIGN KEY (office_code) REFERENCES safety_schema.Office(office_code),
+    FOREIGN KEY (role_id) REFERENCES safety_schema.roles(role_id)
+);
+-------------------------------------------------------------------
    
 
 -- -- CHECK THE CREATED TABLES NAME 
