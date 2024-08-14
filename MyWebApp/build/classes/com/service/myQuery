@@ -1,0 +1,16 @@
+--CREATE TABLE safety_schema.Login (
+--    erp_id VARCHAR(10),
+--    emp_name VARCHAR(50),
+--    designation VARCHAR(50),
+--    office_code VARCHAR(10),
+--    device_id VARCHAR(255) ,
+--    user_agent VARCHAR(255) ,
+--    ip_address VARCHAR(255) ,
+--    login_timestamp TIMESTAMP ,
+--    logout_timestamp TIMESTAMP ,
+--    otp_verified BOOLEAN
+--);
+
+--drop table safety_schema.login;
+
+select 8 f
