@@ -9,7 +9,7 @@ CREATE TABLE safety_schema.Office (
     office_type VARCHAR(20) NOT NULL CHECK (office_type IN ('CCC', 'Division', 'Region', 'Zone', 'Safety_Cell')),
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     create_by INT NOT NULL,
-    active BOOLEAN DEFAULT TRUE
+    active VARCHAR(1) NOT NULL
 );
 
 ----------------------------------------------------------------
@@ -20,7 +20,7 @@ CREATE TABLE safety_schema.Roles (
     description VARCHAR(50) NOT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     create_by VARCHAR(10) NOT NULL,
-    active BOOLEAN DEFAULT TRUE
+    active VARCHAR(1) NOT NULL
 );
 
 -----------------------------------------------------------------
@@ -42,10 +42,10 @@ CREATE TABLE safety_schema.STELL(
 CREATE TABLE safety_schema.Asset_Type (
     asset_type_id VARCHAR(10) PRIMARY KEY,
     network_type VARCHAR(5) NOT NULL,     -- HT or LT
-    asset_name VARCHAR(50) NOT NULL,     -- DTR, Conductor, Pole, PTR etc
+    asset_name VARCHAR(255) NOT NULL,     -- DTR, Conductor, Pole, PTR etc
     create_by VARCHAR(10) NOT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    active BOOLEAN DEFAULT TRUE
+    active VARCHAR(1) NOT NULL
     -- FOREIGN KEY (create_by) REFERENCES safety_schema.Users(erp_id)
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE safety_schema.Problems (
     description VARCHAR(255) NOT NULL,      -- Inadequate Spacers, HT Pole tilted
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     create_by VARCHAR(10) NOT NULL,
-    active BOOLEAN DEFAULT TRUE,
+    active VARCHAR(1) NOT NULL
     FOREIGN KEY (asset_type_id) REFERENCES safety_schema.Asset_Type(asset_type_id)
 );
 
@@ -69,21 +69,21 @@ CREATE TABLE safety_schema.Solutions (
     solution_description VARCHAR(255) NOT NULL,  -- Spacers Installed, converted to cable
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     create_by VARCHAR(10) NOT NULL,
-    active BOOLEAN DEFAULT TRUE,
+    active VARCHAR(1) NOT NULL
     FOREIGN KEY (problem_id) REFERENCES safety_schema.Problems(problem_id)
 );
 ------------------------------------------------------------------------------
 -- 7. Login Table
 CREATE TABLE safety_schema.Login (
-    erp_id VARCHAR(10) PRIMARY KEY NOT NULL,
-    emp_name VARCHAR(50) NOT NULL,
-    designation VARCHAR(50) NOT NULL,
-    office_code VARCHAR(10) NOT NULL,
-    device_id VARCHAR(255) NOT NULL,
-    user_agent VARCHAR(255) NOT NULL,
-    ip_address VARCHAR(255) NOT NULL,
-    login_timestamp TIMESTAMP NOT NULL,
-    logout_timestamp TIMESTAMP NOT NULL,
+    erp_id VARCHAR(10),
+    emp_name VARCHAR(50),
+    designation VARCHAR(50),
+    office_code VARCHAR(10),
+    device_id VARCHAR(255) ,
+    user_agent VARCHAR(255) ,
+    ip_address VARCHAR(255) ,
+    login_timestamp TIMESTAMP ,
+    logout_timestamp TIMESTAMP ,
     otp_verified BOOLEAN
 );
 --------------------------------------------------------------------------
@@ -105,6 +105,7 @@ CREATE TABLE safety_schema.Team_Assignment (
     inspection_id VARCHAR(10) NOT NULL,      -- auto generated i.e. 312
     emp_assigned_to VARCHAR(10) NOT NULL,
     emp_assigned_by VARCHAR(10) NOT NULL,       -- DM i.e. 90009977
+    inspected_by VARCHAR(10),
     rectified_by VARCHAR(10),
     assigned_from_off VARCHAR(10) NOT NULL,
     assigned_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE,   
@@ -121,6 +122,7 @@ CREATE TABLE safety_schema.Vulnerabilities (
     site_id VARCHAR(10) PRIMARY KEY, -- auto generated 987, 988
     inspection_id VARCHAR(10) NOT NULL,   -- 312
     inspection_by VARCHAR(10) NOT NULL,
+    inspection_date DATE NOT NULL,
     problem_id VARCHAR(10) NOT NULL,     --101, 305 i.e. Inadequate Spacers, HT Pole tilted
     location_remarks VARCHAR(255),         -- “In front of school”, “Water logged paddy field”
     problem_remarks VARCHAR(255),          -- Additional detailed descriptions – not mandatory
