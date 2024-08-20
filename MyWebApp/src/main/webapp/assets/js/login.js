@@ -9,32 +9,33 @@ $(document).ready(function() {
 			"Pwd": password
 		};
 		var jsonString = JSON.stringify(jsonobj);
-
 		$.ajax({
 			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with your Servlet URL
 			type: 'POST',
 			data: jsonString,
 			success: function(data) {
 				if (data.ackMsgCode == '100') {
-					
 					$.ajax({
 						url: 'http://localhost:8080/MyWebApp/loginUpdateServlet', // replace with your Servlet URL
 						type: 'POST',
 						data: jsonString,
 						success: function(response) {
-							console.log(response);
+							console.log(`inner success function ${response}`);
+							console.log("test");
+							console.log(response)
 							if (response.trim() == 'otpSent') {
-							generatedOtp = generateOtp();
-							console.log("Generated OTP:", generatedOtp);
+								generatedOtp = generateOtp();
+								console.log("Generated OTP:", generatedOtp);
 
-							// Show OTP section
-							$('#otpMessage').show();
-							$('#otpForm').show();
-							$('#otp').prop('disabled', false);
-							$('#submitOtpBtn').prop('disabled', false);
+							 	// Show OTP section
+								$('#otpMessage').show();
+								$('#otpForm').show();
+								$('#otp').prop('disabled', false);
+								$('#submitOtpBtn').prop('disabled', false);
 
-							// Start OTP countdown
-							startCountdown(30);}
+								// Start OTP countdown
+								startCountdown(30);
+							}
 						}
 					});
 				} else {
@@ -42,12 +43,13 @@ $(document).ready(function() {
 					alert("Incorrect credentials. Please try again.");
 				}
 				console.log(data);
+				console.log(Object.keys(data));
 			},
 			error: function(xhr, status, error) {
 				console.error('Error: ' + error);
 			}
 		});
-		});
+	});
 });
 
 function generateOtp() {
@@ -63,6 +65,7 @@ function submitOtp() {
 	} else {
 		// Show error message
 		var otpError = document.getElementById('otpError');
+		console.log(otpError.textContent);
 		otpError.textContent = "Invalid OTP. Please try again.";
 		otpError.style.display = 'block';
 	}
