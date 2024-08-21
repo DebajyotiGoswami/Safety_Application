@@ -14,6 +14,8 @@ public class envVar {
 	  private String getAssignmentQry= "select inspection_id, emp_assigned_by, emp_assigned_to,"
 	  		+ "office_code_to_inspect, inspection_from_date, inspection_to_date, status "
 	  		+ "from safety_schema.team_assignment";
+	  
+	  private String getProblemQry= "select descriptions from safety_schema.problems";
 
 	public String getConnUrl() {
 		return connUrl;
@@ -37,6 +39,9 @@ public class envVar {
 		 }else if(i== 301) {
 			 System.out.println("data fetched from assignment table");
 			 query= getAssignmentQry;
+		 }else if(i== 401){
+			 System.out.println("data fetched from problems table");
+			 query= getProblemQry;
 		 }else {
 			 query="";
 		 }

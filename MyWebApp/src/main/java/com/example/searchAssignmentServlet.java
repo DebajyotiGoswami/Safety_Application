@@ -20,49 +20,46 @@ import com.service.dbUpdate;
 @WebServlet("/searchAssignmentServlet")
 public class searchAssignmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public searchAssignmentServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public searchAssignmentServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		dbUpdate dbUpd= new dbUpdate();
-		BufferedReader reader = request.getReader();
-		String line;
-		StringBuffer sB = new StringBuffer();
-		while ((line = reader.readLine()) != null)
-			sB.append(line);
-		System.out.println(sB.toString());
-		JSONObject reqJsonHpl = new JSONObject(sB.toString());
+		// response.getWriter().append("Served at: ").append(request.getContextPath());
+		dbUpdate dbUpd = new dbUpdate();
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("from_date", reqJsonHpl.getString("from_date"));
-		jsonObj.put("to_date", reqJsonHpl.getString("to_date"));
+		jsonObj.put("from_date", request.getParameter("from_date"));
+		jsonObj.put("to_date", request.getParameter("to_date"));
+
 		try {
 			jsonObj = dbUpd.getAssignmentProc(jsonObj);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("servlet: "+ jsonObj); // found ok
-		//System.out.println("first"+ jsonObj.getString("msg")); // found ok
-		response.getWriter().println(jsonObj.getString("msg")); //error found here
+		System.out.println("just before request.getSession(): "+ jsonObj);
+		request.getSession().setAttribute("assignmentObject", jsonObj); 
+
+		if (jsonObj.getString("msg").equals("assignment data fetched")) {
+			request.getSession().setAttribute("datafetchflag", "true");
+		}
+		System.out.println("searchAssignmentServlet getSession: " + jsonObj);
+		response.sendRedirect("assignment_status.jsp");
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	/*
-	 * protected void doPost(HttpServletRequest request, HttpServletResponse
-	 * response) throws ServletException, IOException { // TODO Auto-generated
-	 * method stub doGet(request, response); }
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 
 }

@@ -18,12 +18,14 @@
 
 <body>
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+	<nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="#">
             <img src="assets/images/logo.png" alt="Logo">
         </a>
         <span class="navbar-brand">West Bengal State Electricity Distribution Company Limited</span>
     </nav>
+    
+
 
     <!-- Welcome Content -->
     <div class="container login-container mt-5">

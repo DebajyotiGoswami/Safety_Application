@@ -124,7 +124,7 @@
     <!-- Footer -->
     <footer class="text-center mt-auto">
         <div class="text-center p-3">
-            Â© 2024 IT&C Cell, WBSEDCL
+            © 2024 IT&C Cell, WBSEDCL
         </div>
     </footer>
 

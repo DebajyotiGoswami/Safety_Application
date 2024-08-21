@@ -54,21 +54,21 @@ public class loginUpdateServlet extends HttpServlet {
 		StringBuffer sB = new StringBuffer();
 		while ((line = reader.readLine()) != null)
 			sB.append(line);
-		System.out.println(sB.toString());
+		System.out.println("sb tostring: "+ sB.toString());
 		JSONObject reqJsonHpl = new JSONObject(sB.toString());
 
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("user", reqJsonHpl.getString("User"));
 		jsonObj.put("ipAddr", ipAddress);
 		jsonObj.put("userAgent", userAgent);
-		System.out.println(jsonObj);
+		System.out.println("jsonobj: "+ jsonObj);
 		try {
 			jsonObj = dbUpd.dbUpdateProc(jsonObj);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(jsonObj.getString("msg"));
+		System.out.println("msg details: "+ jsonObj.getString("msg"));
 		response.getWriter().println(jsonObj.getString("msg"));
 	}
 }

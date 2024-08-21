@@ -39,4 +39,13 @@
         <servlet-name>loginUpdateServlet</servlet-name>
         <url-pattern>/loginUpdateServlet</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>StoreUserDetailsServlet</servlet-name>
+        <servlet-class>com.example.StoreUserDetailsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StoreUserDetailsServlet</servlet-name>
+        <url-pattern>/StoreUserDetailsServlet</url-pattern>
+    </servlet-mapping>
 </web-app>

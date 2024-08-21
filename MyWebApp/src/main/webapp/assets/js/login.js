@@ -22,7 +22,7 @@ $(document).ready(function() {
 						success: function(response) {
 							console.log(`inner success function ${response}`);
 							console.log("test");
-							console.log(response)
+							console.log("response from servlet: "+ response);
 							if (response.trim() == 'otpSent') {
 								generatedOtp = generateOtp();
 								console.log("Generated OTP:", generatedOtp);
@@ -42,8 +42,27 @@ $(document).ready(function() {
 					// Handle error (e.g., show error message)
 					alert("Incorrect credentials. Please try again.");
 				}
-				console.log(data);
-				console.log(Object.keys(data));
+				console.log("console_data: ", data);
+				
+				var empDtls = {
+							    "erpId": user,
+							    "name": data.empDtls.EMNAMCL,
+							    "office": data.empDtls.LTEXTCL,
+								"designation": data.empDtls.STEXTCL
+							};
+							/*console.log(empDtls);*/
+							$.ajax({
+							    url: 'http://localhost:8080/MyWebApp/StoreUserDetailsServlet', // Your servlet URL
+							    type: 'POST',
+							    contentType: 'application/json',
+							    data: JSON.stringify(empDtls),
+							    success: function(response) {
+							        console.log("Data sent and session updated successfully.");
+							    },
+							    error: function(xhr, status, error) {
+							        console.error("Error sending data:", status, error);
+							    }
+							});
 			},
 			error: function(xhr, status, error) {
 				console.error('Error: ' + error);
@@ -51,6 +70,10 @@ $(document).ready(function() {
 		});
 	});
 });
+
+
+
+
 
 function generateOtp() {
 	return Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
@@ -61,7 +84,8 @@ function submitOtp() {
 
 	if (otp === generatedOtp) {
 		// Redirect to dashboard if OTP is correct
-		window.location.href = 'dashboard.html';
+		/*window.location.href = 'dashboard.html';*/
+		window.location.href = 'dashboard.jsp';
 	} else {
 		// Show error message
 		var otpError = document.getElementById('otpError');
