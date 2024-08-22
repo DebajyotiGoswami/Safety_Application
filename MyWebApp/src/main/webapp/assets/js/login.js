@@ -4,16 +4,27 @@ $(document).ready(function() {
 	$('#loginbttn').on('click', function() {
 		var user = $('#userId').val();
 		var password = $('#password').val();
+		var userAgent = navigator.userAgent;
 		var jsonobj = {
 			"User": user,
-			"Pwd": password
+			"Pwd": password,
+			"userAgent": userAgent,
+			"pageName": "LOGIN"
 		};
+		console.log("userAgent: ", userAgent);
+		console.log("jsonObj with userAgent: ", jsonobj);
+		var url= 'http://10.251.37.170:8080/testSafety/testSafety';
 		var jsonString = JSON.stringify(jsonobj);
 		$.ajax({
-			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with your Servlet URL
+			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
 			type: 'POST',
 			data: jsonString,
 			success: function(data) {
+				console.log("url: ", url);
+				console.log(typeof data);
+				console.log("data: ",  data);
+				console.log("data ack: ", data.ackMsgCode);
+				console.log("type: ", typeof data.ackMsgCode);
 				if (data.ackMsgCode == '100') {
 					$.ajax({
 						url: 'http://localhost:8080/MyWebApp/loginUpdateServlet', // replace with your Servlet URL
@@ -38,8 +49,18 @@ $(document).ready(function() {
 							}
 						}
 					});
+				}else if(data.ackMsgCode == undefined){
+					console.log("yes. found it");
+					$('#otpMessage').show();
+					$('#otpForm').show();
+					$('#otp').prop('disabled', false);
+					$('#submitOtpBtn').prop('disabled', false);
+
+					// Start OTP countdown
+					startCountdown(30);
 				} else {
 					// Handle error (e.g., show error message)
+					console.log("inner failure function", data.ackMsgCode);
 					alert("Incorrect credentials. Please try again.");
 				}
 				console.log("console_data: ", data);

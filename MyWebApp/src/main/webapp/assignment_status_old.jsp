@@ -9,51 +9,60 @@
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/inspection_navigation.css">
-    <link rel="stylesheet" href="assets/css/inspection_status.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <span class="navbar-text">Welcome, <strong><%= request.getParameter("username") %></strong></span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contacts.html">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="LogoutServlet" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-outline-light ml-2">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+	<!-- Navigation Bar -->
+	<nav>
+		<jsp:include page="navbar.jsp" />
+	</nav>
 
-    <!-- Main Content -->
+	<!-- Main Content -->
     <div class="container">
-        <div class="form-container">
+    
+    	<div class="form-container">
+			<h2 class="text-center mb-4">Search Assigned Inspection</h2>
+			<form id="searchForm" action="searchAssignmentServlet" method="post">
+				<div class="mb-3 row">
+					<label for="fromDate" class="col-sm-3 col-form-label">From
+						Date</label>
+					<div class="col-sm-9">
+						<input type="date" class="form-control" id="fromDate"
+							name="fromDate" required>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<label for="toDate" class="col-sm-3 col-form-label">To Date</label>
+					<div class="col-sm-9">
+						<input type="date" class="form-control" id="toDate" name="toDate"
+							required>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<div class="col-sm-12 text-center">
+						<button type="button" class="btn btn-primary" id="searchBtn" 
+						onclick="submitThisForm()">Search</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		
+        <div class="result-container">
             <h2 class="text-center mb-4">Status of Assigned Inspection by <strong><%= request.getParameter("assigned_by_name") %></strong> (<%= request.getParameter("erp_id") %>)</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Inspection ID</th>
-                        <th>Assigned By</th>
-                        <th>Assigned To</th>
-                        <th>Office Name</th>
-                        <th>From Date</th>
-                        <th>To Date</th>
-                        <th>Status</th>
+						<th>#</th>
+						<th>Inspection ID</th>
+						<th>Assigned By</th>
+						<th>Assigned To</th>
+						<th>Office Name</th>
+						<th>From Date</th>
+						<th>To Date</th>
+						<th>Status</th>
                     </tr>
                 </thead>
-                <tbody id="inspectionData">
+                <tbody id="resultsTableBody">
                     <!-- Data will be populated here by JavaScript -->
                 </tbody>
             </table>
@@ -66,29 +75,6 @@
             © 2024 IT&C Cell, WBSEDCL
         </div>
     </footer>
-
-    <script>
-        const erpId = "<%= request.getParameter("erp_id") %>";
-
-        fetch(`/viewInspection?erpId=${erpId}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.getElementById('inspectionData');
-                data.forEach(inspection => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${inspection.inspection_id}</td>
-                        <td>${inspection.assigned_by}</td>
-                        <td>${inspection.assigned_to}</td>
-                        <td>${inspection.office_name}</td>
-                        <td>${inspection.from_date}</td>
-                        <td>${inspection.to_date}</td>
-                        <td>${inspection.status}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    </script>
+	<script src="assets/js/search_inspection.js"></script>
 </body>
 </html>

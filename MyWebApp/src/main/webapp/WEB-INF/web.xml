@@ -48,4 +48,30 @@
         <servlet-name>StoreUserDetailsServlet</servlet-name>
         <url-pattern>/StoreUserDetailsServlet</url-pattern>
     </servlet-mapping>
+    <!-- searchInspectionServlet -->
+    <servlet>
+    	<servlet-name>searchInspectionServlet</servlet-name>
+    	<servlet-class>com.example.searchInspectionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>searchInspectionServlet</servlet-name>
+    	<url-pattern>/searchInspectionServlet</url-pattern>
+	</servlet-mapping>
+	<!-- searchAssignmentServlet -->
+    <servlet>
+    	<servlet-name>searchAssignmentServlet</servlet-name>
+    	<servlet-class>com.example.searchAssignmentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>searchAssignmentServlet</servlet-name>
+    	<url-pattern>/searchAssignmentServlet</url-pattern>
+	</servlet-mapping>
+    <servlet>
+    	<servlet-name>GetIpServlet</servlet-name>
+    	<servlet-class>com.example.GetIpServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>GetIpServlet</servlet-name>
+    	<url-pattern>/GetIpServlet</url-pattern>
+	</servlet-mapping>
 </web-app>

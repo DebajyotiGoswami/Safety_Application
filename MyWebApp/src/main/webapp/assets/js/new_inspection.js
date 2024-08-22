@@ -1,50 +1,30 @@
+function submitThisForm(){
+	document.getElementById("inspectionForm").submit();
+}
 
+
+
+/*
 $(document).ready(function() {
 	// Fetch data for problem_code dropdown
 	$.ajax({
-		url: 'http://localhost:8080/MyWebApp/dbUpdate', 
+		url: 'http://localhost:8080/MyWebApp/dbUpdate',
 		type: 'GET',
+		dataType: 'json',
 		data: { action: 'getProblems' },
-		success: function(response) {
-			console.log("js response: "+ response);
-			var problems = JSON.parse(response);
-			var problemSelect = $('#problem_code');
-			problemSelect.empty();
-			problemSelect.append('<option value="">Select Problem Code</option>');
-			$.each(problems, function(index, problem) {
-				problemSelect.append('<option value="' + problem.code + '">' + problem.description + '</option>');
+		success: function(data) {
+			var $problemCodeSelect = $('#problem_code');
+			$problemCodeSelect.empty(); //clear existing data, if any
+			$.each(data, function(index, problem) {
+				$problemCodeSelect.append($('<option>', {
+					value: problem.decription,
+					text: problem.decription
+				}));
 			});
+		},
+		error: function(xhr, status, error) {
+			console.error('Error fetching problem codes: ' + error);
 		}
-	});
-
-	// Fetch data for office_name dropdown
-	$.ajax({
-		url: 'dbUpdate', // Adjust URL to your servlet
-		type: 'GET',
-		data: { action: 'getOffices' },
-		success: function(response) {
-			var offices = JSON.parse(response);
-			var officeSelect = $('#office_name');
-			officeSelect.empty();
-			officeSelect.append('<option value="">Select Office</option>');
-			$.each(offices, function(index, office) {
-				officeSelect.append('<option value="' + office.code + '">' + office.name + '</option>');
-			});
-		}
-	});
-
-	// Handle form submission
-	$('#submitBtn').click(function() {
-		$.ajax({
-			url: 'dbUpdate', // Adjust URL to your servlet
-			type: 'POST',
-			data: $('#inspectionForm').serialize() + '&action=updateVulnerabilities',
-			success: function(response) {
-				alert('Inspection data submitted successfully!');
-			},
-			error: function() {
-				alert('An error occurred while submitting the data.');
-			}
-		});
 	});
 });
+*/

@@ -13,10 +13,15 @@ public class envVar {
 	  
 	  private String getAssignmentQry= "select inspection_id, emp_assigned_by, emp_assigned_to,"
 	  		+ "office_code_to_inspect, inspection_from_date, inspection_to_date, status "
-	  		+ "from safety_schema.team_assignment";
+	  		+ "from safety_schema.team_assignment where inspection_from_date>= ? and "
+	  		+ "inspection_to_date<= ?";
 	  
-	  private String getProblemQry= "select descriptions from safety_schema.problems";
-
+	  private String getProblemQry= "select problem_id, description from safety_schema.problems";
+	  
+	  private String getInspectionQry= "select inspection_id, emp_assigned_by, emp_assigned_to,"
+		  		+ "office_code_to_inspect, inspection_from_date, inspection_to_date, status "
+		  		+ "from safety_schema.team_assignment";
+	  
 	public String getConnUrl() {
 		return connUrl;
 	}
@@ -42,6 +47,9 @@ public class envVar {
 		 }else if(i== 401){
 			 System.out.println("data fetched from problems table");
 			 query= getProblemQry;
+		 }else if(i== 501){
+			 System.out.println("data fetched from inspection table");
+			 query= getInspectionQry;
 		 }else {
 			 query="";
 		 }

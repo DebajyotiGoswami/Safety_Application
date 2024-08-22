@@ -14,11 +14,10 @@ import org.json.JSONObject;
 
 import com.service.dbUpdate;
 
-
-public class searchAssignmentServlet extends HttpServlet {
+public class searchInspectionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public searchAssignmentServlet() {
+	public searchInspectionServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -29,19 +28,21 @@ public class searchAssignmentServlet extends HttpServlet {
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		dbUpdate dbUpd = new dbUpdate();
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("from_date", request.getParameter("fromDate"));
-		jsonObj.put("to_date", request.getParameter("toDate"));
-		
+		jsonObj.put("from_date", request.getParameter("from_date"));
+		jsonObj.put("to_date", request.getParameter("to_date"));
+
 		try {
-			jsonObj = dbUpd.getAssignmentProc(jsonObj);
+			jsonObj = dbUpd.getInspectionProc(jsonObj);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("just before request.getSession(): "+ jsonObj);
 		request.getSession().setAttribute("assignmentObject", jsonObj); 
 
-		if (jsonObj.getString("msg").equals("success")) {
+		if (jsonObj.getString("msg").equals("assignment data fetched")) {
 			request.getSession().setAttribute("datafetchflag", "true");
 		}
+		System.out.println("searchAssignmentServlet getSession: " + jsonObj);
 		response.sendRedirect("assignment_status.jsp");
 	}
 }

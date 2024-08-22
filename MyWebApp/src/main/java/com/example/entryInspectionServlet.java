@@ -15,10 +15,10 @@ import org.json.JSONObject;
 import com.service.dbUpdate;
 
 
-public class searchAssignmentServlet extends HttpServlet {
+public class entryInspectionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public searchAssignmentServlet() {
+	public entryInspectionServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -29,8 +29,13 @@ public class searchAssignmentServlet extends HttpServlet {
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		dbUpdate dbUpd = new dbUpdate();
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("from_date", request.getParameter("fromDate"));
-		jsonObj.put("to_date", request.getParameter("toDate"));
+		jsonObj.put("inspection_id", request.getParameter("inspection_id"));
+		jsonObj.put("inspection_date", request.getParameter("inspection_date"));
+		jsonObj.put("problem_code", request.getParameter("problem_code"));
+		jsonObj.put("location", request.getParameter("location"));
+		jsonObj.put("problem_details", request.getParameter("problem_details"));
+		jsonObj.put("image1", request.getParameter("image1"));
+		jsonObj.put("inspection_date", request.getParameter("inspection_date"));
 		
 		try {
 			jsonObj = dbUpd.getAssignmentProc(jsonObj);
