@@ -24,8 +24,6 @@
         </a>
         <span class="navbar-brand">West Bengal State Electricity Distribution Company Limited</span>
     </nav>
-    
-
 
     <!-- Welcome Content -->
     <div class="container login-container mt-5">
@@ -82,6 +80,6 @@
     <div class="footer">© 2024 WBSEDCL</div>
 
     <!-- JavaScript to handle LDAP authentication and OTP submission -->
-    <script src="assets/js/login.js"></script>
+    <script src="assets/js/new_login.js"></script>
 </body>
 </html>

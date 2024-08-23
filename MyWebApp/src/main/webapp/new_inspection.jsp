@@ -45,25 +45,6 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-<%--     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <span class="navbar-text">Welcome, <strong><%=session.getAttribute("username")%></strong></span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a></li>
-                    <li class="nav-item">
-                        <form action="LogoutServlet" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-outline-light ml-2">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav> --%>
     <nav>
 		<jsp:include page="navbar.jsp" />
 	</nav>
@@ -122,7 +103,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 btn-center">
-                        <button type="button" class="btn btn-primary" id="submitBtn">Submit</button>
+                        <button type="button" class="btn btn-primary" id="submitBtn" >Submit</button>
                     </div>
                 </div>
             </form>
@@ -135,6 +116,6 @@
     </footer>
     
     <!-- JavaScript to handle LDAP authentication and OTP submission -->
-    <script src="assets/js/new_inspection.js"></script>
+    <script src="assets/js/entry_inspection.js"></script>
 </body>
 </html>

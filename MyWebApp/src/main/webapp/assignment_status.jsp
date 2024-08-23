@@ -21,14 +21,13 @@
 	<nav>
 		<jsp:include page="navbar.jsp" />
 	</nav>
-
 	<!-- Main Content -->
 	<div class="container">
  		<%
 		String dataFetchFlag = (String)request.getSession().getAttribute("datafetchflag");
+ 		System.out.println(dataFetchFlag);
 		//String assignmentObjStr = request.getSession().getAttribute("assignmentObject").toString();
-		%>
-		 
+		%>	 
 	
  		<%
 		if (dataFetchFlag == null) {
@@ -60,9 +59,7 @@
 			</form>
 		</div>
  		<%
-		}
-		
-		else if (dataFetchFlag != null && dataFetchFlag.equals("true")) {
+		}else if (dataFetchFlag != null && dataFetchFlag.equals("true")) {
 		JSONObject assignmentObj = (JSONObject) request.getSession().getAttribute("assignmentObject");
 		
 		%>

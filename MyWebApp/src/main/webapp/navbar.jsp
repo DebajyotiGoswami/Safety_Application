@@ -16,7 +16,7 @@
                 designation = empDtls.optString("designation", "N/A");
             }
         %>
-			<span class="navbar-text">Welcome, <%= username %> (ERP ID: <%= erpId %>
+			<span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>
 				, <%= designation %>)
 			</span>
 

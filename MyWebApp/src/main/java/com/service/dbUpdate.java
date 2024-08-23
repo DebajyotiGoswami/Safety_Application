@@ -34,6 +34,7 @@ public class dbUpdate {
 		return con;
 	}
 
+	//entry login details to login table ( code 201 )
 	public JSONObject dbUpdateProc(JSONObject jsonObj) throws SQLException {
 		PreparedStatement ps = null;
 		int index = 0;
@@ -61,6 +62,7 @@ public class dbUpdate {
 		return jsonObj;
 	}
 
+	//get assignment details from team_assignment table ( code 301 )
 	public JSONObject getAssignmentProc(JSONObject jsonObj) throws SQLException {
 		PreparedStatement ps = null;
 		Connection con = null;
@@ -119,6 +121,7 @@ public class dbUpdate {
 		return jsonObj;
 	}
 
+	//get list of problems from problem+asset_type table ( code 401 )
 	public JSONObject getProblems(JSONObject jsonObj) throws SQLException {
 		PreparedStatement ps = null;
 		Connection con = null;
@@ -158,6 +161,7 @@ public class dbUpdate {
 		return jsonObj;
 	}
 
+	//get list of offices from office table ( code *** ) 
 	public JSONObject getOffices(JSONObject jsonObj) throws SQLException {
 		PreparedStatement ps = null;
 		Connection con = null;
@@ -193,40 +197,43 @@ public class dbUpdate {
 		return jsonObj;
 	}
 
+	//insert new inspection data into vulnerabilities table ( code 601)
 	public JSONObject updateVulnerabilities(JSONObject jsonObj) throws SQLException {
+		System.out.println("Inside updateVuln method");
 		PreparedStatement ps = null;
+		int index = 0;
 		Connection con = null;
+		envVar envar = new envVar();
 		try {
 			con = dbCon();
-			String sql = "INSERT INTO safety_schema.vulnerabilities (inspection_id, inspection_date, problem_code, location, problem_details, office_name) VALUES (?, ?, ?, ?, ?, ?)";
-			ps = con.prepareStatement(sql);
+			System.out.println("Inside updateVuln try section");
+			ps = con.prepareStatement(envar.getSql(601));
 			ps.setString(1, jsonObj.getString("inspection_id"));
-			ps.setDate(2, java.sql.Date.valueOf(jsonObj.getString("inspection_date")));
-			ps.setString(3, jsonObj.getString("problem_code"));
-			ps.setString(4, jsonObj.getString("location"));
-			ps.setString(5, jsonObj.getString("problem_details"));
-			ps.setString(6, jsonObj.getString("office_name"));
-
-			int index = ps.executeUpdate();
+			ps.setString(2, jsonObj.getString("location_remarks"));
+			ps.setString(3, jsonObj.getString("problem_remarks"));
+			ps.setString(4, jsonObj.getString("assigned_office_code"));
+			ps.setString(5, jsonObj.getString("inspection_date"));
+			System.out.println("Inside updateVuln : setstring successfull");
+			System.out.println("ps: "+ ps);
+			index = ps.executeUpdate();
+			System.out.println("index: "+ index);
 			if (index > 0) {
 				jsonObj.put("msg", "vulnerabilities updated");
-			} else {
-				jsonObj.put("msg", "update failed");
 			}
 
 		} catch (Exception e) {
-			jsonObj.put("msg", "update failure");
-			System.err.println("Error updating vulnerabilities.");
+			System.err.println("Connection failed.");
 			e.printStackTrace();
 		} finally {
-			if (ps != null)
-				ps.close();
-			if (con != null)
+			if (con != null) {
 				con.close();
+			}
 		}
+
 		return jsonObj;
 	}
 
+	//get pending inspection from team_assignment table ( code 501 )
 	public JSONObject getInspectionProc(JSONObject jsonObj) throws SQLException {
 		PreparedStatement ps = null;
 		Connection con = null;

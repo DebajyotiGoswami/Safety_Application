@@ -5,16 +5,19 @@ $(document).ready(function() {
 		var user = $('#userId').val();
 		var password = $('#password').val();
 		var userAgent = navigator.userAgent;
+		console.log("userAgent: ", userAgent);
+		var userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
 		var jsonobj = {
 			"User": user,
 			"Pwd": password,
 			"userAgent": userAgent,
-			"pageName": "LOGIN"
+			"pageNm": "LOGIN"
 		};
 		console.log("userAgent: ", userAgent);
 		console.log("jsonObj with userAgent: ", jsonobj);
 		var url= 'http://10.251.37.170:8080/testSafety/testSafety';
 		var jsonString = JSON.stringify(jsonobj);
+		console.log("jsonObj to server: ", jsonString);
 		$.ajax({
 			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
 			type: 'POST',
@@ -86,6 +89,7 @@ $(document).ready(function() {
 							});
 			},
 			error: function(xhr, status, error) {
+				console.log("error found");
 				console.error('Error: ' + error);
 			}
 		});

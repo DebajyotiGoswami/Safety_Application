@@ -74,4 +74,12 @@
     	<servlet-name>GetIpServlet</servlet-name>
     	<url-pattern>/GetIpServlet</url-pattern>
 	</servlet-mapping>
+	<servlet>
+    	<servlet-name>entryInspectionServlet</servlet-name>
+    	<servlet-class>com.example.entryInspectionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>entryInspectionServlet</servlet-name>
+    	<url-pattern>/entryInspectionServlet</url-pattern>
+	</servlet-mapping>
 </web-app>

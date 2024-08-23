@@ -2,6 +2,7 @@ package com.example;
 
 /*import java.io.BufferedReader;*/
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,6 @@ import org.json.JSONObject;
 
 import com.service.dbUpdate;
 
-
 public class entryInspectionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,28 +25,53 @@ public class entryInspectionServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
+
+		// Read JSON data from the request body
+		StringBuilder jsonBuilder = new StringBuilder();
+		try (BufferedReader reader = request.getReader()) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				jsonBuilder.append(line);
+			}
+			System.out.println("line is : " + line);
+		}
+
+		// Convert StringBuilder to JSON object
+		JSONObject jsonObjInput = new JSONObject(jsonBuilder.toString());
+		System.out.println("created json is : " + jsonObjInput);
+
+		String exampleField = jsonObjInput.getString("inspection_id");
+		System.out.println("data out of json: " + exampleField);
+
+		System.out.println("Inside entry inspection servlet.");
+
 		dbUpdate dbUpd = new dbUpdate();
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("inspection_id", request.getParameter("inspection_id"));
-		jsonObj.put("inspection_date", request.getParameter("inspection_date"));
-		jsonObj.put("problem_code", request.getParameter("problem_code"));
-		jsonObj.put("location", request.getParameter("location"));
-		jsonObj.put("problem_details", request.getParameter("problem_details"));
-		jsonObj.put("image1", request.getParameter("image1"));
-		jsonObj.put("inspection_date", request.getParameter("inspection_date"));
-		
+		JSONObject jsonObjOutput = new JSONObject();
+		jsonObjOutput.put("inspection_id", jsonObjInput.getString("inspection_id"));
+		System.out.println(1);
+		jsonObjOutput.put("location_remarks", jsonObjInput.getString("location_remarks"));
+		System.out.println(2);
+		jsonObjOutput.put("problem_remarks", jsonObjInput.getString("problem_details"));
+		System.out.println(3);
+		jsonObjOutput.put("assigned_office_code", jsonObjInput.getString("assigned_office_code"));
+		System.out.println(4);
+		jsonObjOutput.put("inspection_date", jsonObjInput.getString("inspection_date"));
+		System.out.println(5);
+
+		System.out.println("Output json to dbupdate is : " + jsonObjOutput);
+		// jsonObj.put("image1", request.getParameter("image1"));
+
 		try {
-			jsonObj = dbUpd.getAssignmentProc(jsonObj);
+			jsonObjOutput = dbUpd.updateVulnerabilities(jsonObjOutput);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		request.getSession().setAttribute("assignmentObject", jsonObj); 
+		request.getSession().setAttribute("assignmentObject", jsonObjOutput);
 
-		if (jsonObj.getString("msg").equals("success")) {
+		if (jsonObjOutput.getString("msg").equals("success")) {
 			request.getSession().setAttribute("datafetchflag", "true");
 		}
-		response.sendRedirect("assignment_status.jsp");
+		// response.sendRedirect("assignment_status.jsp");
+
 	}
 }

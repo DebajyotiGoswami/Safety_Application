@@ -22,6 +22,12 @@ public class envVar {
 		  		+ "office_code_to_inspect, inspection_from_date, inspection_to_date, status "
 		  		+ "from safety_schema.team_assignment";
 	  
+	  private String insertInspectionQry= "insert into safety_schema.vulnerabilities "
+	  		+ "(site_id, inspection_id, inspection_by, problem_id, location_remarks,"
+	  		+ "problem_remarks, assigned_office_code, present_status, inspection_date, "
+	  		+ "pre_image, post_image)"
+	  		+ "values (5, ?, 90012775, 1, ?, ?, ?, 'INSPECTED', ?,'test.jpg', 'test.jpg')";
+	  
 	public String getConnUrl() {
 		return connUrl;
 	}
@@ -50,6 +56,9 @@ public class envVar {
 		 }else if(i== 501){
 			 System.out.println("data fetched from inspection table");
 			 query= getInspectionQry;
+		 }else if(i== 601){
+			 System.out.println("data inserted into inspection table");
+			 query= insertInspectionQry;
 		 }else {
 			 query="";
 		 }
