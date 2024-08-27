@@ -2,6 +2,7 @@ let generatedOtp;
 var buttonIsOtpFlag= true;
 /*var jsonobj= {};*/
 var xUid= "";
+var empDtls= "";
 
 $(document).ready(function() {
 	$('#loginbttn').on('click', function() {
@@ -24,6 +25,7 @@ $(document).ready(function() {
 				console.log("data ack: ", data.ackMsgCode);
 				if (data.ackMsgCode == '100') {
 					xUid= data.xUid;
+					empDtls= data.empDtls;
 					// Show OTP section
 					$('#otpMessage').show();
 					$('#otpForm').show();
@@ -75,7 +77,8 @@ $('#submitOtpBtn').on('click', function() {
 		"User": User,
 		"otp": otp,
 		"pageNm": "OTP",
-		"xUid": xUid
+		"xUid": xUid,
+		"empDtls": empDtls
 	};
 	console.log("otp jsonobj is: ", jsonobjOtp);
 	$.ajax({
@@ -85,10 +88,13 @@ $('#submitOtpBtn').on('click', function() {
 		success: function(data) {
 			console.log("data ack: ", data.ackMsgCode);
 			console.log("json inside success: ", JSON.stringify(jsonobjOtp));
+			console.log("data inside success: ", data);
 			if (data.ackMsgCode == '100') {
 				// data matched. go to dashboard
 				console.log("OTP matched");
-
+				//window.location.href = 'dashboard.jsp';
+				console.log(empDtls);
+				console.log(typeof empDtls);
 				//save the session variable
 				var empDtls = {
 					"erpId": User,
@@ -146,7 +152,7 @@ $('#submitOtpBtn').on('click', function() {
 
 
 
-function generateOtp() {
+/*function generateOtp() {
 	return Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
 }
 
@@ -155,7 +161,7 @@ function submitOtp() {
 
 	if (otp === generatedOtp) {
 		// Redirect to dashboard if OTP is correct
-		/*window.location.href = 'dashboard.html';*/
+		window.location.href = 'dashboard.html';
 		window.location.href = 'dashboard.jsp';
 	} else {
 		// Show error message
@@ -164,7 +170,7 @@ function submitOtp() {
 		otpError.textContent = "Invalid OTP. Please try again.";
 		otpError.style.display = 'block';
 	}
-}
+}*/
 
 function startCountdown(seconds) {
 	let counter = seconds;
@@ -187,10 +193,10 @@ function startCountdown(seconds) {
 	return buttonIsOtpFlag;
 }
 
-function resendOtp() {
+/*function resendOtp() {
 	generatedOtp = generateOtp();
 	console.log("Resent OTP:", generatedOtp);
 	alert('OTP has been resent!');
 	document.getElementById('otp').value = ''; // Clear previous OTP
 	startCountdown(30); // Restart countdown for new OTP
-}
+}*/
