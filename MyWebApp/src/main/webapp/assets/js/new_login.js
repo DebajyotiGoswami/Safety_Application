@@ -90,9 +90,10 @@ $('#submitOtpBtn').on('click', function() {
 			console.log("json inside success: ", JSON.stringify(jsonobjOtp));
 			console.log("data inside success: ", data);
 			if (data.ackMsgCode == '100') {
+				alert(JSON.stringify(data));
 				// data matched. go to dashboard
 				console.log("OTP matched");
-				//window.location.href = 'dashboard.jsp';
+				window.location.href = 'dashboard.jsp';
 				console.log(empDtls);
 				console.log(typeof empDtls);
 				//save the session variable
