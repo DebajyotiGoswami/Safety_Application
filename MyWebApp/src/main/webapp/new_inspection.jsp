@@ -12,36 +12,6 @@
     <script src="assets/js/jquery.min.js"></script>
     <!-- Custom JavaScript -->
     <script src="assets/js/new_inspection.js"></script>
-    <style>
-        .form-container {
-            margin-top: 5px;
-        }
-        .form-row {
-            align-items: center;
-        }
-        .form-row label {
-            margin-bottom: 0;
-        }
-        .form-row .form-control {
-            margin-bottom: 5px;
-        }
-        .form-row .form-group {
-            margin-bottom: 0;
-        }
-        .btn-center {
-            display: flex;
-            justify-content: center;
-        }
-        .heading-container {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .required-label::after {
-            content: '*';
-            color: red;
-            margin-left: 5px;
-        }
-    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -83,18 +53,13 @@
                     </div>
                 </div>
                 <!-- Image Upload Sections -->
+                
                 <div class="row form-row">
                     <div class="col-sm-12 form-group image-upload-section">
                         <label for="image1" class="form-label">Upload Image 1</label>
                         <input type="file" class="form-control" id="image1" name="image1">
                     </div>
                 </div>
-<!--                 <div class="row form-row">
-                    <div class="col-sm-12 form-group image-upload-section">
-                        <label for="image2" class="form-label">Upload Image 2</label>
-                        <input type="file" class="form-control" id="image2" name="image2">
-                    </div>
-                </div> -->
                 <div class="row form-row">
                     <div class="col-sm-6 form-group">
                         <label for="office_name" class="form-label required-label">Concerned Office Name</label>
