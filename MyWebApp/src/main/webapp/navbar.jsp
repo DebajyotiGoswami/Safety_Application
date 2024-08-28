@@ -44,3 +44,15 @@
 			</div>
 		</div>
 	</nav>
+	<script>
+        // Function to prevent back navigation
+        function preventBack() {
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+            };
+        }
+
+        // Call the function on page load
+        window.onload = preventBack;
+    </script>

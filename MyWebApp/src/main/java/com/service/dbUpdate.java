@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /*import java.sql.Date;*/
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,6 +14,8 @@ import org.json.JSONObject;
 import com.envProp.envVar;
 
 public class dbUpdate {
+	
+	envVar envar = new envVar();
 
 	public Connection dbCon() {
 		Connection con = null;
@@ -133,11 +136,16 @@ public class dbUpdate {
 			con = dbCon();
 			String sql = envar.getSql(401); // fetch the select * query string
 			ps = con.prepareStatement(sql);
+			System.out.println("ps before: "+ ps);
+			ps.setString(1, jsonObj.getString("network_type"));
+			ps.setString(2, jsonObj.getString("asset_name"));
+			System.out.println("ps after: "+ ps);
 			rs = ps.executeQuery(); // this will create multiple rows of results from query
-
+			System.out.println(rs);
+			
 			while (rs.next()) {
 				JSONObject rowObject = new JSONObject();
-				rowObject.put("problem_id", rs.getString("problem_id"));
+				//rowObject.put("problem_id", rs.getString("problem_id"));
 				rowObject.put("description", rs.getString("description"));
 				System.out.println("rowObject: " + rowObject);
 				resultArray.put(rowObject);
@@ -167,16 +175,18 @@ public class dbUpdate {
 		Connection con = null;
 		ResultSet rs = null;
 		JSONArray resultArray = new JSONArray();
+		
 		try {
 			con = dbCon();
-			String sql = "SELECT office_code AS code, office_name AS name FROM safety_schema.office";
+			String sql = envar.getSql(701);
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 				JSONObject rowObject = new JSONObject();
-				rowObject.put("code", rs.getString("code"));
-				rowObject.put("name", rs.getString("name"));
+				rowObject.put("office_code", rs.getString("office_code"));
+				rowObject.put("office_name", rs.getString("office_name"));
+				rowObject.put("office_type", rs.getString("office_type"));
 				resultArray.put(rowObject);
 			}
 			jsonObj.put("offices", resultArray);
@@ -213,12 +223,14 @@ public class dbUpdate {
 			ps.setString(1, jsonObj.getString("assigned_office_code"));
 			System.out.println("1");
 			ps.setString(2, jsonObj.getString("inspection_id"));
-			ps.setString(3, jsonObj.getString("location_remarks"));
-			ps.setString(4, jsonObj.getString("problem_remarks"));
-			ps.setString(5, jsonObj.getString("assigned_office_code"));
+			ps.setString(3, jsonObj.getString("problem_"));
+			ps.setString(4, jsonObj.getString("location_remarks"));
+			ps.setString(5, jsonObj.getString("problem_remarks"));
+			ps.setString(6, jsonObj.getString("assigned_office_code"));
 			System.out.println("data to be shown: "+ jsonObj.getString("inspection_date"));
 			java.sql.Date insp_date= java.sql.Date.valueOf(jsonObj.getString("inspection_date"));
-			ps.setDate(6, insp_date);
+			ps.setDate(7, insp_date);
+			ps.setString(8, jsonObj.getString("image1"));
 			System.out.println("Inside updateVuln : setstring successfull");
 			System.out.println("ps: "+ ps);
 			index = ps.executeUpdate();
@@ -246,10 +258,28 @@ public class dbUpdate {
 		envVar envar = new envVar();
 		ResultSet rs = null;
 		JSONArray resultArray = new JSONArray();
+		JSONArray inspectionIdList= new JSONArray();
 		try {
+			
+			
+			
 			con = dbCon();
 			String sqlStatement = envar.getSql(501);
+			System.out.println(sqlStatement);
+			System.out.println( jsonObj.getString("user"));
 			ps = con.prepareStatement(sqlStatement);
+			
+			/*
+			 * java.sql.Date from_date=
+			 * java.sql.Date.valueOf(jsonObj.getString("from_date")); ps.setDate(1,
+			 * from_date);
+			 * 
+			 * java.sql.Date to_date= java.sql.Date.valueOf(jsonObj.getString("to_date"));
+			 * ps.setDate(2, to_date);
+			 */
+
+			
+			ps.setString(1, jsonObj.getString("user") );
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -267,10 +297,14 @@ public class dbUpdate {
 
 				// Add the JSON object to the JSON array
 				resultArray.put(rowObject);
+				
+				inspectionIdList.put(rs.getString("inspection_id"));
+				
 			}
 			// Add the JSON array to the final JSON object
 			jsonObj.put("assignments", resultArray);
 			jsonObj.put("msg", "success");
+			jsonObj.put("inspectionIdList", inspectionIdList);
 
 		} catch (Exception e) {
 			jsonObj.put("msg", "failure");

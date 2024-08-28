@@ -35,3 +35,47 @@ select * from safety_schema.vulnerabilities;
 --location_remarks,problem_remarks, assigned_office_code, present_status, 
 --inspection_date,pre_image, post_image)values((CONCAT('SITE','_', nextval('safety_schema.vulnerabilities_site_id_serial_seq'))),
 --'4', 90012775, 1, 'ddd', 'dddddd', '3332401', 'INSPECTED', '2024-08-15','test.jpg', 'test.jpg')
+
+
+--select * from safety_schema.stell where stell like '500327%';
+--
+--INSERT INTO safety_schema.stell
+--VALUES ('50032705', 'CE(IT&C)', '5', 'ASSIGNER', '90012775', NOW(), 'A', 'A')
+
+select description from safety_schema.problems where asset_type_id in 
+(select asset_type_id from safety_schema.asset_type where network_type='LT'
+and asset_name='EARTHING')
+
+
+select * from safety_schema.problems
+where asset_type_id='24';
+
+
+select description from safety_schema.problems where asset_type_id in (select asset_type_id from safety_schema.asset_type where network_type='LT'and asset_name='EARTHING')
+
+select problem_id from safety_schema.problems
+where description='LT Earthing Broken or Detached Earth Wire';
+
+insert into safety_schema.vulnerabilities
+(site_id, inspection_id, inspection_by, problem_id, location_remarks,problem_remarks, 
+assigned_office_code, present_status, inspection_date,pre_image, post_image)
+values((CONCAT('3332402','_', nextval('safety_schema.vulnerabilities_site_id_serial_seq'))),
+'4', 90012775, (select problem_id from safety_schema.problems
+where description='LT Earthing Broken or Detached Earth Wire'), 'Rathtala', 'Earth Wire Detached', '3332402', 'INSPECTED', 
+'2024-08-15 +05:30','', 'test.jpg')
+
+
+select * from safety_schema.office
+
+ALTER TABLE safety_schema.team_assignment
+ALTER COLUMN inspection_id TYPE VARCHAR(50)
+
+
+select * from safety_schema.team_assignment;
+
+
+select inspection_id, emp_assigned_by, emp_assigned_to,office_code_to_inspect, inspection_from_date, inspection_to_date, status from safety_schema.team_assignment where inspection_from_date<= now() and emp_assigned_to= '90012775'
+
+select * from safety_schema.dev_otp
+order by cr_dt;
+;

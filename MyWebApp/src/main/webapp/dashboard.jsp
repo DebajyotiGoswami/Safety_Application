@@ -9,6 +9,7 @@
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
+<%@page import="org.json.*"%>
 </head>
 
 <body>
@@ -39,6 +40,8 @@
 					</div>
 				</div>
 			</div>
+<%String str= request.getSession().getAttribute("empDtls").toString(); %>
+<%=str %>
 
 			<!-- Inspection Entry section -->
 			<div class="col-md-6 mb-4">

@@ -3,36 +3,141 @@
 }
 */
 $(document).ready(function() {
+	var erpId=document.getElementById('erpId').value;
+	
+	alert(erpId);
+	$.ajax({
+		url: 'http://localhost:8080/MyWebApp/searchInspectionServlet',
+							type: 'POST',
+							contentType: 'application/json',
+							data: JSON.stringify({
+								"erpId": erpId
+							}),
+							success: function(response) {
+								console.log(response);
+								const jsonObject = JSON.parse(response);
+								console.log(jsonObject.inspectionIdList);
+								var jsonArray = jsonObject.inspectionIdList;
+								alert(JSON.stringify(jsonArray)); 
+								populateDropdown(jsonArray);
+							},
+							error: function(xhr, status, error) {
+								
+								console.error(xhr,status, error);
+							}
+	})
+	
 	$('#submitBtn').on('click', function() {
-		var inspection_id = $('#inspection_id').val();
-		var location_remarks = $('#location').val();
-		var problem_details = $('#problem_details').val();
-		var assigned_office_code = $('#office_name').val();
-		var inspection_date = $('#inspection_date').val();
-		
-		var jsonObj = {
-			"inspection_id": inspection_id,
-			"location_remarks": location_remarks,
-			"problem_details": problem_details,
-			"assigned_office_code": assigned_office_code,
-			"inspection_date": inspection_date
-		};
-				
-		console.log(inspection_id, inspection_date);
-		console.log(jsonObj);
-		
-		$.ajax({
-					url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
+
+		function disableMouseInteraction(className) {
+			var elements = document.querySelectorAll('.' + className);
+			elements.forEach(function(element) {
+				element.style.pointerEvents = 'none';
+			});
+		}
+		if ($('#submitBtn').text() === 'NEXT') {
+			// Collect values from the input fields
+			var network_type = $('#network_type').val();
+			var asset_name = $('#asset_type').val();
+			jsonString = JSON.stringify({
+				"network_type": network_type,
+				"asset_name": asset_name
+			}),
+
+				$.ajax({
+					url: 'http://localhost:8080/MyWebApp/fetchProblemCodes',
 					type: 'POST',
-					data: JSON.stringify(jsonObj),
-					success: function(data) {
-						console.log("successful conn");
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"network_type": network_type,
+						"asset_name": asset_name
+					}),
+					success: function(response) {
+						console.log("entered in success function");
+						console.log("Response received:", response);
+						let problemsArray = response.problems;
+						console.log("problemArray: ", problemsArray);
+						let descriptions = problemsArray.map(problem => problem.description);
+						console.log("Descriptions:", descriptions);
+						let problemSelect = $('#problem_list');
+						problemSelect.empty(); // Clear any existing options
+						descriptions.forEach(function(description) {
+							problemSelect.append($('<option>', {
+								value: description,
+								text: description
+							}));
+						});
+						console.log("exit in success function");
 					},
 					error: function(xhr, status, error) {
-						console.log("connection failed");
-						console.error('Error: ' + error);
+						console.log("Error fetching problem codes.");
+						console.error('Error:', error);
 					}
 				});
+			console.log("outside of ")
+			disableMouseInteraction('initial-section');
+			$('#additionalSection').show(); // Show additional sections
+			$('#submitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
+			isNextClicked = true; // Update flag
+		} else {
+			//var inspection_id = $('#inspection_id').val();
+			var inspection_id = $('#inspectionList').val();
+			var location_remarks = $('#location').val();
+			var problem_details = $('#problem_details').val();
+			var assigned_office_code = $('#office_name').val();
+			var inspection_date = $('#inspection_date').val();
+			var image1= $('#image1').val();
 
-	});
-});		
+			var jsonObj = {
+				"inspectionId": inspection_id,
+				"locationRemarks": location_remarks,
+				"problemRemarks": problem_details,
+				"assignedOfficeCode": assigned_office_code,
+				"inspectionDate": inspection_date,
+				"preImage": image1,
+				"ServType": 102,
+				"latitude": "0.0",
+				"longitude": "0.0",
+				"gisId": "NA",
+				"siteId": "NA"
+				"presentStatus": "INSPECTED",
+				"inspectionBy":,
+				"problemId": 
+			};
+			console.log("inspection_id: ", inspection_id, "inspection_date: ", inspection_date);
+			console.log("jsonobj: ", jsonObj);
+
+			$.ajax({
+				url: 'http://10.251.37.170:8080/testSafety/testSafety',
+				//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
+				type: 'POST',
+				data: JSON.stringify(jsonObj),
+				success: function(response) {
+					console.log(response);
+					console.log("successful conn");
+				},
+				error: function(xhr, status, error) {
+					console.log(xhr, status, error);
+					console.log("connection failed");
+					console.error('Error: ' + error);
+				}
+			});
+		}
+		});
+});
+
+
+function populateDropdown(jsonArray) {
+    var dropdown = $('#inspectionList');
+    dropdown.empty(); // Clear existing options
+    dropdown.append('<option selected="true" disabled selected hidden>Choose Option</option>');
+    dropdown.prop('selectedIndex', 0);
+
+    $.each(jsonArray, function(index, item) {
+        dropdown.append($('<option></option>').attr('value', item).text(item));
+    });
+	
+	$.each(jsonArray, function(index, item) {
+		console.log(item.name);
+		});
+}		

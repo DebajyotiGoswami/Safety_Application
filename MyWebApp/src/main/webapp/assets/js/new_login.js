@@ -12,7 +12,8 @@ $(document).ready(function() {
 		var userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
 		var jsonobj = {
 			"User": User,
-			"Pwd": Pwd,
+			"Pwd": 
+			Pwd,
 			"userAgent": userAgent,
 			"pageNm": "LOGIN"
 		};
@@ -101,9 +102,12 @@ $('#submitOtpBtn').on('click', function() {
 					"erpId": User,
 					"name": data.empDtls.EMNAMCL,
 					"office": data.empDtls.LTEXTCL,
-					"designation": data.empDtls.STEXTCL
+					"designation": data.empDtls.STEXTCL,
+					"role": data.role,
+					"xUid": data.xUid,
+					"tkn": data.tkn
 				};
-				/*console.log(empDtls);*/
+				console.log(empDtls);
 				$.ajax({
 					url: 'http://localhost:8080/MyWebApp/StoreUserDetailsServlet', // Your servlet URL
 					type: 'POST',

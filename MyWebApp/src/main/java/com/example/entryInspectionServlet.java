@@ -2,7 +2,12 @@ package com.example;
 
 /*import java.io.BufferedReader;*/
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.io.BufferedReader;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -10,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 
@@ -25,7 +31,6 @@ public class entryInspectionServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		// Read JSON data from the request body
 		StringBuilder jsonBuilder = new StringBuilder();
 		try (BufferedReader reader = request.getReader()) {
@@ -39,7 +44,7 @@ public class entryInspectionServlet extends HttpServlet {
 		// Convert StringBuilder to JSON object
 		JSONObject jsonObjInput = new JSONObject(jsonBuilder.toString());
 		System.out.println("created json is : " + jsonObjInput);
-
+        
 		String exampleField = jsonObjInput.getString("inspection_id");
 		System.out.println("data out of json: " + exampleField);
 
@@ -57,6 +62,8 @@ public class entryInspectionServlet extends HttpServlet {
 		System.out.println(4);
 		jsonObjOutput.put("inspection_date", jsonObjInput.getString("inspection_date"));
 		System.out.println(5);
+		jsonObjOutput.put("image1", jsonObjInput.getString("image1"));
+		System.out.println(6);
 
 		System.out.println("Output json to dbupdate is : " + jsonObjOutput);
 		// jsonObj.put("image1", request.getParameter("image1"));
