@@ -17,50 +17,17 @@
 <%@page import="org.json.*"%>
 </head>
 <body>
-	<!-- Navigation Bar -->
-<!-- 	<nav class="navbar navbar-expand-lg navbar-dark">
-		<div class="container-fluid">
-			<span class="navbar-text">Welcome, <strong>username</strong></span>
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarNav" aria-controls="navbarNav"
-				aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-end"
-				id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="dashboard.html">Home</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
-					</li>
-					<li class="nav-item">
-						<form action="LogoutServlet" method="POST"
-							style="display: inline;">
-							<button type="submit" class="btn btn-outline-light ml-2">Logout</button>
-						</form>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav> -->
+	
 	<nav>
-		<jsp:include page="navbar.jsp" />
+			<jsp:include page="navbar.jsp" />
 	</nav>
 
 	<!-- Main Content -->
 	<div class="container">
-		<%
-		String dataFetchFlag = (String)request.getSession().getAttribute("datafetchflag");
-		//String assignmentObjStr = request.getSession().getAttribute("assignmentObject").toString();
-		%>
 		
-	
-		<%
-		if (dataFetchFlag == null) {
-		%>
 		<div class="form-container">
 			<h2 class="text-center mb-4">Search Assigned Inspection</h2>
-			<form id="searchForm" action="searchAssignmentServlet" method="post">
+			<form id="searchForm" action="searchInspectionServletNew" method="post">
 				<div class="mb-3 row">
 					<label for="fromDate" class="col-sm-3 col-form-label">From
 						Date</label>
@@ -78,65 +45,38 @@
 				</div>
 				<div class="mb-3 row">
 					<div class="col-sm-12 text-center">
-						<button type="button" class="btn btn-primary" id="searchBtn" 
-						onclick="submitThisForm()">Search</button>
+						<button type="button" class="btn btn-primary" id="searchBtn" name="searchBtn"
+						>Search</button>
 					</div>
 				</div>
+				<table id="inspectionListTable" name="inspectionListTable" class="display table table-responsive" style="width:100%">
+        <thead>
+						<tr>
+							<th>site_id</th>
+							<th>inspection_id</th>
+							<th>inspection_by</th>
+							<th>problem_id</th>
+							<th>location_remarks</th>
+							<th>problem_remarks</th>
+							<th>latitude</th>
+							<th>longitude</th>
+							<th>gis_id</th>
+							<th>assigned_office_code</th>
+							<th>present_status</th>
+							<th>solution_id</th>
+							<th>rectification_date</th>
+							<th>rectified_by</th>
+							<th>rectification_remarks</th>
+							<th>inspection_date</th>
+							<th>pre_image</th>
+							<th>post_image</th>
+							<th>site_id_serial</th>
+						</tr>
+					</thead>
+    </table>
 			</form>
 		</div>
-		<%
-		}
-		
-		else if (dataFetchFlag != null && dataFetchFlag.equals("true")) {
-		JSONObject assignmentObj = (JSONObject) request.getSession().getAttribute("assignmentObject");
-		
-		%>
-	
-		<div class="results-container" id="resultsContainer">
-			<h3 class="text-center mb-4">Inspection Results</h3>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Inspection ID</th>
-						<th>Assigned By</th>
-						<th>Assigned To</th>
-						<th>Office Name</th>
-						<th>From Date</th>
-						<th>To Date</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-				<tbody id="resultsTableBody">
-
-					<%
-					if (assignmentObj.has("msg") && assignmentObj.getString("msg").equals("success")) {
-						JSONArray jsonArray = assignmentObj.getJSONArray("assignments");
-					for (int i = 0; i < jsonArray.length(); i++) {
-						JSONObject buffObj = jsonArray.getJSONObject(i);
-					%>
-					<tr>
-						<td><%=(i + 1)%></td>
-						<td><%=buffObj.getString("inspection_id")%></td>
-						<td><%=buffObj.getString("emp_assigned_by")%></td>
-						<td><%=buffObj.getString("emp_assigned_to")%></td>
-						<td><%=buffObj.getString("office_code_to_inspect")%></td>
-						<td><%=buffObj.getString("inspection_from_date")%></td>
-						<td><%=buffObj.getString("inspection_to_date")%></td>
-						<td><%=buffObj.getString("status")%></td>
-					</tr>
-					<%
-					}
-					%>
-				</tbody>
-			</table>
 		</div>
-		<%
-		}
-		}
-		%> 
-	
-	</div>
 
 	<!-- Footer -->
 	<footer class="text-center mt-auto">

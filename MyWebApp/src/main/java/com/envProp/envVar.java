@@ -16,23 +16,13 @@ public class envVar {
 	  		+ "from safety_schema.team_assignment where inspection_from_date>= ? and "
 	  		+ "inspection_to_date<= ?";
 	  
-	  private String getProblemQry= "select description from safety_schema.problems where asset_type_id in "
+	  private String getProblemQry= "select problem_id, description from safety_schema.problems where asset_type_id in "
 	  		+ "(select asset_type_id from safety_schema.asset_type where network_type=?"
 	  		+ "and asset_name=?)";
 	  
-	  private String getInspectionQry= "select inspection_id, emp_assigned_by, emp_assigned_to,"
-		  		+ "office_code_to_inspect, inspection_from_date, inspection_to_date, status "
-		  		+ "from safety_schema.team_assignment where inspection_from_date<= now() and emp_assigned_to= ?";
-	  
-		/*
-		 * private String insertInspectionQry=
-		 * "insert into safety_schema.vulnerabilities" +
-		 * "(site_id, inspection_id, inspection_by, problem_id, location_remarks," +
-		 * "problem_remarks, assigned_office_code, present_status, inspection_date," +
-		 * "pre_image, post_image)values" +
-		 * "((CONCAT(?,'_', nextval('safety_schema.vulnerabilities_site_id_serial_seq'))),"
-		 * + "?, 90012775, 1, ?, ?, ?, 'INSPECTED', ?,'test.jpg', 'test.jpg')";
-		 */
+	  private String getInspectionQry= "select * "
+	  		+  "from safety_schema.inspectdtls where "
+	  		+ "(inspection_date between ? and ?) and inspection_by= ?";
 	  
 	  private String insertInspectionQry= "insert into safety_schema.vulnerabilities"
 		  		+ "(site_id, inspection_id, inspection_by, problem_id, location_remarks,"
@@ -45,6 +35,11 @@ public class envVar {
 	  
 	  private String fetchOfficesQry= "SELECT office_code, office_name, office_type FROM safety_schema.office "
 	  		+ "where active='A'";
+	  
+	  private String fetchInspectionForEntryQuery="select inspection_id, emp_assigned_by, emp_assigned_to,"
+		  		+ "office_code_to_inspect, inspection_from_date, inspection_to_date, status "
+		  		+ "from safety_schema.team_assignment where inspection_from_date < now()::Date and emp_assigned_to=?";
+	  
 	public String getConnUrl() {
 		return connUrl;
 	}
@@ -80,7 +75,10 @@ public class envVar {
 			 System.out.println("envVar query is: "+ query);
 		 }else if(i== 701) {
 			 query= fetchOfficesQry;
-		 }else {
+		 }else if(i== 801){
+			 query=  fetchInspectionForEntryQuery;
+		 }
+		 else {
 			 query="";
 		 }
 		 return query;

@@ -12,7 +12,7 @@
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
 <!-- Custom JavaScript -->
-<script src="assets/js/new_inspection.js"></script>
+<!-- <script src="assets/js/new_inspection.js"></script> -->
 <style>
 .additional-section {
 	display: none;
@@ -23,7 +23,7 @@
 <body>
 	<!-- Navigation Bar -->
 	<nav>
-		<jsp:include page="navbar.jsp" />
+			<jsp:include page="navbar.jsp" />
 	</nav>
 
 	<!-- Main Content -->
@@ -33,10 +33,11 @@
 				<h2>Entry New Inspection</h2>
 			</div>
 			<form id="inspectionForm" enctype="multipart/form-data">
-<%String str= request.getSession().getAttribute("empDtls").toString(); %>
-<%=str %>
-<% JSONObject empDtls=new JSONObject(str); %>
-<input type="hidden" id="erpId" value="<%=empDtls.getString("erpId")%>">
+
+<%
+
+%>
+
 				<!-- Initial visible sections -->
 				<div id="initialSection" class="initial-section">
 					<div class="row form-row">
@@ -131,8 +132,9 @@
 					</div>
 					<div class="row form-row">
 						<div class="col-sm-12 form-group image-upload-section">
-							<label for="image1" class="form-label">Upload Image 1</label> <input
-								type="file" class="form-control" id="image1" name="image1">
+							<label for="imageInput" class="form-label">Upload Image 1</label> 
+							<input type="file" id="imageInput" name="imageInput" accept=".jpg, .jpeg, .png" onchange="uploadImage()" />
+							 <input type="text" id="base64Output" name="base64Output" style="display: none" readonly />
 						</div>
 					</div>
 					<div class="row form-row">

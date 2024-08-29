@@ -1,21 +1,28 @@
 <!-- Navigation Bar -->
+<%@page import="org.json.*"%>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<!-- Left side: Welcome message -->
 			<%
             // Retrieve user details from session
-            String empDtlsJson = (String) session.getAttribute("empDtls");
-            String username = "Guest"; // Default value if user details are not found
-            String erpId = ""; // Default value if ERP ID is not found
-            String designation= "";
-
-            if (empDtlsJson != null) {
-                org.json.JSONObject empDtls = new org.json.JSONObject(empDtlsJson);
-                username = empDtls.optString("name", "Guest"); // Get name or default to 'Guest'
-                erpId = empDtls.optString("erpId", "N/A"); // Get ERP ID or default to 'N/A'
-                designation = empDtls.optString("designation", "N/A");
-            }
+            JSONObject empDtlsJson = (JSONObject) request.getSession().getAttribute("empDtls");
+            String username = empDtlsJson.getString("name"); // Default value if user details are not found
+            String erpId = empDtlsJson.getString("erpId"); // Default value if ERP ID is not found
+            String designation=  empDtlsJson.getString("designation");
+			String office= empDtlsJson.getString("office");
+		//	String role= empDtlsJson.getString("role");
+		//	String xUid= empDtlsJson.getString("xUid");
+		//	String tkn= empDtlsJson.getString("tkn");
+            request.getSession().setAttribute("empDtls", empDtlsJson);
+            request.getSession().setAttribute("erpId", erpId);
         %>
+        <input type="text" id="erpId" name="erpId" style="display: none" value="<%=erpId%>"/>
+        <input type="text" id="username" name="username" style="display: none" value="<%=username%>"/>
+        <input type="text" id="designation" name="designation" style="display: none" value="<%=designation%>"/>
+        <input type="text" id="office" name="office" style="display: none" value="<%=office%>"/>
+<%--         <input type="text" id="role" name="role" style="display: none" value="<%=role%>"/> --%>
+<%--         <input type="text" id="xUid" name="xUid" style="display: none" value="<%=xUid%>"/> --%>
+<%--         <input type="text" id="tkn" name="tkn" style="display: none" value="<%=tkn%>"/> --%>
 			<span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>
 				, <%= designation %>)
 			</span>

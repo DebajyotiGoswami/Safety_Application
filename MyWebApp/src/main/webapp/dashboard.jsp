@@ -9,6 +9,7 @@
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
+<script src="assets/js/jquery.min.js"></script>
 <%@page import="org.json.*"%>
 </head>
 
@@ -16,7 +17,7 @@
 	<!-- Navigation Bar -->
 <%-- 	<%@ include file="navbar.jsp" % --%>
 	<nav>
-		<jsp:include page="navbar.jsp" />
+			<jsp:include page="navbar.jsp" />
 	</nav>
 
 	<!-- Dashboard Content -->
@@ -54,8 +55,8 @@
 						<div class="btn-container">
 							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Entry New
 								Inspection</a> 
-						<a href="pending_inspection.jsp" class="btn btn-primary btn-equal">View
-								All Inspections</a>
+						<button type= "button" id="showInspectionReport" name="showInspectionReport" class="btn btn-primary btn-equal">View
+								All Inspections</button>
 						</div>
 					</div>
 				</div>
@@ -69,7 +70,7 @@
 						<p class="card-text">Enter the detailed information of
 							corrective actions which was taken after inspections.</p>
 						<div class="btn-container">
-							<a href="#" class="btn btn-primary btn-equal">Pending
+							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Entry New
 								Rectification</a> <a href="#" class="btn btn-primary btn-equal">View
 								All Rectifications</a>
 						</div>
@@ -99,7 +100,7 @@
 	<footer class="text-center mt-auto">
 		<div class="text-center p-3">© 2024 IT&C Cell, WBSEDCL</div>
 	</footer>
-
+	<script src="assets/js/new_login.js"></script>
 	<!-- Link to Bootstrap JS -->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

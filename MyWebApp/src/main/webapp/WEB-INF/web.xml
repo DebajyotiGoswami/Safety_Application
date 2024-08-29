@@ -61,14 +61,14 @@
 		<url-pattern>/searchInspectionServlet</url-pattern>
 	</servlet-mapping>
 	<!-- searchAssignmentServlet -->
-	<servlet>
+ 	<servlet>
 		<servlet-name>searchAssignmentServlet</servlet-name>
 		<servlet-class>com.example.searchAssignmentServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>searchAssignmentServlet</servlet-name>
 		<url-pattern>/searchAssignmentServlet</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> 
 	<servlet>
 		<servlet-name>GetIpServlet</servlet-name>
 		<servlet-class>com.example.GetIpServlet</servlet-class>
@@ -111,4 +111,16 @@
 		<servlet-name>uploadImageServlet</servlet-name>
 		<url-pattern>/uploadImageServlet</url-pattern>
 	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>searchInspectionServletNew</servlet-name>
+		<servlet-class>com.example.searchInspectionServletNew</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchInspectionServletNew</servlet-name>
+		<url-pattern>/searchInspectionServletNew</url-pattern>
+	</servlet-mapping>
+	
+	
 </web-app>

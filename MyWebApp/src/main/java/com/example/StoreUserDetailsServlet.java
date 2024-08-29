@@ -23,13 +23,17 @@ public class StoreUserDetailsServlet extends HttpServlet {
             sb.append(line);
         }
         JSONObject empDtls = new JSONObject(sb.toString());
+        //String erpId= "";
+        System.out.println("empDtls: "+ empDtls);
 
         // Store the JSON object in the session
         HttpSession session = request.getSession();
-        session.setAttribute("empDtls", empDtls.toString());
+        session.setAttribute("empDtls", empDtls);
+        //session.setAttribute("erpId",  empDtls.erpId.toString());
 
         // Send a response back to the client
-        response.setContentType("text/plain");
+		/* response.setContentType("text/plain"); */
+        response.setContentType("application/json");
         response.getWriter().write("User details stored in session.");
     }
 }

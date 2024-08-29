@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class entryAssignment
  */
-@WebServlet("/entryAssignment")
+//@WebServlet("/entryAssignment")
 public class entryAssignment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

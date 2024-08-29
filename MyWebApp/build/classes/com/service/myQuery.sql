@@ -67,8 +67,13 @@ where description='LT Earthing Broken or Detached Earth Wire'), 'Rathtala', 'Ear
 
 select * from safety_schema.office
 
-ALTER TABLE safety_schema.team_assignment
-ALTER COLUMN inspection_id TYPE VARCHAR(50)
+--ALTER TABLE safety_schema.inspectdtls
+--ALTER COLUMN inspection_id TYPE VARCHAR(50)
+--ALTER COLUMN solution_id TYPE VARCHAR(50)
+--ALTER COLUMN site_id TYPE VARCHAR(50)
+
+ALTER TABLE safety_schema.inspectdtls
+ALTER COLUMN post_image TYPE TEXT
 
 
 select * from safety_schema.team_assignment;

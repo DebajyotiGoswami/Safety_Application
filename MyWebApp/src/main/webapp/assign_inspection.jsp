@@ -24,7 +24,7 @@
 <body>
 	<!-- Navigation Bar -->
 	<nav>
-		<jsp:include page="navbar.jsp" />
+			<jsp:include page="navbar.jsp" />
 	</nav>
 
 	<!-- Main Content -->

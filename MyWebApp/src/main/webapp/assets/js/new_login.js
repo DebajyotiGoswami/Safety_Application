@@ -4,7 +4,39 @@ var buttonIsOtpFlag= true;
 var xUid= "";
 var empDtls= "";
 
+var erpId= "";
+var emp_name= "";
+var desig= "";
+var office_name= "";
+
+
 $(document).ready(function() {
+									
+	$('#showInspectionReport').on('click', function() {
+		alert("inside jewel page");
+		$.ajax({
+			url: 'http://10.250.34.61:8080/SafetyReportView/loadReportDashbrd', // replace with above Servlet URL
+						type: 'POST',
+						data:  {
+							erpId: empDtls.erpId,
+							emp_name: empDtls.name,
+							desig: empDtls.designation,
+							office_name: empDtls.office
+						},
+						success: function(response) {
+							console.log(response);
+							},
+							error: function(xhr, status, error) {
+										
+											console.error(xhr, status, error);
+										}
+			});
+		
+			
+	});
+	
+	
+	
 	$('#loginbttn').on('click', function() {
 		var User = $('#userId').val();
 		var Pwd = $('#password').val();
