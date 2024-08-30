@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<display-name>MyFirstProject</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>com.example.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/LoginServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>OtpServlet</servlet-name>
+		<servlet-class>com.example.OtpServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OtpServlet</servlet-name>
+		<url-pattern>/OtpServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>com.example.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/LogoutServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>loginUpdateServlet</servlet-name>
+		<servlet-class>com.example.loginUpdateServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginUpdateServlet</servlet-name>
+		<url-pattern>/loginUpdateServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>StoreUserDetailsServlet</servlet-name>
+		<servlet-class>com.example.StoreUserDetailsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>StoreUserDetailsServlet</servlet-name>
+		<url-pattern>/StoreUserDetailsServlet</url-pattern>
+	</servlet-mapping>
+	<!-- searchInspectionServlet -->
+	<servlet>
+		<servlet-name>searchInspectionServlet</servlet-name>
+		<servlet-class>com.example.searchInspectionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchInspectionServlet</servlet-name>
+		<url-pattern>/searchInspectionServlet</url-pattern>
+	</servlet-mapping>
+	<!-- searchAssignmentServlet -->
+ 	<servlet>
+		<servlet-name>searchAssignmentServlet</servlet-name>
+		<servlet-class>com.example.searchAssignmentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchAssignmentServlet</servlet-name>
+		<url-pattern>/searchAssignmentServlet</url-pattern>
+	</servlet-mapping> 
+	<servlet>
+		<servlet-name>GetIpServlet</servlet-name>
+		<servlet-class>com.example.GetIpServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetIpServlet</servlet-name>
+		<url-pattern>/GetIpServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>entryInspectionServlet</servlet-name>
+		<servlet-class>com.example.entryInspectionServlet</servlet-class>
+		<multipart-config>
+			<location>\user_images</location>
+			<max-file-size>20848820</max-file-size>
+			<max-request-size>418018841</max-request-size>
+			<file-size-threshold>1048576</file-size-threshold>
+		</multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>entryInspectionServlet</servlet-name>
+		<url-pattern>/entryInspectionServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>fetchProblemCodes</servlet-name>
+		<servlet-class>com.example.fetchProblemCodes</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fetchProblemCodes</servlet-name>
+		<url-pattern>/fetchProblemCodes</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>uploadImageServlet</servlet-name>
+		<servlet-class>com.example.uploadImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadImageServlet</servlet-name>
+		<url-pattern>/uploadImageServlet</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>searchInspectionServletNew</servlet-name>
+		<servlet-class>com.example.searchInspectionServletNew</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchInspectionServletNew</servlet-name>
+		<url-pattern>/searchInspectionServletNew</url-pattern>
+	</servlet-mapping>
+	
+	
+</web-app>
