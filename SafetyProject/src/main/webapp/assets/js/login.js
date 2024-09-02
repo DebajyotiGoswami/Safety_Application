@@ -1,5 +1,54 @@
 var url = "http://10.251.37.170:8080/testSafety/testSafety";
 
+var KEY1=bigInt("10953483997285864814773860729");
+var KEY2=bigInt("37997636186218092599949125647");
+
+var devEle= {};
+var jsonObj = {};
+
+function enCrypt(uid,pwd)
+{	
+	alert("inside enCrypt");
+	//$(document).ready(function(){
+		alert("inside document ready");
+		//var uid=devEle["enIdCon"];
+		//var pwd=devEle["enAuthCon"];
+		var uidConver= [];
+		var pwdConver=[];
+		var enIden =[];
+		var enAuth =[];
+		var enIdCon="";
+		var enAuthCon="";
+//		var devEle= {};
+		
+		for (var i = 0; i < uid.length; i++) 
+		{
+			uidConver[i]=uid.charCodeAt(i);
+			var bigtemp=bigInt(uidConver[i]);
+			enIden[i]=bigInt(uidConver[i]).modPow(KEY1,KEY2).toString(16);
+			enIdCon=enIdCon.concat(enIden[i]);
+			if(i!=(uid.length-1)){
+				enIdCon=enIdCon.concat("@");}
+		}
+		for (var i = 0; i < pwd.length; i++) 
+		{
+			pwdConver[i]=pwd.charCodeAt(i);
+			enAuth[i]=bigInt(pwdConver[i]).modPow(KEY1,KEY2).toString(16);
+			enAuthCon=enAuthCon.concat(enAuth[i]);
+			if(i!=(pwd.length-1)){
+				enAuthCon=enAuthCon.concat("?");}
+
+		}
+		//devEle["User"]=enIdCon;
+		//devEle["Pwd"]=enAuthCon;
+		jsonObj["User"]= enIdCon;
+		jsonObj["Pwd"]= enAuthCon;
+		alert("User: "+ JSON.stringify(jsonObj))
+		//console.log(JSON.stringify(jsonObj));
+	//});
+	//return devEle;
+}
+
 function isValidNumber(input) {
 	const numericRegex = /^[0-9]+$/;
 	return numericRegex.test(input) && input.length === 8 && input.startsWith('9');
@@ -84,34 +133,48 @@ function handleButtonClick(event) {
 	var loginflg = false;
 	var submitotpflg = false;
 	var resendotpflg = false;
-	var jsonObj = {};
-	var User = $('#userId').val();
+	//var jsonObj = {};
+	
 
 	if (buttonId === 'loginbttn') {
+		var User = $('#userId').val();
 		var Pwd = $('#password').val();
 		if (validateLoginAndSubmit(User, Pwd)) {
+			console.log("User: "+ User+ " Pwd: "+ Pwd);
+//			jsonObj= enCrypt(User, Pwd);
+			enCrypt(User, Pwd);
+			alert("after enCrypt");
+			alert("jsonObj after enCrypt: "+ JSON.stringify(jsonObj));
+			//console.log("jsonObj after enCrypt: "+ JSON.stringify(jsonObj));
+			//jsonObj= devEle;
+			//console.log(jsonObj);
 			loginflg = true;
 			var userAgent = navigator.userAgent;
 			var userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
-			jsonObj = {
+			jsonObj["userAgent"]= userAgent;
+			jsonObj["pageNm"]= "LOGIN";
+/*			jsonObj = {
 				"User": User,
 				"Pwd": Pwd,
 				"userAgent": userAgent,
 				"pageNm": "LOGIN"
-			};
+			};*/
 		} else {
 			return;
 		}
 	}
 	else {
 		var otp = $('#otp').val();
-		jsonObj = {
+		jsonObj["pageNm"]= "OTP";
+		jsonObj["xUid"]= xUid;
+		jsonObj["empDtls"]= JSON.parse(getCookie("empDtls"));
+	/*	jsonObj = {
 			"User": User,
 			"otp": otp,
 			"pageNm": "OTP",
 			"xUid": xUid,
 			"empDtls": JSON.parse(getCookie("empDtls"))
-		};
+		};*/
 		if (buttonId === 'submitOtpBtn') {
 			submitotpflg = true;
 			if (validateOtpAndSubmit(otp)) {

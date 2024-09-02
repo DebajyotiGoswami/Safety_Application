@@ -14,8 +14,16 @@
 
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
+
+<script src="assets/js/BigInteger.js"></script>
+<script src="assets/js/BigInteger.min.js"></script>
+
+
 <!-- JavaScript to handle LDAP authentication and OTP submission -->
 <script src="assets/js/login.js"></script>
+
+<!-- <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script> -->
+
 </head>
 
 <body>
