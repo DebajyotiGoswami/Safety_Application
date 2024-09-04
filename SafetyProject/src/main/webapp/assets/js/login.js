@@ -8,6 +8,7 @@ var xUidEncrypted= "";
 var dUidEncrypted= "";
 var empDtls= "";
 var jsonObjInput = {};
+var jsonObjCookie= {};
 
 function enCrypt(uid, pwd) {
 	//var uid=devEle["enIdCon"];
@@ -146,6 +147,8 @@ function handleButtonClick(event) {
 			loginflg = true;
 			jsonObjInput["userAgent"] = userAgent;
 			jsonObjInput["pageNm"] = "LOGIN";
+			jsonObjCookie["User"]= User;
+			jsonObjCookie["userAgent"]= userAgent;
 		} else {
 			return;
 		}
@@ -157,6 +160,8 @@ function handleButtonClick(event) {
 		jsonObjInput["xUid"] = xUidEncrypted;
 		jsonObjInput["dUid"]= dUidEncrypted;
 		jsonObjInput["empDtls"]= empDtls;
+		jsonObjCookie["xUid"]= xUid;
+		jsonObjCookie["empDtls"]= empDtls;
 		//jsonObj["empDtls"] = JSON.parse(getCookie("empDtls"));
 		if (buttonId === 'submitOtpBtn') {
 			submitotpflg = true;
@@ -212,8 +217,10 @@ function handleButtonClick(event) {
 					if (response.ackMsgCode == '100') {
 						window.location.href = 'dashboard.jsp';
 						jsonObjInput["tkn"]= response.tkn;
-						setCookie("empDtls", jsonObjInput, 30);
-						setCookie("tkn", jsonObjInput["tkn"], 30);
+						jsonObjCookie["tkn"]= response.tkn;
+						//setCookie("empDtls", JSON.stringify(jsonObjInput), 30);
+						setCookie("empDtls", JSON.stringify(jsonObjCookie), 30);
+						setCookie("tkn", jsonObjCookie["tkn"], 30);
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}

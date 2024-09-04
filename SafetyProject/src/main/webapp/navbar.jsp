@@ -131,20 +131,21 @@
         
         document.addEventListener('DOMContentLoaded', () => {
         	const empDtls = {
-                    "name": "Debajyoti Goswami",
+                    "name": "Debajyoti",
                     "erp_id": "90012775",
                     "designation": "DE(IT&C)",
-                    "office": "IT&C Cell",
+                    "office": "VB",
                     "userRole": "1"
-                };
-        	setCookie('empDetails', JSON.stringify(empDtls), 30);
-        	const cookieData = JSON.parse(getCookie('empDetails'));
+                }; 
+        	//setCookie('empDetails', JSON.stringify(empDtls), 30);
+        	const cookieData = JSON.parse(getCookie('empDtls'));
         	//get different value based on key of cookieData json
-        	const name= cookieData.name;
-        	const erp_id= cookieData.erp_id;
-        	const designation= cookieData.designation;
-        	const office= cookieData.office;
-        	const userRole= cookieData.userRole;
+        	console.log(cookieData);
+        	const name= cookieData.empDtls.EMNAMCL;
+        	const erp_id= cookieData.User;
+        	const designation= cookieData.empDtls.STEXTCL;
+        	const office= cookieData.empDtls.LTEXTCL;
+        	const userRole= cookieData.empDtls.STELLCL;
         	
         	document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
         	
