@@ -1,52 +1,44 @@
 var url = "http://10.251.37.170:8080/testSafety/testSafety";
 
-var KEY1=bigInt("10953483997285864814773860729");
-var KEY2=bigInt("37997636186218092599949125647");
+var KEY1 = bigInt("10953483997285864814773860729");
+var KEY2 = bigInt("37997636186218092599949125647");
 
-var devEle= {};
-var jsonObj = {};
+function enCrypt(uid, pwd) {
+	//var uid=devEle["enIdCon"];
+	//var pwd=devEle["enAuthCon"];
+	var uidConver = [];
+	var pwdConver = [];
+	var enIden = [];
+	var enAuth = [];
+	var enIdCon = "";
+	var enAuthCon = "";
+	var jsonObj = {};
 
-function enCrypt(uid,pwd)
-{	
-	alert("inside enCrypt");
-	//$(document).ready(function(){
-		alert("inside document ready");
-		//var uid=devEle["enIdCon"];
-		//var pwd=devEle["enAuthCon"];
-		var uidConver= [];
-		var pwdConver=[];
-		var enIden =[];
-		var enAuth =[];
-		var enIdCon="";
-		var enAuthCon="";
-//		var devEle= {};
-		
-		for (var i = 0; i < uid.length; i++) 
-		{
-			uidConver[i]=uid.charCodeAt(i);
-			var bigtemp=bigInt(uidConver[i]);
-			enIden[i]=bigInt(uidConver[i]).modPow(KEY1,KEY2).toString(16);
-			enIdCon=enIdCon.concat(enIden[i]);
-			if(i!=(uid.length-1)){
-				enIdCon=enIdCon.concat("@");}
+	for (var i = 0; i < uid.length; i++) {
+		uidConver[i] = uid.charCodeAt(i);
+		var bigtemp = bigInt(uidConver[i]);
+		enIden[i] = bigInt(uidConver[i]).modPow(KEY1, KEY2).toString(16);
+		enIdCon = enIdCon.concat(enIden[i]);
+		if (i != (uid.length - 1)) {
+			enIdCon = enIdCon.concat("@");
 		}
-		for (var i = 0; i < pwd.length; i++) 
-		{
-			pwdConver[i]=pwd.charCodeAt(i);
-			enAuth[i]=bigInt(pwdConver[i]).modPow(KEY1,KEY2).toString(16);
-			enAuthCon=enAuthCon.concat(enAuth[i]);
-			if(i!=(pwd.length-1)){
-				enAuthCon=enAuthCon.concat("?");}
-
+	}
+	for (var i = 0; i < pwd.length; i++) {
+		pwdConver[i] = pwd.charCodeAt(i);
+		enAuth[i] = bigInt(pwdConver[i]).modPow(KEY1, KEY2).toString(16);
+		enAuthCon = enAuthCon.concat(enAuth[i]);
+		if (i != (pwd.length - 1)) {
+			enAuthCon = enAuthCon.concat("?");
 		}
-		//devEle["User"]=enIdCon;
-		//devEle["Pwd"]=enAuthCon;
-		jsonObj["User"]= enIdCon;
-		jsonObj["Pwd"]= enAuthCon;
-		alert("User: "+ JSON.stringify(jsonObj))
-		//console.log(JSON.stringify(jsonObj));
-	//});
-	//return devEle;
+	}
+
+
+	jsonObj = {
+		"User": enIdCon,
+		"Pwd": enAuthCon
+	};
+
+	return jsonObj;
 }
 
 function isValidNumber(input) {
@@ -110,7 +102,9 @@ function setCookie(name, value, minutes) {
 		date.setTime(date.getTime() + (minutes * 60 * 1000));
 		expires = "; expires=" + date.toUTCString();
 	}
+	console.log("cookie before: " + document.cookie);
 	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+	console.log("cookie after: " + document.cookie);
 }
 
 function getCookie(name) {
@@ -130,51 +124,38 @@ $(document).ready(function() {
 
 function handleButtonClick(event) {
 	const buttonId = event.target.id;
+	console.log(buttonId);
 	var loginflg = false;
 	var submitotpflg = false;
 	var resendotpflg = false;
-	//var jsonObj = {};
-	
+	var jsonObj = {};
 
 	if (buttonId === 'loginbttn') {
 		var User = $('#userId').val();
 		var Pwd = $('#password').val();
+		var userAgent = navigator.userAgent;
+		var userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
+
 		if (validateLoginAndSubmit(User, Pwd)) {
-			console.log("User: "+ User+ " Pwd: "+ Pwd);
-//			jsonObj= enCrypt(User, Pwd);
-			enCrypt(User, Pwd);
-			alert("after enCrypt");
-			alert("jsonObj after enCrypt: "+ JSON.stringify(jsonObj));
-			//console.log("jsonObj after enCrypt: "+ JSON.stringify(jsonObj));
-			//jsonObj= devEle;
-			//console.log(jsonObj);
+			jsonObj = enCrypt(User, Pwd);  // use this line if encryption is working
+			//jsonObj= {"User": User, "Pwd": Pwd}; // use this line if encryption is not working
 			loginflg = true;
-			var userAgent = navigator.userAgent;
-			var userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
-			jsonObj["userAgent"]= userAgent;
-			jsonObj["pageNm"]= "LOGIN";
-/*			jsonObj = {
-				"User": User,
-				"Pwd": Pwd,
-				"userAgent": userAgent,
-				"pageNm": "LOGIN"
-			};*/
+			jsonObj["userAgent"] = userAgent;
+			jsonObj["pageNm"] = "LOGIN";
 		} else {
 			return;
 		}
 	}
-	else {
+	else if((buttonId === 'submitOtpBtn') || (buttonId === 'resendOtpBtn')) {
+		alert("inside else if");
+		console.log("inside else if");
 		var otp = $('#otp').val();
-		jsonObj["pageNm"]= "OTP";
-		jsonObj["xUid"]= xUid;
-		jsonObj["empDtls"]= JSON.parse(getCookie("empDtls"));
-	/*	jsonObj = {
-			"User": User,
-			"otp": otp,
-			"pageNm": "OTP",
-			"xUid": xUid,
-			"empDtls": JSON.parse(getCookie("empDtls"))
-		};*/
+		alert(otp);
+		console.log(otp);
+		jsonObj["otp"]= otp;
+		jsonObj["pageNm"] = "OTP";
+		jsonObj["xUid"] = xUid;
+		jsonObj["empDtls"] = JSON.parse(getCookie("empDtls"));
 		if (buttonId === 'submitOtpBtn') {
 			submitotpflg = true;
 			if (validateOtpAndSubmit(otp)) {
@@ -184,18 +165,21 @@ function handleButtonClick(event) {
 			}
 		}
 		else if (buttonId === 'resendOtpBtn') {
-			jsonObj["pageNm"]= "RESOTP";
+			jsonObj["pageNm"] = "RESOTP";
 			resendotpflg = true;
 		}
 	}
-
+	alert("request: "+ JSON.stringify(jsonObj));
 	$.ajax({
 		url: url, // replace with above Servlet URL
 		type: 'POST',
 		data: JSON.stringify(jsonObj),
 		success: function(response) {
+			alert("response: "+ JSON.stringify(response.empDtls));
 			if (loginflg) {
 				if (response.ackMsgCode == '105') {
+					//alert("response: "+ JSON.stringify(response.empDtls));
+					//alert("response: "+ JSON.stringify(response.empDtls));
 					xUid = response.xUid;
 					setCookie("empDtls", JSON.stringify(response.empDtls), 30);
 					// Show OTP section
@@ -226,7 +210,7 @@ function handleButtonClick(event) {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}
 				} else if (resendotpflg) {
-					if (response.ackMsgCode == '100') {
+					if (response.ackMsgCode == '105') {
 						document.getElementById('resendOtp').disabled = true;
 						window.location.href = 'dashboard.jsp';
 					} else {
@@ -239,8 +223,6 @@ function handleButtonClick(event) {
 			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
 	});
-
-
 }
 
 
