@@ -32,7 +32,7 @@
 </nav>
 
 
-<script>
+ <script>
         // Function to prevent back navigation
         function preventBack() {
             history.pushState(null, null, location.href);
@@ -148,7 +148,7 @@
         	
         	document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
         	
-        	if (userRole === "1"){
+        	/* if (userRole === "1"){
         		//Disable "Inspection Assignment" section for role 1
         		$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
         	}
@@ -161,7 +161,7 @@
             } else if (userRole === "4") {
                 // Disable "Reports" section for role 4
                 $(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
-            }
+            } */
         });
      // Call the function on page load
         //window.onload = onPageLoad;

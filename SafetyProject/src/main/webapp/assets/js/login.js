@@ -3,6 +3,12 @@ var url = "http://10.251.37.170:8080/testSafety/testSafety";
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
+var xUid= "";
+var xUidEncrypted= "";
+var dUidEncrypted= "";
+var empDtls= "";
+var jsonObjInput = {};
+
 function enCrypt(uid, pwd) {
 	//var uid=devEle["enIdCon"];
 	//var pwd=devEle["enAuthCon"];
@@ -96,15 +102,14 @@ function startResendOtpTimer() {
 }
 
 function setCookie(name, value, minutes) {
+	//value passed as object
 	let expires = "";
 	if (minutes) {
 		const date = new Date();
 		date.setTime(date.getTime() + (minutes * 60 * 1000));
 		expires = "; expires=" + date.toUTCString();
 	}
-	console.log("cookie before: " + document.cookie);
 	document.cookie = name + "=" + (value || "") + expires + "; path=/";
-	console.log("cookie after: " + document.cookie);
 }
 
 function getCookie(name) {
@@ -119,16 +124,15 @@ function getCookie(name) {
 }
 
 $(document).ready(function() {
-	$('#loginbttn, #submitOtpBtn, #resendOtpBtn').on('click', handleButtonClick);
+	$('#loginbttn, #submitOtpBtn, #resendOtpBtn, #assgnSubmitbtn').on('click', handleButtonClick);
 });
 
 function handleButtonClick(event) {
 	const buttonId = event.target.id;
-	console.log(buttonId);
 	var loginflg = false;
 	var submitotpflg = false;
 	var resendotpflg = false;
-	var jsonObj = {};
+	/*var jsonObjInput = {};*/
 
 	if (buttonId === 'loginbttn') {
 		var User = $('#userId').val();
@@ -137,25 +141,23 @@ function handleButtonClick(event) {
 		var userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
 
 		if (validateLoginAndSubmit(User, Pwd)) {
-			jsonObj = enCrypt(User, Pwd);  // use this line if encryption is working
+			jsonObjInput = enCrypt(User, Pwd);  // use this line if encryption is working
 			//jsonObj= {"User": User, "Pwd": Pwd}; // use this line if encryption is not working
 			loginflg = true;
-			jsonObj["userAgent"] = userAgent;
-			jsonObj["pageNm"] = "LOGIN";
+			jsonObjInput["userAgent"] = userAgent;
+			jsonObjInput["pageNm"] = "LOGIN";
 		} else {
 			return;
 		}
 	}
 	else if((buttonId === 'submitOtpBtn') || (buttonId === 'resendOtpBtn')) {
-		alert("inside else if");
-		console.log("inside else if");
 		var otp = $('#otp').val();
-		alert(otp);
-		console.log(otp);
-		jsonObj["otp"]= otp;
-		jsonObj["pageNm"] = "OTP";
-		jsonObj["xUid"] = xUid;
-		jsonObj["empDtls"] = JSON.parse(getCookie("empDtls"));
+		jsonObjInput["otp"]= otp;
+		jsonObjInput["pageNm"] = "OTP";
+		jsonObjInput["xUid"] = xUidEncrypted;
+		jsonObjInput["dUid"]= dUidEncrypted;
+		jsonObjInput["empDtls"]= empDtls;
+		//jsonObj["empDtls"] = JSON.parse(getCookie("empDtls"));
 		if (buttonId === 'submitOtpBtn') {
 			submitotpflg = true;
 			if (validateOtpAndSubmit(otp)) {
@@ -165,23 +167,27 @@ function handleButtonClick(event) {
 			}
 		}
 		else if (buttonId === 'resendOtpBtn') {
-			jsonObj["pageNm"] = "RESOTP";
+			jsonObjInput["pageNm"] = "RESOTP";
 			resendotpflg = true;
 		}
 	}
-	alert("request: "+ JSON.stringify(jsonObj));
+	else if(buttonId === 'assgnSubmitbtn'){
+		//for new assignment 
+	}
 	$.ajax({
 		url: url, // replace with above Servlet URL
 		type: 'POST',
-		data: JSON.stringify(jsonObj),
+		data: JSON.stringify(jsonObjInput),
 		success: function(response) {
-			alert("response: "+ JSON.stringify(response.empDtls));
 			if (loginflg) {
 				if (response.ackMsgCode == '105') {
-					//alert("response: "+ JSON.stringify(response.empDtls));
-					//alert("response: "+ JSON.stringify(response.empDtls));
 					xUid = response.xUid;
-					setCookie("empDtls", JSON.stringify(response.empDtls), 30);
+					empDtls= response.empDtls;
+					xUidJson= enCrypt(xUid, "123456");
+					xUidEncrypted= xUidJson.User;
+					dUidEncrypted= xUidJson.Pwd;
+					//empDtls= response.empDtls;
+					//setCookie("empDtls", JSON.stringify(response.empDtls), 30);
 					// Show OTP section
 					$('#otpMessage').show();
 					$('#otpForm').show();
@@ -193,19 +199,21 @@ function handleButtonClick(event) {
 					alert("Incorrect credentials. Please try again.");
 				}
 			} else {
-				var empDtls = {
+				/*var empDtls = {
 					"erpId": User,
 					"name": response.empDtls.EMNAMCL,
 					"office": response.empDtls.LTEXTCL,
 					"designation": response.empDtls.STEXTCL,
 					"role": response.role,
-					"xUid": response.xUid,
+					"xUid": xUidEncrypted,//response.xUid,
 					"tkn": response.tkn
-				};
+				};*/
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
 						window.location.href = 'dashboard.jsp';
-						setCookie("empDtls", empDtls, 30);
+						jsonObjInput["tkn"]= response.tkn;
+						setCookie("empDtls", jsonObjInput, 30);
+						setCookie("tkn", jsonObjInput["tkn"], 30);
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}

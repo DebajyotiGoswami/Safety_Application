@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
 <script src="assets/js/jquery.min.js"></script>
+<!-- <script src="assets/js/login.js"></script> -->
 <%@page import="org.json.*"%>
 </head>
 
