@@ -19,19 +19,19 @@
         // Call the function on page load
         window.onload = preventBack;
     </script>
-<%@page import="org.json.*,java.time.*,java.time.format.*" %>
+<%@page import="org.json.*,java.time.*,java.time.format.*"%>
 </head>
 <body>
 	<!-- Navigation Bar -->
 	<nav>
-			<%@ include file="navbar.jsp"%>
+		<%@ include file="navbar.jsp"%>
 	</nav>
 
 	<!-- Main Content -->
 	<div class="container">
 		<div class="form-container">
 			<h2 class="text-center mb-4">Assign Inspection</h2>
-			<%
+			<%-- 			<%
 			String empDtls=request.getSession().getAttribute("empDtls").toString();
 			JSONObject empDtlsJsonObj= new JSONObject(empDtls);
 			String tkn= empDtlsJsonObj.getString("tkn");
@@ -44,10 +44,10 @@
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			String formattedDate = today.format(formatter);
 			
-			%>
-			
+			%> --%>
+
 			<form>
-<!-- 				<div class="mb-3 row">
+				<!-- 				<div class="mb-3 row">
 					<label class="col-sm-3 col-form-label">Hello, <strong>username</strong>
 						(Office Code)
 					</label>
@@ -69,8 +69,8 @@
 							onchange="updateERPFields()">
 							<option disabled selected hidden>Select Team Members</option>
 							<option value="1">1</option>
-							<option value="2" disabled>2</option>
-							<option value="3" disabled>3</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
 							<option value="4" disabled>4</option>
 							<option value="5" disabled>5</option>
 						</select>
@@ -649,27 +649,94 @@
 	</footer>
 
 	<script>
- // Fetch office names from the server
-//     document.addEventListener("DOMContentLoaded", function() {
-//     fetch('dbUpdate')  // URL to your dbUpdate servlet
-//         .then(response => response.json())
-//         .then(data => {
-//             const officeSelect = document.getElementById('officeName');
-//             data.offices.forEach(office => {
-//                 const option = document.createElement('option');
-//                 option.value = office.office_name; // Unique value for each option
-//                 option.textContent = office.office_name;
-//                 officeSelect.appendChild(option);
-//             });
-//         })
-//         .catch(error => console.error('Error fetching office names:', error));
-// });
-    
-    
+	var name= "";
+	var erp_id= "";
+	var designation= "";
+	var office= "";
+	var userRole= "";
+	var tkn= "";
+	
+	function getCookie(name) {
+		const nameEQ = name + "=";
+		const ca = document.cookie.split(';');
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	} 
+	
+	const getCurrentDate = () => {
+		const date = new Date();
+	    let year = String(date.getFullYear());
+	    
+	    let month = String(date.getMonth() + 1); // Add 1 to the month
+	    month = month.length === 1 ? "0" + month : month;
+	    let day = String(date.getDate());
+	    day = day.length === 1 ? "0" + day : day;
+	    
+	    //return `${year}-${day}-${month}`;
+	    return year+ "-"+ day+ "-"+ month;
+	};
+	
+	
+	document.addEventListener('DOMContentLoaded', () => {
+		var cookieData = JSON.parse(getCookie('empDtls'));
+		//get different value based on key of cookieData json
+		var name= cookieData.empDtls.EMNAMCL;
+		var erp_id= cookieData.User;
+		var designation= cookieData.empDtls.STEXTCL;
+		var office= cookieData.empDtls.LTEXTCL;
+		var userRole= cookieData.empDtls.STELLCL;
+		var tkn= cookieData.tkn;
+		
+		/* document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found."; */
+		$('#assgnSubmitbtn').on('click', function() {
+			var jsonObject = {};
+	    	jsonObject.assignedDate= getCurrentDate();
+	    	jsonObject.inspectionFromDate= document.getElementById('inspectionDateStart').value;
+	    	jsonObject.inspectionToDate= document.getElementById('inspectionDateEnd').value;
+	    	jsonObject.inspectionId= "";
+	    	jsonObject.empAssignedTo= document.getElementById('erpId1').value;
+	    	jsonObject.empAssignedBy= erp_id;
+	    	jsonObject.rectifiedBy= "";
+	    	jsonObject.assignedFromOff= office;
+	    	jsonObject.officeCodeToInspect= document.getElementById('officeName').value;
+	    	jsonObject.status= "ASSIGNED";
+	    	jsonObject.inspectedBy= "";
+	    	jsonObject.tkn= tkn;
+	    	jsonObject.pageNm= "DASH";
+	    	jsonObject.ServType= 101;
+        	$.ajax({
+        		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
+        		type: 'POST',
+        		data: JSON.stringify(jsonObject),
+        		success: function(response) {
+        			if(response.ackMsgCode== '101'){
+        				alert("assignment successful");
+        				window.location.href = 'assign_inspection.jsp';
+        			}
+        			console.log("entered success function");
+        			//alert(JSON.stringify(jsonObject));
+					console.log("Data sent and session updated successfully.");
+				},
+				error: function(xhr, status, error) {
+					//console.error("Error sending data:", status, error);
+					console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+				}
+        	});		
+        });
+		
+		preventBack();
+		document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
+	});
+	
         function updateERPFields() {
             const number = document.getElementById('teamMembers').value;
             const container = document.getElementById('erpIdContainer');
             container.innerHTML = ''; // Clear previous fields
+            var erp_array= [];
             for (let i = 1; i <= number; i++) {
                 const div = document.createElement('div');
                 div.className = 'mb-3 row';
@@ -689,46 +756,29 @@
                 div.appendChild(label);
                 div.appendChild(inputDiv);
                 container.appendChild(div);
+                erp_array.push(input.id);
             }
+            var values= getERPValues(erp_array);
+        }
+        
+        function getERPValues(erp_array) {
+            const erpValues = [];
+            // Loop through the erp_array to get the values
+            erp_array.forEach(function (erpId) {
+                const erpValue = document.getElementById(erpId).value;
+                erpValues.push(erpValue);
+            });
+            alert("erpValues: "+ erpValues); // Display the ERP values in the console or use them as needed
+            return erpValues;
         }
         
         
-        $(document).ready(function() {
-        	
-        	let jsonObject = {};
-			
-        	<%-- alert(<%=empDtlsJsonObj%>); --%>
-        	
-        	jsonObject.empDtls= <%=empDtlsJsonObj%>;
-        	jsonObject.tkn= '<%=tkn%>';
-        	jsonObject.xUid= '<%=xUid%>';
-        	jsonObject.pageNm= '<%=pageNm%>';
-        	jsonObject.ServType= 101;
-        	jsonObject.empAssignedBy= '<%=empAssignedBy%>';
-        	jsonObject.assignedFromOff= '<%=officeNm%>'; //assignedFromOff
-        	jsonObject.rectifiedBy= 'NA';
-        	jsonObject.status= 'assigned'; //status
-        	jsonObject.inspectedBy= 'NA'; //inspectedBy
-        	// Get the current date
-        	/* var curr_date= new Date();
-			var year= curr_date.getFullYear();
-			var month = String(curr_date.getMonth() + 1).padStart(2, '0');
-			var day = String(curr_date.getDate()).padStart(2, '0');
-			var sqlDate = `${year}-${month}-${day}`; */
-        	console.log(<%=formattedDate%>);
-        	alert(<%=formattedDate%>);
-        	jsonObject.assignedDate= '<%=formattedDate%>';
-        	
-        	alert(JSON.stringify(jsonObject));
-
-        	
-        	$('#submitbtn').on('click', function() {
-        		jsonObject.empAssignedTo= document.getElementById('erpId1').value;
-        		jsonObject.officeCodeToInspect= document.getElementById('officeName').value;
-            	jsonObject.inspectionFromDate= document.getElementById('inspectionDateStart').value.toString();
+/*         $(document).ready(function() {      	
+        	$('#assgnSubmitbtn').on('click', function() {
+        		alert("jsonObject inside: "+ jsonObject);
             	//alert(document.getElementById('inspectionDateStart').value);
             	//alert(typeof document.getElementById('inspectionDateStart').value);
-            	jsonObject.inspectionToDate= document.getElementById('inspectionDateEnd').value.toString();
+            	alert("jsonObject in assign_inspection"+ JSON.stringify(jsonObject));
         		$.ajax({
         			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
         			type: 'POST',
@@ -744,13 +794,14 @@
 					},
 					error: function(xhr, status, error) {
 						//console.error("Error sending data:", status, error);
-						console.log(xhr, status, error);
+						console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 					}
         		});
         			
         	});
-        });
+        }); */
         
     </script>
+	<!-- <script src="assets/js/login.js"></script> -->
 </body>
 </html>

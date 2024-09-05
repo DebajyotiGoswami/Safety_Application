@@ -177,7 +177,11 @@ function handleButtonClick(event) {
 		}
 	}
 	else if(buttonId === 'assgnSubmitbtn'){
-		//for new assignment 
+		var jsonObjAssgnmnt= {};
+		jsonObjAssgnmnt.empAssignedTo= document.getElementById('erpId1').value;
+		jsonObjAssgnmnt.officeCodeToInspect= document.getElementById('officeName').value;
+		jsonObjAssgnmnt.inspectionFromDate= document.getElementById('inspectionDateStart').value.toString();
+		alert("json assignment: "+ jsonObjAssgnmnt);
 	}
 	$.ajax({
 		url: url, // replace with above Servlet URL
@@ -191,8 +195,6 @@ function handleButtonClick(event) {
 					xUidJson= enCrypt(xUid, "123456");
 					xUidEncrypted= xUidJson.User;
 					dUidEncrypted= xUidJson.Pwd;
-					//empDtls= response.empDtls;
-					//setCookie("empDtls", JSON.stringify(response.empDtls), 30);
 					// Show OTP section
 					$('#otpMessage').show();
 					$('#otpForm').show();
@@ -204,15 +206,6 @@ function handleButtonClick(event) {
 					alert("Incorrect credentials. Please try again.");
 				}
 			} else {
-				/*var empDtls = {
-					"erpId": User,
-					"name": response.empDtls.EMNAMCL,
-					"office": response.empDtls.LTEXTCL,
-					"designation": response.empDtls.STEXTCL,
-					"role": response.role,
-					"xUid": xUidEncrypted,//response.xUid,
-					"tkn": response.tkn
-				};*/
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
 						window.location.href = 'dashboard.jsp';

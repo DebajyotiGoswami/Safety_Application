@@ -43,4 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Disable "Reports" section for role 4
         $(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
     } */
+	
+	preventBack();
 });
