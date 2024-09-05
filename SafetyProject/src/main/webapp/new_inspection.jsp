@@ -23,7 +23,7 @@
 <body>
 	<!-- Navigation Bar -->
 	<nav>
-			<%@ include file="navbar.jsp"%>
+		<%@ include file="navbar.jsp"%>
 	</nav>
 
 	<!-- Main Content -->
@@ -34,15 +34,13 @@
 			</div>
 			<form id="inspectionForm" enctype="multipart/form-data">
 
-<%
-
-%>
-
 				<!-- Initial visible sections -->
 				<div id="initialSection" class="initial-section">
 					<div class="row form-row">
 						<div class="col-sm-6 form-group">
-							<select id="inspectionList">
+							<label for="inspection_id" class="form-label required-label">Assigned
+								Inspections</label> <select id="inspectionList" class="form-control">
+								<!-- Added class "form-control" -->
 								<option selected="true" disabled>Loading...</option>
 							</select>
 						</div>
@@ -52,6 +50,7 @@
 								id="inspection_date" name="inspection_date" required>
 						</div>
 					</div>
+
 					<div class="row form-row">
 						<div class="col-sm-6 form-group">
 							<label for="network_type" class="form-label required-label">Network
@@ -132,9 +131,11 @@
 					</div>
 					<div class="row form-row">
 						<div class="col-sm-12 form-group image-upload-section">
-							<label for="imageInput" class="form-label">Upload Image 1</label> 
-							<input type="file" id="imageInput" name="imageInput" accept=".jpg, .jpeg, .png" onchange="uploadImage()" />
-							 <input type="text" id="base64Output" name="base64Output" style="display: none" readonly />
+							<label for="imageInput" class="form-label">Upload Image 1</label>
+							<input type="file" id="imageInput" name="imageInput"
+								accept=".jpg, .jpeg, .png" onchange="uploadImage()" /> <input
+								type="text" id="base64Output" name="base64Output"
+								style="display: none" readonly />
 						</div>
 					</div>
 					<div class="row form-row">

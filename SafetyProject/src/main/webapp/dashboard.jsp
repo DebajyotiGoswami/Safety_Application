@@ -34,7 +34,7 @@
 						<p class="card-text">Manage inspection tasks by assigning
 							responsibilities to your team and track assignment progress.</p>
 						<div class="btn-container">
-							<a href="assign_inspection.jsp"
+							<a href="new_inspection.jsp"
 								class="btn btn-primary btn-equal">New Assignment</a> 
 							<a href="assignment_status.jsp" class="btn btn-primary btn-equal">View 
 							All Assignments</a>

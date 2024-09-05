@@ -124,6 +124,19 @@ function getCookie(name) {
 	return null;
 }
 
+function getCurrentDate(){
+		const date = new Date();
+	    let year = String(date.getFullYear());
+	    
+	    let month = String(date.getMonth() + 1); // Add 1 to the month
+	    month = month.length === 1 ? "0" + month : month;
+	    let day = String(date.getDate());
+	    day = day.length === 1 ? "0" + day : day;
+	    
+	    //return `${year}-${day}-${month}`;
+	    return year+ "-"+ day+ "-"+ month;
+	}
+
 $(document).ready(function() {
 	$('#loginbttn, #submitOtpBtn, #resendOtpBtn, #assgnSubmitbtn').on('click', handleButtonClick);
 });
@@ -133,7 +146,7 @@ function handleButtonClick(event) {
 	var loginflg = false;
 	var submitotpflg = false;
 	var resendotpflg = false;
-	/*var jsonObjInput = {};*/
+	var assignmentflg= false;
 
 	if (buttonId === 'loginbttn') {
 		var User = $('#userId').val();
@@ -177,11 +190,49 @@ function handleButtonClick(event) {
 		}
 	}
 	else if(buttonId === 'assgnSubmitbtn'){
-		var jsonObjAssgnmnt= {};
-		jsonObjAssgnmnt.empAssignedTo= document.getElementById('erpId1').value;
-		jsonObjAssgnmnt.officeCodeToInspect= document.getElementById('officeName').value;
-		jsonObjAssgnmnt.inspectionFromDate= document.getElementById('inspectionDateStart').value.toString();
-		alert("json assignment: "+ jsonObjAssgnmnt);
+		alert("found");
+		assignmentflg= true;
+		var jsonObjInput = {};
+		var cookieData = JSON.parse(getCookie('empDtls'));
+		var name= cookieData.empDtls.EMNAMCL;
+		var designation= cookieData.empDtls.STEXTCL;
+		var userRole= cookieData.empDtls.STELLCL;
+		var office= cookieData.empDtls.LTEXTCL;
+		
+    	jsonObjInput.assignedDate= getCurrentDate();
+    	jsonObjInput.inspectionFromDate= document.getElementById('inspectionDateStart').value;
+    	jsonObjInput.inspectionToDate= document.getElementById('inspectionDateEnd').value;
+    	jsonObjInput.inspectionId= "";
+    	jsonObjInput.empAssignedTo= document.getElementById('erpId1').value;
+    	jsonObjInput.empAssignedBy= cookieData.User;
+    	jsonObjInput.rectifiedBy= "";
+    	jsonObjInput.assignedFromOff= cookieData.empDtls.LTEXTCL;
+    	jsonObjInput.officeCodeToInspect= document.getElementById('officeName').value;
+    	jsonObjInput.status= "ASSIGNED";
+    	jsonObjInput.inspectedBy= "";
+    	jsonObjInput.tkn= cookieData.tkn;
+    	jsonObjInput.pageNm= "DASH";
+    	jsonObjInput.ServType= 101;
+    	/*$.ajax({
+    		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
+    		type: 'POST',
+    		data: JSON.stringify(jsonObject),
+    		success: function(response) {
+    			if(response.ackMsgCode== '101'){
+    				alert("assignment successful");
+    				window.location.href = 'assign_inspection.jsp';
+    			}
+    			console.log("entered success function");
+    			//alert(JSON.stringify(jsonObject));
+				console.log("Data sent and session updated successfully.");
+			},
+			error: function(xhr, status, error) {
+				//console.error("Error sending data:", status, error);
+				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+			}
+    	});*/	
+		
+		alert("jsonObjInput in assignment: "+ jsonObjInput);
 	}
 	$.ajax({
 		url: url, // replace with above Servlet URL
@@ -205,7 +256,8 @@ function handleButtonClick(event) {
 				} else {
 					alert("Incorrect credentials. Please try again.");
 				}
-			} else {
+			} 
+			else if (submitotpflg || resendotpflg){
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
 						window.location.href = 'dashboard.jsp';
@@ -224,6 +276,12 @@ function handleButtonClick(event) {
 					} else {
 						alert("OTP resent. Please check your registered mobile number.");
 					}
+				}
+			}
+			else if(assignmentflg){
+				if (response.ackMsgCode == '101') {
+					alert("new assignment successful");
+					window.location.href = 'assign_inspection.jsp';
 				}
 			}
 		}, error: function(xhr, status, error) {
