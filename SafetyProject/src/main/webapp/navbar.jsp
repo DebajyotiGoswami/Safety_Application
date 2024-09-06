@@ -1,5 +1,6 @@
 <!-- Navigation Bar -->
 <%@page import="org.json.*"%>
+<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container-fluid">
 		<!-- Left side: Welcome message -->
