@@ -637,12 +637,57 @@
 	</footer>
 
 	<script>
+	
+	var KEY1 = bigInt("10953483997285864814773860729");
+	var KEY2 = bigInt("37997636186218092599949125647");
+	
 	var name= "";
 	var erp_id= "";
 	var designation= "";
 	var office= "";
 	var userRole= "";
 	var tkn= "";
+	var xUidEncrypted= "";
+	var dUidEncrypted= "";
+	var xUidJson= {};
+	
+	function enCrypt(uid, pwd) {
+		//var uid=devEle["enIdCon"];
+		//var pwd=devEle["enAuthCon"];
+		var uidConver = [];
+		var pwdConver = [];
+		var enIden = [];
+		var enAuth = [];
+		var enIdCon = "";
+		var enAuthCon = "";
+		var jsonObj = {};
+
+		for (var i = 0; i < uid.length; i++) {
+			uidConver[i] = uid.charCodeAt(i);
+			var bigtemp = bigInt(uidConver[i]);
+			enIden[i] = bigInt(uidConver[i]).modPow(KEY1, KEY2).toString(16);
+			enIdCon = enIdCon.concat(enIden[i]);
+			if (i != (uid.length - 1)) {
+				enIdCon = enIdCon.concat("@");
+			}
+		}
+		for (var i = 0; i < pwd.length; i++) {
+			pwdConver[i] = pwd.charCodeAt(i);
+			enAuth[i] = bigInt(pwdConver[i]).modPow(KEY1, KEY2).toString(16);
+			enAuthCon = enAuthCon.concat(enAuth[i]);
+			if (i != (pwd.length - 1)) {
+				enAuthCon = enAuthCon.concat("?");
+			}
+		}
+
+
+		jsonObj = {
+			"User": enIdCon,
+			"Pwd": enAuthCon
+		};
+
+		return jsonObj;
+	}
 	
 	function getCookie(name) {
 		const nameEQ = name + "=";
@@ -686,11 +731,15 @@
 		var cookieData = JSON.parse(getCookie('empDtls'));
 		//get different value based on key of cookieData json
 		var name= cookieData.empDtls.EMNAMCL;
-		var erp_id= cookieData.User;
+		var erp_id= cookieData.xUid.slice(0, 8);
 		var designation= cookieData.empDtls.STEXTCL;
 		var office= cookieData.empDtls.LTEXTCL;
 		var userRole= cookieData.empDtls.STELLCL;
 		var tkn= cookieData.tkn;
+		var xUid= cookieData.xUid;
+		xUidJson= enCrypt(xUid, "123456");
+		xUidEncrypted= xUidJson.User;
+		dUidEncrypted= xUidJson.Pwd;
 		
 		$('#assgnSubmitbtn').on('click', function() {
 			var jsonObject = {};
@@ -698,6 +747,8 @@
 	    	jsonObject.inspectionFromDate= document.getElementById('inspectionDateStart').value;
 	    	jsonObject.inspectionToDate= document.getElementById('inspectionDateEnd').value;
 	    	jsonObject.inspectionId= "";
+	    	jsonObject.xUid= xUidEncrypted;
+	    	jsonObject.dUid= dUidEncrypted
 	    	jsonObject.empAssignedTo= document.getElementById('erpId1').value;
 	    	jsonObject.empAssignedBy= erp_id;
 	    	jsonObject.rectifiedBy= "";
