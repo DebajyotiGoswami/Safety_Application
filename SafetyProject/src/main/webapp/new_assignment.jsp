@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Assign Inspection</title>
 
-<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+<!-- <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"> -->
 
 
 <!-- Link to Bootstrap CSS -->
@@ -16,16 +16,6 @@
 <script src="assets/js/BigInteger.js"></script>
 <script src="assets/js/BigInteger.min.js"></script>
 
-<script>function preventBack() {
-            history.pushState(null, null, location.href);
-            window.onpopstate = function () {
-                history.pushState(null, null, location.href);
-            };
-        }
-
-        // Call the function on page load
-        window.onload = preventBack;
-    </script>
 <%@page import="org.json.*,java.time.*,java.time.format.*"%>
 </head>
 <body>
