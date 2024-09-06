@@ -637,12 +637,12 @@
 	</footer>
 
 	<script>
-	var name= "";
-	var erp_id= "";
-	var designation= "";
-	var office= "";
-	var userRole= "";
-	var tkn= "";
+	//var name= "";
+	//var erp_id= "";
+	//var designation= "";
+	//var office= "";
+	//var userRole= "";
+	//var tkn= "";
 	
 	function getCookie(name) {
 		const nameEQ = name + "=";
@@ -719,6 +719,7 @@
 	    	jsonObject.tkn= tkn;
 	    	jsonObject.pageNm= "DASH";
 	    	jsonObject.ServType= 101;
+	    	
         	$.ajax({
         		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
         		type: 'POST',
@@ -748,54 +749,76 @@
 	    const number = document.getElementById('teamMembers').value;
 	    const container = document.getElementById('erpIdContainer');
 	    container.innerHTML = ''; // Clear previous fields
+	    var data= cookieData.xUid.slice(0, 8);
 
-	    // Pre-defined list of ERP IDs
-	    const erpIds = ["90012775", "90009977", "90009981", "90012774", "90012776"];
+	    $.ajax({
+    		url: 'fetchInspectorList', // replace with above Servlet URL
+    		type: 'POST',
+    		data: data,
+    		contentType: 'application/json', // Specify content type
+    		success: function(response) {
+    			alert(response);
+    			alert(JSON.stringify(response));
+    			 const erpIds=response.emplist;
+    			 alert(erpIds);
+    			 alert(erpIds.length);
+    			 for (let i = 1; i <= number; i++) {
+    			 
+    			 const div = document.createElement('div');
+			        div.className = 'mb-3 row';
 
-	    for (let i = 1; i <= number; i++) {
-	        const div = document.createElement('div');
-	        div.className = 'mb-3 row';
+			        // Create label
+			        const label = document.createElement('label');
+			        label.setAttribute('for', 'erpId' + i);
+			        label.className = 'col-sm-3 col-form-label';
+			        label.textContent = 'Team Member ' + i;
 
-	        // Create label
-	        const label = document.createElement('label');
-	        label.setAttribute('for', 'erpId' + i);
-	        label.className = 'col-sm-3 col-form-label';
-	        label.textContent = 'ERP ID ' + i;
+			        // Create select dropdown
+			        const inputDiv = document.createElement('div');
+			        inputDiv.className = 'col-sm-9';
+			        const select = document.createElement('select');
+			        select.className = 'form-control erp-select';
+			        select.id = 'erpId' + i;
+			        select.name = 'erpId' + i;
 
-	        // Create select dropdown
-	        const inputDiv = document.createElement('div');
-	        inputDiv.className = 'col-sm-9';
-	        const select = document.createElement('select');
-	        select.className = 'form-control erp-select';
-	        select.id = 'erpId' + i;
-	        select.name = 'erpId' + i;
+			        // Add a default disabled option
+			        const defaultOption = document.createElement('option');
+			        defaultOption.textContent = 'Select ERP ID';
+			        defaultOption.disabled = true;
+			        defaultOption.selected = true;
+			        select.appendChild(defaultOption);
 
-	        // Add a default disabled option
-	        const defaultOption = document.createElement('option');
-	        defaultOption.textContent = 'Select ERP ID';
-	        defaultOption.disabled = true;
-	        defaultOption.selected = true;
-	        select.appendChild(defaultOption);
+			        // Populate the select dropdown with ERP IDs
+			        erpIds.forEach(function (erpId) {
+			            const option = document.createElement('option');
+			            option.value = erpId;
+			            option.textContent = erpId;
+			            select.appendChild(option);
+			        });
 
-	        // Populate the select dropdown with ERP IDs
-	        erpIds.forEach(function (erpId) {
-	            const option = document.createElement('option');
-	            option.value = erpId;
-	            option.textContent = erpId;
-	            select.appendChild(option);
-	        });
-
-	        // Append the select dropdown to the div
-	        inputDiv.appendChild(select);
-	        div.appendChild(label);
-	        div.appendChild(inputDiv);
-	        container.appendChild(div);
-	    }
+			        // Append the select dropdown to the div
+			        inputDiv.appendChild(select);
+			        div.appendChild(label);
+			        div.appendChild(inputDiv);
+			        container.appendChild(div);
+ 			    
+ 			 
+ 			     
+    			 }
+    			// Add event listeners to all the dropdowns
+ 			    $('.erp-select').on('change', function () {
+ 			        filterDropdownOptions();
+ 			    });
+			},
+			error: function(xhr, status, error) {
+				//console.error("Error sending data:", status, error);
+				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+			}
+    	});	
 	    
-	 // Add event listeners to all the dropdowns
-	    $('.erp-select').on('change', function () {
-	        filterDropdownOptions();
-	    });
+	    
+	    // Pre-defined list of ERP IDs
+	   
 	}
 	
 	// Function to filter options in dropdowns
