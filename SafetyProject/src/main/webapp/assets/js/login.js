@@ -171,7 +171,6 @@ function handleButtonClick(event) {
 	}
 	else if((buttonId === 'submitOtpBtn') || (buttonId === 'resendOtpBtn')) {
 		var otp = $('#otp').val();
-		alert(otp);
 		jsonObjInput['otp']=$('#otp').val();
 		jsonObjInput["pageNm"] = "OTP";
 		jsonObjInput["xUid"] = xUidEncrypted;

@@ -6,6 +6,8 @@
 
 <title>Safety Dashboard</title>
 
+<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
