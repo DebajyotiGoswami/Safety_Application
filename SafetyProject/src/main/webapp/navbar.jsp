@@ -24,7 +24,7 @@
 				<li class="nav-item">
 					<!-- Logout form -->
 					<form action="LogoutServlet" method="POST" style="display: inline;">
-						<button type="submit" class="btn btn-outline-light ml-2">Logout</button>
+						<button type="submit" id="logOutSubmit" name="logOutSubmit" class="btn btn-outline-light ml-2">Logout</button>
 					</form>
 				</li>
 			</ul>
@@ -52,6 +52,29 @@
 		document.getElementById("cookieDisplay").innerText = cookieData ? name
 				+ ", " + designation + " (ERP ID: " + erp_id + ") "
 				: "Cookie not found.";
+		
+		$('#"logOutSubmit").on('click', handleLogout);
+		
+		function handleLogout() {
+	        // Function to delete all cookies
+	        function deleteAllCookies() {
+	            const cookies = document.cookie.split(";");
+	            for (let i = 0; i < cookies.length; i++) {
+	                const cookie = cookies[i];
+	                const eqPos = cookie.indexOf("=");
+	                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+	                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+	            }
+	        }
+
+	        // Clear cookies
+	        deleteAllCookies();
+
+	        // Redirect to LogoutServlet to invalidate session
+	        //document.getElementById('logoutForm').action = 'LogoutServlet';
+	        //document.getElementById('logoutForm').method = 'POST';
+	        //document.getElementById('logoutForm').submit();
+	    }
 	</script>
 </nav>
 

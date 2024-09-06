@@ -111,6 +111,8 @@ function setCookie(name, value, minutes) {
 		expires = "; expires=" + date.toUTCString();
 	}
 	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+	alert(document.cookie.tkn);
+	console.log(document.cookie.tkn);
 }
 
 function getCookie(name) {
@@ -266,6 +268,8 @@ function handleButtonClick(event) {
 						window.location.href = 'dashboard.jsp';
 						jsonObjInput["tkn"]= response.tkn;
 						jsonObjCookie["tkn"]= response.tkn;
+						console.log(jsonObjCookie["tkn"]);
+						alert(jsonObjCookie["tkn"]);
 						//setCookie("empDtls", JSON.stringify(jsonObjInput), 30);
 						setCookie("empDtls", JSON.stringify(jsonObjCookie), 30);
 						setCookie("tkn", jsonObjCookie["tkn"], 30);

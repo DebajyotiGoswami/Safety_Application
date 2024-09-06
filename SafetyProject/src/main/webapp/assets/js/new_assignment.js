@@ -96,7 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	var designation = cookieData.empDtls.STEXTCL;
 	var office = cookieData.empDtls.LTEXTCL;
 	var userRole = cookieData.empDtls.STELLCL;
+	console.log(cookieData.tkn);
 	var tkn = cookieData.tkn;
+	console.log("token: "+ tkn);
 	var xUid = cookieData.xUid;
 	xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
@@ -129,9 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					alert("assignment successful");
 					window.location.href = 'assign_inspection.jsp';
 				}
-				console.log("entered success function");
-				//alert(JSON.stringify(jsonObject));
-				console.log("Data sent and session updated successfully.");
 			},
 			error: function(xhr, status, error) {
 				//console.error("Error sending data:", status, error);
