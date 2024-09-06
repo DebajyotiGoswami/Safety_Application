@@ -698,7 +698,18 @@
 	    	jsonObject.inspectionFromDate= document.getElementById('inspectionDateStart').value;
 	    	jsonObject.inspectionToDate= document.getElementById('inspectionDateEnd').value;
 	    	jsonObject.inspectionId= "";
-	    	jsonObject.empAssignedTo= document.getElementById('erpId1').value;
+	    	
+	    	// Collect all ERP IDs
+	        var erpIds = [];
+	        $('.erp-select').each(function() {
+	            var erpId = $(this).val();
+	            if (erpId !== 'Select ERP ID') {
+	                erpIds.push(erpId);
+	            }
+	        });
+	        
+	    	//jsonObject.empAssignedTo= document.getElementById('erpId1').value;
+	    	jsonObject.empAssignedTo= erpIds;
 	    	jsonObject.empAssignedBy= erp_id;
 	    	jsonObject.rectifiedBy= "";
 	    	jsonObject.assignedFromOff= office;
@@ -712,6 +723,7 @@
         		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
         		type: 'POST',
         		data: JSON.stringify(jsonObject),
+        		contentType: 'application/json', // Specify content type
         		success: function(response) {
         			if(response.ackMsgCode== '101'){
         				alert("assignment successful");
@@ -732,32 +744,92 @@
 		document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
 	});
 	
-        function updateERPFields() {
-            const number = document.getElementById('teamMembers').value;
-            const container = document.getElementById('erpIdContainer');
-            container.innerHTML = ''; // Clear previous fields
-            
-            for (let i = 1; i <= number; i++) {
-                const div = document.createElement('div');
-                div.className = 'mb-3 row';
-                const label = document.createElement('label');
-                label.setAttribute('for', 'erpId' + i);
-                label.className = 'col-sm-3 col-form-label';
-                label.textContent = 'ERP ID ' + i;
-                const inputDiv = document.createElement('div');
-                inputDiv.className = 'col-sm-9';
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'form-control';
-                input.id = 'erpId' + i;
-                input.name = 'erpId' + i;
-                input.placeholder = 'Enter ERP ID';
-                inputDiv.appendChild(input);
-                div.appendChild(label);
-                div.appendChild(inputDiv);
-                container.appendChild(div);
-            }
-        }
+	function updateERPFields() {
+	    const number = document.getElementById('teamMembers').value;
+	    const container = document.getElementById('erpIdContainer');
+	    container.innerHTML = ''; // Clear previous fields
+
+	    // Pre-defined list of ERP IDs
+	    const erpIds = ["90012775", "90009977", "90009981", "90012774", "90012776"];
+
+	    for (let i = 1; i <= number; i++) {
+	        const div = document.createElement('div');
+	        div.className = 'mb-3 row';
+
+	        // Create label
+	        const label = document.createElement('label');
+	        label.setAttribute('for', 'erpId' + i);
+	        label.className = 'col-sm-3 col-form-label';
+	        label.textContent = 'ERP ID ' + i;
+
+	        // Create select dropdown
+	        const inputDiv = document.createElement('div');
+	        inputDiv.className = 'col-sm-9';
+	        const select = document.createElement('select');
+	        select.className = 'form-control erp-select';
+	        select.id = 'erpId' + i;
+	        select.name = 'erpId' + i;
+
+	        // Add a default disabled option
+	        const defaultOption = document.createElement('option');
+	        defaultOption.textContent = 'Select ERP ID';
+	        defaultOption.disabled = true;
+	        defaultOption.selected = true;
+	        select.appendChild(defaultOption);
+
+	        // Populate the select dropdown with ERP IDs
+	        erpIds.forEach(function (erpId) {
+	            const option = document.createElement('option');
+	            option.value = erpId;
+	            option.textContent = erpId;
+	            select.appendChild(option);
+	        });
+
+	        // Append the select dropdown to the div
+	        inputDiv.appendChild(select);
+	        div.appendChild(label);
+	        div.appendChild(inputDiv);
+	        container.appendChild(div);
+	    }
+	    
+	 // Add event listeners to all the dropdowns
+	    $('.erp-select').on('change', function () {
+	        filterDropdownOptions();
+	    });
+	}
+	
+	// Function to filter options in dropdowns
+	function filterDropdownOptions() {
+	    const allSelects = document.querySelectorAll('.erp-select');
+	    const selectedValues = [];
+
+	    // Get all selected values
+	    allSelects.forEach(select => {
+	        if (select.value !== 'Select ERP ID') {
+	            selectedValues.push(select.value);
+	        }
+	    });
+
+	    // Update options in each dropdown
+	    allSelects.forEach(select => {
+	        const currentSelection = select.value;
+	        const options = select.querySelectorAll('option');
+
+	        // Enable/disable options based on the selected values in other dropdowns
+	        options.forEach(option => {
+	            if (option.value !== 'Select ERP ID') {
+	                if (selectedValues.includes(option.value) && option.value !== currentSelection) {
+	                    //option.disabled = true;
+	                    option.style.display = 'none';
+	                } else {
+	                    //option.disabled = false;
+	                    option.style.display = 'block';
+	                }
+	            }
+	        });
+	    });
+	}
+
         
         function validateInspectionDates() {
             const startDateInput = document.getElementById('inspectionDateStart');

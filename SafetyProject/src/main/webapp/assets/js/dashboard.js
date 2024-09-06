@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	//get different value based on key of cookieData json
 	console.log(cookieData);
 	const name= cookieData.empDtls.EMNAMCL;
-	const erp_id= cookieData.User;
+	const erp_id= cookieData.xUid.slice(0,8);
 	const designation= cookieData.empDtls.STEXTCL;
 	const office= cookieData.empDtls.LTEXTCL;
 	const userRole= cookieData.empDtls.STELLCL;

@@ -7,8 +7,8 @@ var xUid= "";
 var xUidEncrypted= "";
 var dUidEncrypted= "";
 var empDtls= "";
-var jsonObjInput = {};
-var jsonObjCookie= {};
+/*var jsonObjInput = {};
+var jsonObjCookie= {};*/
 
 function enCrypt(uid, pwd) {
 	//var uid=devEle["enIdCon"];
@@ -148,6 +148,9 @@ function handleButtonClick(event) {
 	var resendotpflg = false;
 	var assignmentflg= false;
 
+	var jsonObjInput = {};
+	var jsonObjCookie= {};
+	
 	if (buttonId === 'loginbttn') {
 		var User = $('#userId').val();
 		var Pwd = $('#password').val();
@@ -168,7 +171,8 @@ function handleButtonClick(event) {
 	}
 	else if((buttonId === 'submitOtpBtn') || (buttonId === 'resendOtpBtn')) {
 		var otp = $('#otp').val();
-		jsonObjInput["otp"]= otp;
+		alert(otp);
+		jsonObjInput['otp']=$('#otp').val();
 		jsonObjInput["pageNm"] = "OTP";
 		jsonObjInput["xUid"] = xUidEncrypted;
 		jsonObjInput["dUid"]= dUidEncrypted;
