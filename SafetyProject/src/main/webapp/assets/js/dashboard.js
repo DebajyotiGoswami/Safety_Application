@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const office= cookieData.empDtls.LTEXTCL;
 	const userRole= cookieData.empDtls.STELLCL;
 	
-	document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
+	//document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
 	
 	/*  if (userRole === "1"){
 		//Disable "Inspection Assignment" section for role 1
