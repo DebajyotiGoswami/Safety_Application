@@ -53,7 +53,9 @@
 				+ ", " + designation + " (ERP ID: " + erp_id + ") "
 				: "Cookie not found.";
 		
-		$('#"logOutSubmit").on('click', handleLogout);
+		//$("#logOutSubmit").on('click', handleLogout);
+		
+		document.getElementById('logOutSubmit').addEventListener('click', handleLogout);
 		
 		function handleLogout() {
 	        // Function to delete all cookies
