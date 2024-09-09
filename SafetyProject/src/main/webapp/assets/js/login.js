@@ -111,7 +111,6 @@ function setCookie(name, value, minutes) {
 		expires = "; expires=" + date.toUTCString();
 	}
 	document.cookie = name + "=" + (value || "") + expires + "; path=/";
-	console.log(document.cookie.tkn);
 }
 
 function getCookie(name) {
@@ -141,7 +140,7 @@ function getCurrentDate(){
 $(document).ready(function() {
 	$('#loginbttn, #submitOtpBtn, #resendOtpBtn, #assgnSubmitbtn').on('click', handleButtonClick);
 });
-
+		
 function handleButtonClick(event) {
 	const buttonId = event.target.id;
 	var loginflg = false;
@@ -151,6 +150,7 @@ function handleButtonClick(event) {
 
 	var jsonObjInput = {};
 	var jsonObjCookie= {};
+	//create token to be set
 	
 	if (buttonId === 'loginbttn') {
 		var User = $('#userId').val();
@@ -267,7 +267,7 @@ function handleButtonClick(event) {
 						window.location.href = 'dashboard.jsp';
 						jsonObjInput["tkn"]= response.tkn;
 						jsonObjCookie["tkn"]= response.tkn;
-						console.log(jsonObjCookie["tkn"]);
+						//console.log(jsonObjCookie["tkn"]);
 						//setCookie("empDtls", JSON.stringify(jsonObjInput), 30);
 						setCookie("empDtls", JSON.stringify(jsonObjCookie), 30);
 						setCookie("tkn", jsonObjCookie["tkn"], 30);

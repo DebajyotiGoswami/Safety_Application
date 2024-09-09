@@ -50,13 +50,26 @@ function enCrypt(uid, pwd) {
 	return jsonObj;
 }
 
+function setCookie(name, value, minutes) {
+	//value passed as object
+	let expires = "";
+	if (minutes) {
+		const date = new Date();
+		date.setTime(date.getTime() + (minutes * 60 * 1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
 function getCookie(name) {
 	const nameEQ = name + "=";
 	const ca = document.cookie.split(';');
 	for (let i = 0; i < ca.length; i++) {
 		let c = ca[i];
 		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+		if (c.indexOf(nameEQ) === 0){
+			return c.substring(nameEQ.length, c.length);
+		}
 	}
 	return null;
 }
@@ -90,22 +103,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
 	var cookieData = JSON.parse(getCookie('empDtls'));
+	
 	//get different value based on key of cookieData json
 	var name = cookieData.empDtls.EMNAMCL;
 	var erp_id = cookieData.xUid.slice(0, 8);
 	var designation = cookieData.empDtls.STEXTCL;
 	var office = cookieData.empDtls.LTEXTCL;
+	var costCenter= cookieData.empDtls.KST01CL; //cost center
 	var userRole = cookieData.empDtls.STELLCL;
-	console.log(cookieData.tkn);
-	var tkn = cookieData.tkn;
-	console.log("token: "+ tkn);
+	//console.log(cookieData.tkn);
+	
+	//console.log("token: "+ tkn);
 	var xUid = cookieData.xUid;
 	xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
 	dUidEncrypted = xUidJson.Pwd;
 
 	$('#assgnSubmitbtn').on('click', function() {
+		var cookieDataToken= getCookie('tkn');
+		var tkn = cookieDataToken; //cookieData.tkn;
 		var jsonObject = {};
+		jsonObject["KST01CL"]= costCenter;
 		jsonObject.assignedDate = getCurrentDate();
 		jsonObject.inspectionFromDate = document.getElementById('inspectionDateStart').value;
 		jsonObject.inspectionToDate = document.getElementById('inspectionDateEnd').value;
@@ -128,8 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			data: JSON.stringify(jsonObject),
 			success: function(response) {
 				if (response.ackMsgCode == '101') {
-					alert("assignment successful");
-					window.location.href = 'assign_inspection.jsp';
+					var newToken= response.tkn;
+					var ackMsg= response.ackMsg;
+					var ackMsgCode= response.ackMsgCode;
+					var inspectionId= response.inspectionId;
+					if(ackMsgCode=== "101"){
+						alert(`${ackMsg}. Inspection ID: ${inspectionId}`);
+						setCookie("tkn", newToken, 30);
+						window.location.href = 'new_assignment.jsp';
+					}
+					
 				}
 			},
 			error: function(xhr, status, error) {
@@ -139,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
-	preventBack();
+	//preventBack();
 	//document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
 });
 

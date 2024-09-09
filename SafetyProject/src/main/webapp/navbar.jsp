@@ -43,6 +43,22 @@
 			}
 			return null;
 		}
+		
+		function preventBack() {
+	        // Add a state to the history
+	        history.pushState(null, null, window.location.href);
+
+	        // Listen for the popstate event to detect back button usage
+	        window.onpopstate = function () {
+	            // Push state again to prevent navigating back
+	            history.pushState(null, null, window.location.href);
+	            // Inform the user that the back button is disabled
+	            alert("Back button is disabled.");
+	        };
+	    }
+
+	    // Call preventBack() when the page loads
+	    window.onload = preventBack;
 
 		const cookieData = JSON.parse(getCookie('empDtls'));
 		const name = cookieData.empDtls.EMNAMCL;
