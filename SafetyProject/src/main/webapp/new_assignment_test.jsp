@@ -704,9 +704,17 @@
 	        $('.erp-select').each(function() {
 	            var erpId = $(this).val();
 	            if (erpId !== 'Select ERP ID') {
-	                erpIds.push(erpId);
+	            	let tempJson= {};
+	            	erpName= erpId.slice(0, erpId.indexOf("(")- 1);
+	            	erpId= erpId.slice(erpId.indexOf("(")+ 1, erpId.length- 1);
+	            	alert("erp id: "+ erpId);
+	            	alert("name; "+ name);
+	            	tempJson.erpId= erpId;
+	            	tempJson.erpName= erpName;
+	                erpIds.push(tempJson);
 	            }
 	        });
+	        alert("erp array: "+ erpIds);
 	        
 	    	//jsonObject.empAssignedTo= document.getElementById('erpId1').value;
 	    	jsonObject.empAssignedTo= erpIds;
@@ -719,6 +727,8 @@
 	    	jsonObject.tkn= tkn;
 	    	jsonObject.pageNm= "DASH";
 	    	jsonObject.ServType= 101;
+	    	
+	    	alert(jsonObject);
 	    	
         	$.ajax({
         		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
