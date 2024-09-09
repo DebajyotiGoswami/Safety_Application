@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
 <script src="assets/js/jquery.min.js"></script>
 <!-- <script src="assets/js/login.js"></script> -->
+<script src="assets/js/dashboard.js"></script>
 <%@page import="org.json.*"%>
 </head>
 
@@ -105,7 +106,7 @@
 	<footer class="text-center mt-auto">
 		<div class="text-center p-3">© 2024 IT&C Cell, WBSEDCL</div>
 	</footer>
-	<script src="assets/js/new_login.js"></script> 
+	<!-- <script src="assets/js/new_login.js"></script> --> 
 	<!-- Above script might not be required as it was only for jewel report page
 	before CE(Safety) meeting -->
 	
@@ -113,6 +114,6 @@
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
-    <script src="assets/js/dashboard.js"></script>
+    
 </body>
 </html>
