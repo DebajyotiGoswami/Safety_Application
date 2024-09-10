@@ -10,7 +10,9 @@
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/inspection_navigation.css">
-<!-- <link rel="stylesheet" href="assets/css/assignment_status.css"> -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/BigInteger.js"></script>
 
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
@@ -64,7 +66,7 @@
 				<div class="mb-3 row">
 					<div class="col-sm-12 text-center">
 						<button type="button" class="btn btn-primary" id="searchBtn">Search
-							Above Selction</button>
+							Above Selection</button>
 					</div>
 					<div class="col-sm-12 text-center">
 						<button type="button" class="btn btn-primary ml-2"
@@ -81,7 +83,7 @@
                <thead>
                    <tr>
                        <th>Inspection ID</th>
-                       <th>Assigned By</th>
+                       <th>Assigned Date</th>
                        <th>Assigned To</th>
                        <th>Office Name</th>
                        <th>From Date</th>

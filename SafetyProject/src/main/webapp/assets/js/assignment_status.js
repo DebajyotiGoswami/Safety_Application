@@ -1,3 +1,73 @@
+var KEY1 = bigInt("10953483997285864814773860729");
+var KEY2 = bigInt("37997636186218092599949125647");
+
+var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var xUidEncrypted = "";
+var dUidEncrypted = "";
+var xUidJson = {};
+
+function enCrypt(uid, pwd) {
+	//var uid=devEle["enIdCon"];
+	//var pwd=devEle["enAuthCon"];
+	var uidConver = [];
+	var pwdConver = [];
+	var enIden = [];
+	var enAuth = [];
+	var enIdCon = "";
+	var enAuthCon = "";
+	var jsonObj = {};
+
+	for (var i = 0; i < uid.length; i++) {
+		uidConver[i] = uid.charCodeAt(i);
+		var bigtemp = bigInt(uidConver[i]);
+		enIden[i] = bigInt(uidConver[i]).modPow(KEY1, KEY2).toString(16);
+		enIdCon = enIdCon.concat(enIden[i]);
+		if (i != (uid.length - 1)) {
+			enIdCon = enIdCon.concat("@");
+		}
+	}
+	for (var i = 0; i < pwd.length; i++) {
+		pwdConver[i] = pwd.charCodeAt(i);
+		enAuth[i] = bigInt(pwdConver[i]).modPow(KEY1, KEY2).toString(16);
+		enAuthCon = enAuthCon.concat(enAuth[i]);
+		if (i != (pwd.length - 1)) {
+			enAuthCon = enAuthCon.concat("?");
+		}
+	}
+
+
+	jsonObj = {
+		"User": enIdCon,
+		"Pwd": enAuthCon
+	};
+
+	return jsonObj;
+}
+
+function setCookie(name, value, minutes) {
+	//value passed as object
+	let expires = "";
+	if (minutes) {
+		const date = new Date();
+		date.setTime(date.getTime() + (minutes * 60 * 1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+	const nameEQ = name + "=";
+	const ca = document.cookie.split(';');
+	for (let i = 0; i < ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) === 0) {
+			return c.substring(nameEQ.length, c.length);
+		}
+	}
+	return null;
+}
+
 $(document).ready(function() {
 
 	$('#searchBtn, #allAssignedByMeBtn').click(function() {
@@ -8,13 +78,29 @@ $(document).ready(function() {
 		var toDate = $('#toDate').val();
 		var assignedTo = $('#assignedTo').val();
 		var pendingAssignments = document.querySelector("#pendingAssignments").checked;
+		
+		var jsonObjectInput= {};
+		jsonObjectInput.pageNm= "DASH";
+		jsonObjectInput.ServType= "201";
+		var cookieData = JSON.parse(getCookie('empDtls'));
+		var tkn = getCookie('tkn');
+		var xUid = cookieData.xUid;
+		var costCenter = cookieData.empDtls.KST01CL;
+		xUidJson = enCrypt(xUid, "123456");
+		xUidEncrypted = xUidJson.User;
+		dUidEncrypted = xUidJson.Pwd;
+		jsonObjectInput.xUid= xUidEncrypted;
+		jsonObjectInput.dUid= dUidEncrypted;
+		jsonObjectInput.tkn= tkn;
+		jsonObjectInput["KST01CL"] = costCenter;
+		
 
 		console.log(fromDate, toDate, assignedTo, pendingAssignments);
 
 		var data = [
 			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
+				"inspection_id": "123456785446242",
+				"assigned_date": "2024-08-31",
 				"emp_assigned_to": ["90012775", "90012776"],
 				"office_code_to_inspect": "3332103",
 				"inspection_from_date": "2024-12-05",
@@ -22,231 +108,40 @@ $(document).ready(function() {
 				"status": "ASSIGNED"
 			},
 			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
+				"inspection_id": "12345678425464",
+				"assigned_date": "2024-08-31",
 				"emp_assigned_to": ["90012775", "90012776"],
 				"office_code_to_inspect": "3332103",
 				"inspection_from_date": "2024-12-05",
 				"inspection_to_date": "2024-12-06",
 				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "RECTIFIED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "RECTIFIED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "RECTIFIED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "RECTIFIED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678",
-				"emp_assigned_by": "90012775",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			}
+			}	
 		];
 		//alert("before calling populate table");
-		populateTable(data);
-		/*$.ajax({
+		//populateTable(data);
+		
+		$.ajax({
 			type: 'POST',
-			url: 'searchAssignmentServlet',
-			data: { fromDate: fromDate, toDate: toDate, erpId: erpId },
+			url: url,
+			data: JSON.stringify(jsonObjectInput),
 			success: function(response) {
-				alert(response);
-				var responseJson = JSON.parse(response);
+				alert("total response: "+ JSON.stringify(response));
+				console.log(response);
+/*				var responseJson = JSON.parse(response);
 				var jsonArray = responseJson.assignments;
 				var msg = responseJson.msg;
 				alert(jsonArray);
-				alert(msg);
-				if (msg == 'success') {
-					populateTable(jsonArray);
+				alert(msg);*/
+				
+				var empList= response.assignEmpDtls.assignList;
+				var newToken = response.tkn;
+				if (response.ackMsgCode === "104") {
+					alert("only employee list: "+ JSON.stringify(empList));					alert("type: "+ typeof(empList));
+					populateTable(empList);
+					setCookie("tkn", newToken, 30);
 				}
 			}
-		});*/
+		});
 	});
 
 	/*function populateTable(data) {
@@ -294,11 +189,11 @@ $(document).ready(function() {
 			row.appendChild(inspectionIdCell);
 
 			var empAssignedByCell = document.createElement('td');
-			empAssignedByCell.textContent = item.emp_assigned_by;
+			empAssignedByCell.textContent = item.assigned_date;
 			row.appendChild(empAssignedByCell);
 
 			var empAssignedToCell = document.createElement('td');
-			empAssignedToCell.textContent = item.emp_assigned_to.join(', ');
+			empAssignedToCell.textContent = item.emp_assigned_to_Nm;
 			row.appendChild(empAssignedToCell);
 
 			var officeCodeCell = document.createElement('td');
@@ -337,5 +232,3 @@ $(document).ready(function() {
 		});
 	}
 });
-
-
