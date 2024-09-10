@@ -51,6 +51,7 @@ html, body {
 	margin-bottom: 10px; /* Increased margin between buttons */
 	flex: 1; /* Allow buttons to take equal space */
 	margin-right: 5px; /* Add minimal margin for separation */
+	padding: 10px;
 }
 
 /* Remove right margin for the last button */
@@ -152,6 +153,7 @@ footer {
 .btn-primary {
 	padding: 10px 24px;
 	font-size: 1.25rem;
+	margin-bottom: 10px;
 }
 
 .navbar, footer {
@@ -199,4 +201,33 @@ footer {
 	content: '*';
 	color: red;
 	margin-left: 5px;
+}
+
+
+.table-responsive {
+    position: relative;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+thead.thead-fixed th {
+    position: sticky;
+    top: 0;
+    background-color: white; /* Change to your desired background color */
+    z-index: 10;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+/* Optional: Style the scrollbar */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
 }

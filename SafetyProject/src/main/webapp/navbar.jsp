@@ -85,13 +85,7 @@
 	            }
 	        }
 
-	        // Clear cookies
 	        deleteAllCookies();
-
-	        // Redirect to LogoutServlet to invalidate session
-	        //document.getElementById('logoutForm').action = 'LogoutServlet';
-	        //document.getElementById('logoutForm').method = 'POST';
-	        //document.getElementById('logoutForm').submit();
 	    }
 	</script>
 </nav>

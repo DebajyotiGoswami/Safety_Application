@@ -67,7 +67,7 @@ function getCookie(name) {
 	for (let i = 0; i < ca.length; i++) {
 		let c = ca[i];
 		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) === 0){
+		if (c.indexOf(nameEQ) === 0) {
 			return c.substring(nameEQ.length, c.length);
 		}
 	}
@@ -103,16 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
 	var cookieData = JSON.parse(getCookie('empDtls'));
-	
 	//get different value based on key of cookieData json
 	var name = cookieData.empDtls.EMNAMCL;
 	var erp_id = cookieData.xUid.slice(0, 8);
 	var designation = cookieData.empDtls.STEXTCL;
 	var office = cookieData.empDtls.LTEXTCL;
-	var costCenter= cookieData.empDtls.KST01CL; //cost center
+	var costCenter = cookieData.empDtls.KST01CL; //cost center
 	var userRole = cookieData.empDtls.STELLCL;
 	//console.log(cookieData.tkn);
-	
+
 	//console.log("token: "+ tkn);
 	var xUid = cookieData.xUid;
 	xUidJson = enCrypt(xUid, "123456");
@@ -120,17 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
 	dUidEncrypted = xUidJson.Pwd;
 
 	$('#assgnSubmitbtn').on('click', function() {
-		var cookieDataToken= getCookie('tkn');
+		var cookieDataToken = getCookie('tkn');
 		var tkn = cookieDataToken; //cookieData.tkn;
 		var jsonObject = {};
-		jsonObject["KST01CL"]= costCenter;
+		jsonObject["KST01CL"] = costCenter;
 		jsonObject.assignedDate = getCurrentDate();
 		jsonObject.inspectionFromDate = document.getElementById('inspectionDateStart').value;
 		jsonObject.inspectionToDate = document.getElementById('inspectionDateEnd').value;
 		jsonObject.inspectionId = "";
+
+		// Collect all ERP IDs
+		var erpIds = [];
+		$('.erp-select').each(function() {
+			var erpId = $(this).val();
+			if (erpId !== 'Select ERP ID') {
+				let tempJson = {};
+				erpName = erpId.slice(0, erpId.indexOf("(") - 1);
+				erpId = erpId.slice(erpId.indexOf("(") + 1, erpId.length - 1);
+				alert("erp id: " + erpId);
+				alert("name; " + name);
+				tempJson.erpId = erpId;
+				tempJson.erpName = erpName;
+				erpIds.push(tempJson);
+			}
+		});
+		alert("erp array: " + erpIds);
+
+
 		jsonObject.xUid = xUidEncrypted;
 		jsonObject.dUid = dUidEncrypted
-		jsonObject.empAssignedTo = document.getElementById('erpId1').value;
+		jsonObject.empAssignedTo = erpIds;
 		jsonObject.empAssignedBy = erp_id;
 		jsonObject.rectifiedBy = "";
 		jsonObject.assignedFromOff = office;
@@ -146,16 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			data: JSON.stringify(jsonObject),
 			success: function(response) {
 				if (response.ackMsgCode == '101') {
-					var newToken= response.tkn;
-					var ackMsg= response.ackMsg;
-					var ackMsgCode= response.ackMsgCode;
-					var inspectionId= response.inspectionId;
-					if(ackMsgCode=== "101"){
+					var newToken = response.tkn;
+					var ackMsg = response.ackMsg;
+					var ackMsgCode = response.ackMsgCode;
+					var inspectionId = response.inspectionId;
+					if (ackMsgCode === "101") {
 						alert(`${ackMsg}. Inspection ID: ${inspectionId}`);
 						setCookie("tkn", newToken, 30);
 						window.location.href = 'new_assignment.jsp';
 					}
-					
+
 				}
 			},
 			error: function(xhr, status, error) {
@@ -169,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	//document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
 });
 
-function updateERPFields() {
+/*function updateERPFields() {
 	const number = document.getElementById('teamMembers').value;
 	const container = document.getElementById('erpIdContainer');
 	container.innerHTML = ''; // Clear previous fields
@@ -194,7 +212,113 @@ function updateERPFields() {
 		div.appendChild(inputDiv);
 		container.appendChild(div);
 	}
+}*/
+
+function updateERPFields() {
+	const number = document.getElementById('teamMembers').value;
+	const container = document.getElementById('erpIdContainer');
+	container.innerHTML = ''; // Clear previous fields
+	var data = cookieData.xUid.slice(0, 8);
+
+	$.ajax({
+		url: 'fetchInspectorList', // replace with above Servlet URL
+		type: 'POST',
+		data: data,
+		contentType: 'application/json', // Specify content type
+		success: function(response) {
+			alert(response);
+			alert(JSON.stringify(response));
+			const erpIds = response.emplist;
+			alert(erpIds);
+			alert(erpIds.length);
+			for (let i = 1; i <= number; i++) {
+
+				const div = document.createElement('div');
+				div.className = 'mb-3 row';
+
+				// Create label
+				const label = document.createElement('label');
+				label.setAttribute('for', 'erpId' + i);
+				label.className = 'col-sm-3 col-form-label';
+				label.textContent = 'Team Member ' + i;
+
+				// Create select dropdown
+				const inputDiv = document.createElement('div');
+				inputDiv.className = 'col-sm-9';
+				const select = document.createElement('select');
+				select.className = 'form-control erp-select';
+				select.id = 'erpId' + i;
+				select.name = 'erpId' + i;
+
+				// Add a default disabled option
+				const defaultOption = document.createElement('option');
+				defaultOption.textContent = 'Select ERP ID';
+				defaultOption.disabled = true;
+				defaultOption.selected = true;
+				select.appendChild(defaultOption);
+
+				// Populate the select dropdown with ERP IDs
+				erpIds.forEach(function(erpId) {
+					const option = document.createElement('option');
+					option.value = erpId;
+					option.textContent = erpId;
+					select.appendChild(option);
+				});
+
+				// Append the select dropdown to the div
+				inputDiv.appendChild(select);
+				div.appendChild(label);
+				div.appendChild(inputDiv);
+				container.appendChild(div);
+
+
+
+			}
+			// Add event listeners to all the dropdowns
+			$('.erp-select').on('change', function() {
+				filterDropdownOptions();
+			});
+		},
+		error: function(xhr, status, error) {
+			//console.error("Error sending data:", status, error);
+			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+		}
+	});
+
 }
+
+// Function to filter options in dropdowns
+function filterDropdownOptions() {
+	const allSelects = document.querySelectorAll('.erp-select');
+	const selectedValues = [];
+
+	// Get all selected values
+	allSelects.forEach(select => {
+		if (select.value !== 'Select ERP ID') {
+			selectedValues.push(select.value);
+		}
+	});
+
+	// Update options in each dropdown
+	allSelects.forEach(select => {
+		const currentSelection = select.value;
+		const options = select.querySelectorAll('option');
+
+		// Enable/disable options based on the selected values in other dropdowns
+		options.forEach(option => {
+			if (option.value !== 'Select ERP ID') {
+				if (selectedValues.includes(option.value) && option.value !== currentSelection) {
+					//option.disabled = true;
+					option.style.display = 'none';
+				} else {
+					//option.disabled = false;
+					option.style.display = 'block';
+				}
+			}
+		});
+	});
+}
+
 
 function validateInspectionDates() {
 	const startDateInput = document.getElementById('inspectionDateStart');
