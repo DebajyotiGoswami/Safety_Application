@@ -679,82 +679,82 @@
         });
     }
 	
-	document.addEventListener('DOMContentLoaded', () => {
-		document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
-        document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
+document.addEventListener('DOMContentLoaded', () => {
+	document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
+    document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
-		var cookieData = JSON.parse(getCookie('empDtls'));
-		//get different value based on key of cookieData json
-		var name= cookieData.empDtls.EMNAMCL;
-		var erp_id= cookieData.User;
-		var designation= cookieData.empDtls.STEXTCL;
-		var office= cookieData.empDtls.LTEXTCL;
-		var userRole= cookieData.empDtls.STELLCL;
-		var tkn= cookieData.tkn;
-		
-		$('#assgnSubmitbtn').on('click', function() {
-			var jsonObject = {};
-	    	jsonObject.assignedDate= getCurrentDate();
-	    	jsonObject.inspectionFromDate= document.getElementById('inspectionDateStart').value;
-	    	jsonObject.inspectionToDate= document.getElementById('inspectionDateEnd').value;
-	    	jsonObject.inspectionId= "";
-	    	
-	    	// Collect all ERP IDs
-	        var erpIds = [];
-	        $('.erp-select').each(function() {
-	            var erpId = $(this).val();
-	            if (erpId !== 'Select ERP ID') {
-	            	let tempJson= {};
-	            	erpName= erpId.slice(0, erpId.indexOf("(")- 1);
-	            	erpId= erpId.slice(erpId.indexOf("(")+ 1, erpId.length- 1);
-	            	alert("erp id: "+ erpId);
-	            	alert("name; "+ name);
-	            	tempJson.erpId= erpId;
-	            	tempJson.erpName= erpName;
-	                erpIds.push(tempJson);
-	            }
-	        });
-	        alert("erp array: "+ erpIds);
-	        
-	    	//jsonObject.empAssignedTo= document.getElementById('erpId1').value;
-	    	jsonObject.empAssignedTo= erpIds;
-	    	jsonObject.empAssignedBy= erp_id;
-	    	jsonObject.rectifiedBy= "";
-	    	jsonObject.assignedFromOff= office;
-	    	jsonObject.officeCodeToInspect= document.getElementById('officeName').value;
-	    	jsonObject.status= "ASSIGNED";
-	    	jsonObject.inspectedBy= "";
-	    	jsonObject.tkn= tkn;
-	    	jsonObject.pageNm= "DASH";
-	    	jsonObject.ServType= 101;
-	    	
-	    	alert(jsonObject);
-	    	
-        	$.ajax({
-        		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
-        		type: 'POST',
-        		data: JSON.stringify(jsonObject),
-        		contentType: 'application/json', // Specify content type
-        		success: function(response) {
-        			if(response.ackMsgCode== '101'){
-        				alert("assignment successful");
-        				window.location.href = 'assign_inspection.jsp';
-        			}
-        			console.log("entered success function");
-        			//alert(JSON.stringify(jsonObject));
-					console.log("Data sent and session updated successfully.");
-				},
-				error: function(xhr, status, error) {
-					//console.error("Error sending data:", status, error);
-					console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
-				}
-        	});		
-        });
-		
-		preventBack();
-		document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
-	});
+	var cookieData = JSON.parse(getCookie('empDtls'));
+	//get different value based on key of cookieData json
+	var name= cookieData.empDtls.EMNAMCL;
+	var erp_id= cookieData.User;
+	var designation= cookieData.empDtls.STEXTCL;
+	var office= cookieData.empDtls.LTEXTCL;
+	var userRole= cookieData.empDtls.STELLCL;
+	var tkn= cookieData.tkn;
 	
+	$('#assgnSubmitbtn').on('click', function() {
+		var jsonObject = {};
+    	jsonObject.assignedDate= getCurrentDate();
+    	jsonObject.inspectionFromDate= document.getElementById('inspectionDateStart').value;
+    	jsonObject.inspectionToDate= document.getElementById('inspectionDateEnd').value;
+    	jsonObject.inspectionId= "";
+    	
+    	// Collect all ERP IDs
+        var erpIds = [];
+        $('.erp-select').each(function() {
+            var erpId = $(this).val();
+            if (erpId !== 'Select ERP ID') {
+            	let tempJson= {};
+            	erpName= erpId.slice(0, erpId.indexOf("(")- 1);
+            	erpId= erpId.slice(erpId.indexOf("(")+ 1, erpId.length- 1);
+            	alert("erp id: "+ erpId);
+            	alert("name; "+ name);
+            	tempJson.erpId= erpId;
+            	tempJson.erpName= erpName;
+                erpIds.push(tempJson);
+            }
+        });
+        alert("erp array: "+ erpIds);
+        
+    	//jsonObject.empAssignedTo= document.getElementById('erpId1').value;
+    	jsonObject.empAssignedTo= erpIds;
+    	jsonObject.empAssignedBy= erp_id;
+    	jsonObject.rectifiedBy= "";
+    	jsonObject.assignedFromOff= office;
+    	jsonObject.officeCodeToInspect= document.getElementById('officeName').value;
+    	jsonObject.status= "ASSIGNED";
+    	jsonObject.inspectedBy= "";
+    	jsonObject.tkn= tkn;
+    	jsonObject.pageNm= "DASH";
+    	jsonObject.ServType= 101;
+    	
+    	alert(jsonObject);
+    	
+       	$.ajax({
+       		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
+       		type: 'POST',
+       		data: JSON.stringify(jsonObject),
+       		contentType: 'application/json', // Specify content type
+       		success: function(response) {
+       			if(response.ackMsgCode== '101'){
+       				alert("assignment successful");
+       				window.location.href = 'assign_inspection.jsp';
+       			}
+       			console.log("entered success function");
+       			//alert(JSON.stringify(jsonObject));
+				console.log("Data sent and session updated successfully.");
+			},
+			error: function(xhr, status, error) {
+				//console.error("Error sending data:", status, error);
+				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+			}
+       	});		
+       });
+	
+	preventBack();
+	document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
+});
+
 	function updateERPFields() {
 	    const number = document.getElementById('teamMembers').value;
 	    const container = document.getElementById('erpIdContainer');
