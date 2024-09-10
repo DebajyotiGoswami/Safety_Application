@@ -45,7 +45,7 @@
                 </div> -->
 				<div class="mb-3 row">
 					<label for="teamMembers" class="col-sm-3 col-form-label">Number
-						of Team Members</label>
+						of Team Members<span class="text-danger">*</span></label>
 					<div class="col-sm-9">
 						<select class="form-control" id="teamMembers"
 							onchange="updateERPFields()">
@@ -58,7 +58,7 @@
 				</div>
 				<div id="erpIdContainer"></div>
 				<div class="mb-3 row">
-					<label class="col-sm-3 col-form-label">Inspection Date</label>
+					<label class="col-sm-3 col-form-label">Inspection Date<span class="text-danger">*</span></label>
 					<div class="col-sm-4">
 						<input type="date" class="form-control" id="inspectionDateStart"
 							required>
@@ -73,7 +73,7 @@
 				<!-- Error message container with red text -->
 				<div class="mb-3 row">
 					<label for="officeName" class="col-sm-3 col-form-label">Office
-						Name</label>
+						Name<span class="text-danger">*</span></label>
 					<!-- <div class="col-sm-9">
                         <input type="text" class="form-control" id="officeName" placeholder="Enter Office Name" required>
                     </div> -->
@@ -617,7 +617,7 @@
 				</div>
 				<div class="mb-3 row">
 					<div class="col-sm-12 text-center">
-						<button type="button" class="btn btn-primary" id="assgnSubmitbtn">Assign
+						<button type="button" class="btn btn-primary" id="assgnSubmitbtn" disabled>Assign
 							Inspection</button>
 					</div>
 				</div>

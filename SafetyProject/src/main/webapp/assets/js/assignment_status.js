@@ -321,7 +321,7 @@ $(document).ready(function() {
 			if (item.status === "INSPECTED" || item.status === "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
-				anchor.href = "detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
+				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
 				anchor.textContent = "View Inspection"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
 				actionCell.appendChild(anchor);

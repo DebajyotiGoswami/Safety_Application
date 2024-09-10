@@ -98,6 +98,28 @@ function fetchERPIds() {
 	});
 }
 
+function validateForm() {
+	const button = document.getElementById('assgnSubmitbtn');
+	var isFormValid;
+	
+	inspectStartDate= document.getElementById('inspectionDateStart').value
+	inspectEndDate= document.getElementById('inspectionDateEnd').value
+	officeName= document.getElementById('officeName').value;
+	
+	if(inspectStartDate=== null || inspectEndDate=== null || officeName=== null){
+		isFormValid= false;
+	}
+	else{
+		isFormValid= true;
+	}
+	
+	if (isFormValid) {
+		button.disabled = false;
+	} else {
+		button.disabled = true;
+	}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
@@ -117,7 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
 	dUidEncrypted = xUidJson.Pwd;
-
+	
+	//validateForm();
 	$('#assgnSubmitbtn').on('click', function() {
 		var cookieDataToken = getCookie('tkn');
 		var tkn = cookieDataToken; //cookieData.tkn;
@@ -126,25 +149,22 @@ document.addEventListener('DOMContentLoaded', () => {
 		jsonObject.assignedDate = getCurrentDate();
 		jsonObject.inspectionFromDate = document.getElementById('inspectionDateStart').value;
 		jsonObject.inspectionToDate = document.getElementById('inspectionDateEnd').value;
+		jsonObject.remarks = document.getElementById('remarks').value;
 		jsonObject.inspectionId = "";
 
 		// Collect all ERP IDs
 		var erpIds = [];
 		$('.erp-select').each(function() {
 			var erpId = $(this).val();
-			if (erpId !== 'Select ERP ID') {
+			if (erpId !== 'Select Team Member') {
 				let tempJson = {};
 				erpName = erpId.slice(0, erpId.indexOf("(") - 1);
 				erpId = erpId.slice(erpId.indexOf("(") + 1, erpId.length - 1);
-				alert("erp id: " + erpId);
-				alert("name; " + name);
 				tempJson.erpId = erpId;
 				tempJson.erpName = erpName;
 				erpIds.push(tempJson);
 			}
 		});
-		alert("erp array: " + erpIds);
-
 
 		jsonObject.xUid = xUidEncrypted;
 		jsonObject.dUid = dUidEncrypted
@@ -156,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		jsonObject.status = "ASSIGNED";
 		jsonObject.inspectedBy = "";
 		jsonObject.tkn = tkn;
+		jsonObject.empAssignedByNm= name;
 		jsonObject.pageNm = "DASH";
 		jsonObject.ServType = 101;
 		$.ajax({
@@ -226,11 +247,7 @@ function updateERPFields() {
 		data: data,
 		contentType: 'application/json', // Specify content type
 		success: function(response) {
-			alert(response);
-			alert(JSON.stringify(response));
 			const erpIds = response.emplist;
-			alert(erpIds);
-			alert(erpIds.length);
 			for (let i = 1; i <= number; i++) {
 
 				const div = document.createElement('div');
@@ -252,7 +269,7 @@ function updateERPFields() {
 
 				// Add a default disabled option
 				const defaultOption = document.createElement('option');
-				defaultOption.textContent = 'Select ERP ID';
+				defaultOption.textContent = 'Select Team Member';
 				defaultOption.disabled = true;
 				defaultOption.selected = true;
 				select.appendChild(defaultOption);
@@ -270,9 +287,6 @@ function updateERPFields() {
 				div.appendChild(label);
 				div.appendChild(inputDiv);
 				container.appendChild(div);
-
-
-
 			}
 			// Add event listeners to all the dropdowns
 			$('.erp-select').on('change', function() {
@@ -294,7 +308,7 @@ function filterDropdownOptions() {
 
 	// Get all selected values
 	allSelects.forEach(select => {
-		if (select.value !== 'Select ERP ID') {
+		if (select.value !== 'Select Team Member') {
 			selectedValues.push(select.value);
 		}
 	});
@@ -306,7 +320,7 @@ function filterDropdownOptions() {
 
 		// Enable/disable options based on the selected values in other dropdowns
 		options.forEach(option => {
-			if (option.value !== 'Select ERP ID') {
+			if (option.value !== 'Select Team Member') {
 				if (selectedValues.includes(option.value) && option.value !== currentSelection) {
 					//option.disabled = true;
 					option.style.display = 'none';

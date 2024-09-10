@@ -218,16 +218,4 @@ thead.thead-fixed th {
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
-/* Optional: Style the scrollbar */
-.table-responsive::-webkit-scrollbar {
-    width: 8px;
-}
 
-.table-responsive::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
