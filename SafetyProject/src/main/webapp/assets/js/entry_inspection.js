@@ -103,7 +103,7 @@ $(document).ready(function() {
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
-	jsonObjectInput.ServType = "201";
+	jsonObjectInput.ServType = "202";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
 	var xUid = cookieData.xUid;

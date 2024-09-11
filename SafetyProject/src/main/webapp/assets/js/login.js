@@ -111,6 +111,7 @@ function setCookie(name, value, minutes) {
 		expires = "; expires=" + date.toUTCString();
 	}
 	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+	alert("name: "+ name+ " saved with value of "+ value);
 }
 
 function getCookie(name) {
@@ -265,14 +266,24 @@ function handleButtonClick(event) {
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
 						console.log("response after otp: "+ JSON.stringify(response));
-						alert("response after otp: "+ JSON.stringify(response));
+						alert("check the console");
 						window.location.href = 'dashboard.jsp';
 						jsonObjInput["tkn"]= response.tkn;
 						jsonObjCookie["tkn"]= response.tkn;
+						var employee_list= JSON.stringify(response.empList.empList);
+						var office_list= JSON.stringify(response.offList.officeList.slice(0, 10));
+						alert("emp: "+ employee_list);
+						alert("count "+ employee_list.length);
+						alert("off: "+ office_list);
+						alert("count "+ office_list.length);
 						//console.log(jsonObjCookie["tkn"]);
 						//setCookie("empDtls", JSON.stringify(jsonObjInput), 30);
 						setCookie("empDtls", JSON.stringify(jsonObjCookie), 30);
 						setCookie("tkn", jsonObjCookie["tkn"], 30);
+						setCookie("empList", employee_list, 30);
+						setCookie("officeList", office_list, 30);
+						setCookie("empCount", employee_list.length, 30);
+						setCookie("officeCount", office_list.length, 30);
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}
