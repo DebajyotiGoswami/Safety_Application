@@ -99,7 +99,7 @@
        </div> -->
 
 		<div class="card" id="resultsContainer" style="display: none;">
-			<div class="card-header text-center">Inspection Results</div>
+			<div class="card-header text-center custom-header">Inspection Assigned By You</div>
 			<div class="card-body">
 				<div class="table-responsive" style="height: 180px; overflow-y: auto;">
 				<!-- <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> -->
@@ -108,7 +108,7 @@
 							<tr>
 								<th>Sl No.</th>
 								<th>Inspection ID</th>
-								<th>Assigned By</th>
+								<th>Assigned On</th>
 								<th>Assigned To</th>
 								<th>Office Name</th>
 								<th>From Date</th>

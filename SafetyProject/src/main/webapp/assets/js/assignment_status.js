@@ -136,7 +136,7 @@ $(document).ready(function() {
 				var empList= response.assignEmpDtls.assignList;
 				var newToken = response.tkn;
 				if (response.ackMsgCode === "104") {
-					alert("only employee list: "+ JSON.stringify(empList));					alert("type: "+ typeof(empList));
+					alert("only employee list: "+ JSON.stringify(empList));					
 					populateTable(empList);
 					setCookie("tkn", newToken, 30);
 				}
