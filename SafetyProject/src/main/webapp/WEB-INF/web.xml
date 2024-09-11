@@ -32,5 +32,29 @@
 		<servlet-name>fetchInspectorList</servlet-name>
 		<url-pattern>/fetchInspectorList</url-pattern>
 	</servlet-mapping>
+	
+	<!-- Servlet Declaration -->
+	<servlet>
+		<servlet-name>searchInspectionServlet</servlet-name>
+		<servlet-class>com.example.searchInspectionServlet</servlet-class>
+	</servlet>
+
+	<!-- Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>searchInspectionServlet</servlet-name>
+		<url-pattern>/searchInspectionServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Servlet Declaration -->
+	<servlet>
+		<servlet-name>fetchProblemCodes</servlet-name>
+		<servlet-class>com.example.fetchProblemCodes</servlet-class>
+	</servlet>
+
+	<!-- Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>fetchProblemCodes</servlet-name>
+		<url-pattern>/fetchProblemCodes</url-pattern>
+	</servlet-mapping>
 
 </web-app>

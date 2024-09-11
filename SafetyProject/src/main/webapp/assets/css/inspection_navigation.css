@@ -218,4 +218,13 @@ thead.thead-fixed th {
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
+.custom-header {
+    font-weight: bold;            /* Makes the text bold */
+    font-size: 1.5em;             /* Increases the font size */
+    background-color: #ADD8E6;    /* Light blue background color */
+    padding: 10px;                /* Adds some padding for better spacing */
+    border-radius: 5px;           /* Optional: Adds slightly rounded corners */
+}
+
+
 
