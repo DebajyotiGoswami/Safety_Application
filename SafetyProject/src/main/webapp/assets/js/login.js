@@ -264,6 +264,8 @@ function handleButtonClick(event) {
 			else if (submitotpflg || resendotpflg){
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
+						console.log("response after otp: "+ JSON.stringify(response));
+						alert("response after otp: "+ JSON.stringify(response));
 						window.location.href = 'dashboard.jsp';
 						jsonObjInput["tkn"]= response.tkn;
 						jsonObjCookie["tkn"]= response.tkn;
