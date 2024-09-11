@@ -62,6 +62,9 @@ public class dbUpdate {
 			if (con != null) {
 				con.close();
 			}
+			if (ps != null) {
+				ps.close();
+			}
 		}
 
 		return jsonObj;
