@@ -281,6 +281,9 @@ function handleButtonClick(event) {
 						// Store office list in localStorage
 						localStorage.setItem("officeList", office_list);  // Store full office list in localStorage
 						//localStorage.setItem("officeCount", office_list.length); // Store office list count in localStorage
+						localStorage.setItem("empList", employee_list);  // Store full employee list in localStorage
+						localStorage.empListCount= JSON.parse(localStorage.getItem("empList")).length;
+						localStorage.officeListCount= JSON.parse(localStorage.getItem("officeList")).length;
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}
