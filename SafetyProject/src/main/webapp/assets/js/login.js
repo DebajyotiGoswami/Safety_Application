@@ -194,7 +194,6 @@ function handleButtonClick(event) {
 		}
 	}
 	else if(buttonId === 'assgnSubmitbtn'){
-		alert("found");
 		assignmentflg= true;
 		var jsonObjInput = {};
 		var cookieData = JSON.parse(getCookie('empDtls'));
@@ -289,8 +288,8 @@ function handleButtonClick(event) {
 					}
 				} else if (resendotpflg) {
 					if (response.ackMsgCode == '105') {
-						document.getElementById('resendOtp').disabled = true;
-						window.location.href = 'dashboard.jsp';
+						document.getElementById('resendOtpBtn').disabled = true;
+						//window.location.href = 'dashboard.jsp';
 					} else {
 						alert("OTP resent. Please check your registered mobile number.");
 					}

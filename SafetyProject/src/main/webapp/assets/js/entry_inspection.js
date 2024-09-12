@@ -123,7 +123,7 @@ $(document).ready(function() {
 		success: function(response) {
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
-			if (response.ackMsgCode === "104") {
+			if (response.ackMsgCode === "202") {
 				populateTable(empList);
 				setCookie("tkn", newToken, 30);
 				console.log("new token: " + newToken);
@@ -154,10 +154,7 @@ $(document).ready(function() {
 					url: 'fetchProblemCodes',
 					type: 'POST',
 					contentType: 'application/json',
-					data: JSON.stringify({
-						"network_type": network_type,
-						"asset_name": asset_name
-					}),
+					data: jsonString,
 					success: function(response) {
 						var dropdown = $('#problem_list');
 						dropdown.empty(); // Clear any existing options
@@ -181,7 +178,7 @@ $(document).ready(function() {
 			isNextClicked = true; // Update flag
 		} else {
 			//var inspection_id = $('#inspection_id').val();
-			var inspection_id = $('#inspectionList').val();
+			var inspection_id = $('#inspection_id').val();
 			var location_remarks = $('#location').val();
 			var problem_details = $('#problem_details').val();
 			var assigned_office_code = $('#office_name').val();
@@ -189,6 +186,7 @@ $(document).ready(function() {
 			var image1 = $('#base64Output').val();
 			var inspectionBy = $('#erpId').val();
 			var problem_id = $('#problem_list').val();
+			
 			alert(problem_id);
 			jsonObjectInput.pageNm = "DASH";
 			jsonObjectInput.ServType = "202";
@@ -199,7 +197,8 @@ $(document).ready(function() {
 			xUidJson = enCrypt(xUid, "123456");
 			xUidEncrypted = xUidJson.User;
 			dUidEncrypted = xUidJson.Pwd;
-			
+			var costCenter = cookieData.empDtls.KST01CL;
+			var inspectionBy= cookieData.xUid.slice(0, 8);
 			
 			var jsonObjInput = {
 				"inspectionId": inspection_id,
@@ -220,7 +219,8 @@ $(document).ready(function() {
 				//"empDtls":JSON.parse(empDtls)
 				"tkn": tkn,
 				"xUid": xUidEncrypted,
-				"dUid": dUidEncrypted
+				"dUid": dUidEncrypted,
+				"KST01CL": costCenter
 			};
 			alert("inspectionBy: ", inspectionBy);
 			alert("base64String: ", image1);
@@ -233,10 +233,12 @@ $(document).ready(function() {
 				//contentType: 'application/json',
 				data: JSON.stringify(jsonObjInput),
 				success: function(response) {
-					var newToken= getCookie("tkn");
+					var newToken= response.tkn;
+					console.log("newToken after inspection entry: "+ newToken);
 					console.log(response);
 					console.log("successful conn");
 					setCookie("tkn", newToken, 30);
+					console.log("newToken after setting cookie in inspection entry: "+ getCookie("tkn"));
 				},
 				error: function(xhr, status, error) {
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
@@ -246,6 +248,7 @@ $(document).ready(function() {
 	});
 
 	function populateTable(data) {
+		alert("inside populate table table");
 		// Get the table body element
 		var tableBody = document.getElementById('resultsTableBody');
 		var index = 1;
@@ -322,6 +325,7 @@ $(document).ready(function() {
 				var emptyCell = document.createElement('td');
 				row.appendChild(emptyCell);
 			}
+			console.log(row);
 
 			// Append the row to the table body
 			tableBody.appendChild(row);

@@ -47,7 +47,7 @@
 					<label for="teamMembers" class="col-sm-3 col-form-label">Number
 						of Team Members<span class="text-danger">*</span></label>
 					<div class="col-sm-9">
-						<select class="form-control" id="teamMembers"
+						<select class="form-control team-selection" id="teamMembers"
 							onchange="updateERPFields()">
 							<option disabled selected hidden=>Select Team Members</option>
 							<option value="1">1</option>
@@ -56,6 +56,17 @@
 						</select>
 					</div>
 				</div>
+				<!-- <div class="mb-3 row">
+					<label for="empDetails" class="col-sm-3 col-form-label">Employee Details
+					<span class="text-danger">*</span></label>
+					<div class="col-sm-9">
+						<select class="form-control" id="empDetails" name="empDetails"
+							required>
+							<option value="">Select Employee Name</option>
+							Add options here dynamically or hardcode them
+						</select>
+					</div>
+				</div> -->
 				<div id="erpIdContainer"></div>
 				<div class="mb-3 row">
 					<label class="col-sm-3 col-form-label">Inspection Date<span class="text-danger">*</span></label>
@@ -74,9 +85,6 @@
 				<div class="mb-3 row">
 					<label for="officeName" class="col-sm-3 col-form-label">Office
 						Name<span class="text-danger">*</span></label>
-					<!-- <div class="col-sm-9">
-                        <input type="text" class="form-control" id="officeName" placeholder="Enter Office Name" required>
-                    </div> -->
 					<div class="col-sm-9">
 						<select class="form-control" id="officeName" name="officeName"
 							required>

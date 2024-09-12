@@ -101,18 +101,18 @@ function fetchERPIds() {
 function validateForm() {
 	const button = document.getElementById('assgnSubmitbtn');
 	var isFormValid;
-	
-	inspectStartDate= document.getElementById('inspectionDateStart').value
-	inspectEndDate= document.getElementById('inspectionDateEnd').value
-	officeName= document.getElementById('officeName').value;
-	
-	if(inspectStartDate=== null || inspectEndDate=== null || officeName=== null){
-		isFormValid= false;
+
+	inspectStartDate = document.getElementById('inspectionDateStart').value
+	inspectEndDate = document.getElementById('inspectionDateEnd').value
+	officeName = document.getElementById('officeName').value;
+
+	if (inspectStartDate === null || inspectEndDate === null || officeName === null) {
+		isFormValid = false;
 	}
-	else{
-		isFormValid= true;
+	else {
+		isFormValid = true;
 	}
-	
+
 	if (isFormValid) {
 		button.disabled = false;
 	} else {
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	var officeList = JSON.parse(localStorage.getItem('officeList'));
 	function populateOfficeDropdown() {
 		var officeDropdown = document.getElementById('officeName');
-		
+
 		// Clear any existing options
 		officeDropdown.innerHTML = '<option value="">Select Office Name</option>';
 
@@ -141,7 +141,30 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 	populateOfficeDropdown();
-		
+
+	/*// Fetch employee list from localStorage
+	var empList = JSON.parse(localStorage.getItem('empList'));
+	function populateEmployeeDropdown() {
+		var employeeDropdown = document.getElementById('empDetails');
+
+		// Clear any existing options
+		employeeDropdown.innerHTML = '<option value="">Select Employee Name</option>';
+
+		// Loop through the officeList and append options
+		if (empList && empList.length > 0) {
+			empList.forEach(function(emp) {
+				//officeJSON= JSON.parse(office);
+				var option = document.createElement('option');
+				option.value = emp.empId;
+				option.text = emp.empName + ' (' + emp.empId + ')';
+				employeeDropdown.appendChild(option);
+			});
+		}
+	}
+	//populateEmployeeDropdown();*/
+
+
+
 	document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
@@ -160,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
 	dUidEncrypted = xUidJson.Pwd;
-	
+
 	//validateForm();
 	$('#assgnSubmitbtn').on('click', function() {
 		var cookieDataToken = getCookie('tkn');
@@ -197,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		jsonObject.status = "ASSIGNED";
 		jsonObject.inspectedBy = "";
 		jsonObject.tkn = tkn;
-		jsonObject.empAssignedByNm= name;
+		jsonObject.empAssignedByNm = name;
 		jsonObject.pageNm = "DASH";
 		jsonObject.ServType = 101;
 		$.ajax({
@@ -256,20 +279,79 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 }*/
 
+// Fetch employee list from localStorage
+var empList = JSON.parse(localStorage.getItem('empList'));
+function populateEmployeeDropdown() {
+	alert("populate employee dropdown called");
+	var employeeDropdown = document.getElementById('empDetails');
+
+	// Clear any existing options
+	employeeDropdown.innerHTML = '<option value="">Select Employee Name</option>';
+
+	// Loop through the officeList and append options
+	if (empList && empList.length > 0) {
+		empList.forEach(function(emp) {
+			//officeJSON= JSON.parse(office);
+			var option = document.createElement('option');
+			option.value = emp.empId;
+			option.text = emp.empName + ' (' + emp.empId + ')';
+			employeeDropdown.appendChild(option);
+		});
+	}
+}
+//populateEmployeeDropdown();
+
+// Add event listeners to all the dropdowns
+/*$('.team-selection').on('change', function() {
+	alert("filterDropdownOptions called from outside");
+	filterDropdownOptions();
+});*/
+
 function updateERPFields() {
+	/*// Fetch office list from localStorage
+	var empList = JSON.parse(localStorage.getItem('empList'));
+	function populateEmployeeDropdown() {
+		var empDropdown = document.getElementById('officeName');
+
+		// Clear any existing options
+		empDropdown.innerHTML = '<option value="">Select Employee for Inspection</option>';
+
+		// Loop through the officeList and append options
+		if (empList && empList.length > 0) {
+			empList.forEach(function(emp) {
+				//officeJSON= JSON.parse(office);
+				var option = document.createElement('option');
+				option.value = emp.empId;
+				option.text = emp.empName + ' (' + emp.empId + ')';
+				empDropdown.appendChild(option);
+			});
+		}
+	}
+	populateEmployeeDropdown();*/
+
+
 	const number = document.getElementById('teamMembers').value;
 	const container = document.getElementById('erpIdContainer');
 	container.innerHTML = ''; // Clear previous fields
-	var data = cookieData.xUid.slice(0, 8);
+	//var data = cookieData.xUid.slice(0, 8);
+	var data= localStorage.getItem("empList");
+	console.log("request string: "+ data);
 
 	$.ajax({
 		url: 'fetchInspectorList', // replace with above Servlet URL
 		type: 'POST',
+		//data: data,
 		data: data,
 		contentType: 'application/json', // Specify content type
 		success: function(response) {
-			const erpIds = response.emplist;
+			console.log("response string: "+ JSON.stringify(response));
+			empList= response.empList;
+			console.log("empList string: "+ JSON.stringify(empList));
+			const erpIds = response.empList;
+			console.log("erpIds: "+ erpIds);
+			console.log("erpIds string: "+ JSON.stringify(erpIds));
 			for (let i = 1; i <= number; i++) {
+				console.log("inside for loop");
 
 				const div = document.createElement('div');
 				div.className = 'mb-3 row';
@@ -311,6 +393,7 @@ function updateERPFields() {
 			}
 			// Add event listeners to all the dropdowns
 			$('.erp-select').on('change', function() {
+				alert("filterDropdownOptions called from ajax call")
 				filterDropdownOptions();
 			});
 		},
@@ -324,6 +407,7 @@ function updateERPFields() {
 
 // Function to filter options in dropdowns
 function filterDropdownOptions() {
+	alert("inside filterDropDownOptions")
 	const allSelects = document.querySelectorAll('.erp-select');
 	const selectedValues = [];
 
