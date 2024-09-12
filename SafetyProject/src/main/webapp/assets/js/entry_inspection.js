@@ -190,8 +190,18 @@ $(document).ready(function() {
 			var inspectionBy = $('#erpId').val();
 			var problem_id = $('#problem_list').val();
 			alert(problem_id);
-
-			var jsonObj = {
+			jsonObjectInput.pageNm = "DASH";
+			jsonObjectInput.ServType = "202";
+			var cookieData = JSON.parse(getCookie('empDtls'));
+			var tkn = getCookie('tkn');
+			var xUid = cookieData.xUid;
+			//var costCenter = cookieData.empDtls.KST01CL;
+			xUidJson = enCrypt(xUid, "123456");
+			xUidEncrypted = xUidJson.User;
+			dUidEncrypted = xUidJson.Pwd;
+			
+			
+			var jsonObjInput = {
 				"inspectionId": inspection_id,
 				"locationRemarks": location_remarks,
 				"problemRemarks": problem_details,
@@ -206,25 +216,30 @@ $(document).ready(function() {
 				"presentStatus": "INSPECTED",
 				"pageNm": "DASH",
 				"inspectionBy": inspectionBy,  //to be fetched from session variable
-				"problemId": problem_id//,  //integer
+				"problemId": problem_id,  //integer
 				//"empDtls":JSON.parse(empDtls)
+				"tkn": tkn,
+				"xUid": xUidEncrypted,
+				"dUid": dUidEncrypted
 			};
 			alert("inspectionBy: ", inspectionBy);
 			alert("base64String: ", image1);
-			alert("jsonobj: ", jsonObj);
-
+			alert("jsonObjInput: ", jsonObjInput);
+			alert("")
 			$.ajax({
 				url: 'http://10.251.37.170:8080/testSafety/testSafety',
 				//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
 				type: 'POST',
 				//contentType: 'application/json',
-				data: JSON.stringify(jsonObj),
+				data: JSON.stringify(jsonObjInput),
 				success: function(response) {
+					var newToken= getCookie("tkn");
 					console.log(response);
 					console.log("successful conn");
+					setCookie("tkn", newToken, 30);
 				},
 				error: function(xhr, status, error) {
-					console.log(xhr, status, error);
+					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
 			});
 		}
