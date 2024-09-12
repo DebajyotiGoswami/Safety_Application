@@ -191,6 +191,9 @@
 					<div class="col-sm-12 btn-center submitBtn" >
 						<button type="button" class="btn btn-primary" id="submitBtn" >NEXT</button>
 					</div>
+					<div class="col-sm-12 btn-center submitBtn" >
+						<button type="button" class="btn btn-primary" id="submitBtn2" >SUBMIT</button>
+					</div>
 				</div>
 			</form>
 		</div>

@@ -134,7 +134,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#submitBtn').on('click', function() {
+	$('#submitBtn, #submitBtn2').on('click', function() {
 		function disableMouseInteraction(className) {
 			var elements = document.querySelectorAll('.' + className);
 			elements.forEach(function(element) {
@@ -145,38 +145,61 @@ $(document).ready(function() {
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
-			jsonString = JSON.stringify({
+			var cookieData = JSON.parse(getCookie('empDtls'));
+			var tkn = getCookie('tkn');
+			var xUid = cookieData.xUid;
+			var costCenter = cookieData.empDtls.KST01CL;
+			//var costCenter = cookieData.empDtls.KST01CL;
+			xUidJson = enCrypt(xUid, "123456");
+			xUidEncrypted = xUidJson.User;
+			dUidEncrypted = xUidJson.Pwd;
+			var jsonObj = {
 				"network_type": network_type,
-				"asset_name": asset_name
-			}),
+				"assetId": asset_name,
+				"pageNm": "DASH",
+				"ServType": "203",
+				"tkn": tkn,
+				"xUid": xUidEncrypted,
+				"dUid": dUidEncrypted,
+				"KST01CL": costCenter
+			};
+			//var jsonString = JSON.stringify(jsonObj);
+			console.log("json before ajax call: "+ JSON.stringify(jsonObj));
+			alert("url: "+url);
+			$.ajax({
+				url: url,
+				//url: 'fetchProblemCodes',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(jsonObj),
+				success: function(response) {
+					console.log("inside problem fetching success ajax");
+					var dropdown = $('#problem_list');
+					dropdown.empty(); // Clear any existing options
 
-				$.ajax({
-					url: 'fetchProblemCodes',
-					type: 'POST',
-					contentType: 'application/json',
-					data: jsonString,
-					success: function(response) {
-						var dropdown = $('#problem_list');
-						dropdown.empty(); // Clear any existing options
+					// Assuming response is a JSON array
+					$.each(response.problems, function(index, item) {
+						console.log("item.key: ", item.problem_id);
+						console.log("item.value: ", item.description);
+						dropdown.append($('<option></option>').attr('value', item.problem_id).text(item.description));
+					});
 
-						// Assuming response is a JSON array
-						$.each(response.problems, function(index, item) {
-							console.log("item.key: ", item.problem_id);
-							console.log("item.value: ", item.description);
-							dropdown.append($('<option></option>').attr('value', item.problem_id).text(item.description));
-						});
-					},
-					error: function(xhr, status, error) {
-						console.log("Error fetching problem codes.");
-						console.error('Error:', error);
-					}
-				});
+					alert("inside success of problem list fetch");
+					var newToken = response.tkn;
+					setCookie("tkn", newToken, 30);
+					alert("newToken: " + newToken + " cookie token: " + getCookie("tkn"));
+				},
+				error: function(xhr, status, error) {
+					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`)
+				}
+			});
 			console.log("outside of ")
 			disableMouseInteraction('initial-section');
 			$('#additionalSection2').show(); // Show additional sections
 			$('#submitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
 			isNextClicked = true; // Update flag
-		} else {
+		} else if ($('#submitBtn2').text() === 'SUBMIT'){
+			alert("inside submit button 2");
 			//var inspection_id = $('#inspection_id').val();
 			var inspection_id = $('#inspection_id').val();
 			var location_remarks = $('#location').val();
@@ -186,7 +209,7 @@ $(document).ready(function() {
 			var image1 = $('#base64Output').val();
 			var inspectionBy = $('#erpId').val();
 			var problem_id = $('#problem_list').val();
-			
+
 			alert(problem_id);
 			jsonObjectInput.pageNm = "DASH";
 			jsonObjectInput.ServType = "202";
@@ -198,8 +221,8 @@ $(document).ready(function() {
 			xUidEncrypted = xUidJson.User;
 			dUidEncrypted = xUidJson.Pwd;
 			var costCenter = cookieData.empDtls.KST01CL;
-			var inspectionBy= cookieData.xUid.slice(0, 8);
-			
+			var inspectionBy = cookieData.xUid.slice(0, 8);
+
 			var jsonObjInput = {
 				"inspectionId": inspection_id,
 				"locationRemarks": location_remarks,
@@ -233,12 +256,12 @@ $(document).ready(function() {
 				//contentType: 'application/json',
 				data: JSON.stringify(jsonObjInput),
 				success: function(response) {
-					var newToken= response.tkn;
-					console.log("newToken after inspection entry: "+ newToken);
+					var newToken = response.tkn;
+					console.log("newToken after inspection entry: " + newToken);
 					console.log(response);
 					console.log("successful conn");
 					setCookie("tkn", newToken, 30);
-					console.log("newToken after setting cookie in inspection entry: "+ getCookie("tkn"));
+					console.log("newToken after setting cookie in inspection entry: " + getCookie("tkn"));
 				},
 				error: function(xhr, status, error) {
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
