@@ -121,6 +121,27 @@ function validateForm() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+	// Fetch office list from localStorage
+	var officeList = JSON.parse(localStorage.getItem('officeList'));
+	function populateOfficeDropdown() {
+		var officeDropdown = document.getElementById('officeName');
+		
+		// Clear any existing options
+		officeDropdown.innerHTML = '<option value="">Select Office Name</option>';
+
+		// Loop through the officeList and append options
+		if (officeList && officeList.length > 0) {
+			officeList.forEach(function(office) {
+				//officeJSON= JSON.parse(office);
+				var option = document.createElement('option');
+				option.value = office.offCode;
+				option.text = office.offName + ' (' + office.offCode + ')';
+				officeDropdown.appendChild(option);
+			});
+		}
+	}
+	populateOfficeDropdown();
+		
 	document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
