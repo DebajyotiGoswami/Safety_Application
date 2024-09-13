@@ -106,7 +106,7 @@ $(document).ready(function() {
 	jsonObjectInput.ServType = "202";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
-	var xUid = cookieData.xUid;
+	var xUid = getCookie("User");
 	var costCenter = cookieData.empDtls.KST01CL;
 	xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
@@ -115,12 +115,13 @@ $(document).ready(function() {
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
 	jsonObjectInput["KST01CL"] = costCenter;
-
+	alert("before ajax call");
 	$.ajax({
-		type: 'POST',
 		url: url,
+		type: 'POST',
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
+			alert("inside success");
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
 			if (response.ackMsgCode === "202") {
@@ -134,25 +135,31 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#submitBtn, #submitBtn2').on('click', function() {
+	$('#inspSubmitBtn, #inspSubmitBtn2').on('click', function() {
+		alert("one of the two button clicked");
 		function disableMouseInteraction(className) {
 			var elements = document.querySelectorAll('.' + className);
 			elements.forEach(function(element) {
 				element.style.pointerEvents = 'none';
 			});
 		}
-		if ($('#submitBtn').text() === 'NEXT') {
+		if ($('#inspSubmitBtn').text() === 'NEXT') {
+			alert("next  button clicked");
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
 			var cookieData = JSON.parse(getCookie('empDtls'));
 			var tkn = getCookie('tkn');
-			var xUid = cookieData.xUid;
+			var xUid = getCookie("User");
 			var costCenter = cookieData.empDtls.KST01CL;
 			//var costCenter = cookieData.empDtls.KST01CL;
 			xUidJson = enCrypt(xUid, "123456");
 			xUidEncrypted = xUidJson.User;
 			dUidEncrypted = xUidJson.Pwd;
+			let assetList= JSON.parse(getCookie("assetList"));
+/*			alert(assetList);
+			alert(typeof(assetList));
+			alert(assetList[network_type+ asset_name]);*/
 			var jsonObj = {
 				"network_type": network_type,
 				"assetId": asset_name,
@@ -161,29 +168,42 @@ $(document).ready(function() {
 				"tkn": tkn,
 				"xUid": xUidEncrypted,
 				"dUid": dUidEncrypted,
-				"KST01CL": costCenter
+				"KST01CL": costCenter,
+				"office_code_to_inspect": getCookie("office_code_to_inspect"),
+				"assetId": assetList[network_type+ asset_name]
 			};
+			alert("JSON create: "+ JSON.stringify(jsonObj));
 			//var jsonString = JSON.stringify(jsonObj);
 			console.log("json before ajax call: "+ JSON.stringify(jsonObj));
 			alert("url: "+url);
 			$.ajax({
-				url: url,
-				//url: 'fetchProblemCodes',
 				type: 'POST',
-				contentType: 'application/json',
+				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
 					console.log("inside problem fetching success ajax");
+					
+					//populate problem dropdown
 					var dropdown = $('#problem_list');
 					dropdown.empty(); // Clear any existing options
 
 					// Assuming response is a JSON array
-					$.each(response.problems, function(index, item) {
-						console.log("item.key: ", item.problem_id);
-						console.log("item.value: ", item.description);
-						dropdown.append($('<option></option>').attr('value', item.problem_id).text(item.description));
+					$.each(response.probDtls.probDtls, function(index, item) {
+						console.log("item.key: ", item.probId);
+						console.log("item.value: ", item.probDesc);
+						dropdown.append($('<option></option>').attr('value', item.probId).text(item.probDesc));
 					});
-
+					
+					//populate office dropdown
+					var dropdown = $('#office_name');
+					dropdown.empty(); // Clear any existing options
+					// Assuming response is a JSON array
+					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
+						console.log("item.key: ", item.offCode);
+						console.log("item.value: ", item.offName);
+						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+					});
+					
 					alert("inside success of problem list fetch");
 					var newToken = response.tkn;
 					setCookie("tkn", newToken, 30);
@@ -193,13 +213,16 @@ $(document).ready(function() {
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`)
 				}
 			});
-			console.log("outside of ")
+			alert("outside of ajax");
 			disableMouseInteraction('initial-section');
 			$('#additionalSection2').show(); // Show additional sections
-			$('#submitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
+			$('#inspSubmitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
 			isNextClicked = true; // Update flag
-		} else if ($('#submitBtn2').text() === 'SUBMIT'){
-			alert("inside submit button 2");
+			alert("if section ends.");
+		} 
+		else if ($('#inspSubmitBtn').text() === 'SUBMIT') {
+		//else if ($('#inspSubmitBtn2').text() === 'SUBMIT'){
+			alert("submit  button clicked");
 			//var inspection_id = $('#inspection_id').val();
 			var inspection_id = $('#inspection_id').val();
 			var location_remarks = $('#location').val();
@@ -230,7 +253,7 @@ $(document).ready(function() {
 				"assignedOfficeCode": assigned_office_code,
 				"inspectionDate": inspection_date,
 				"preImage": image1,
-				"ServType": 102,  //integer
+				"ServType": "102",  //integer
 				"latitude": 88.32, //double
 				"longitude": 132.12, //double
 				"gisId": "NA",
@@ -257,11 +280,13 @@ $(document).ready(function() {
 				data: JSON.stringify(jsonObjInput),
 				success: function(response) {
 					var newToken = response.tkn;
-					console.log("newToken after inspection entry: " + newToken);
-					console.log(response);
-					console.log("successful conn");
 					setCookie("tkn", newToken, 30);
 					console.log("newToken after setting cookie in inspection entry: " + getCookie("tkn"));
+					if(response.ackMsgCode=== "102"){
+						console.log("successful conn");
+						alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
+						window.location.href = 'new_inspection.jsp';
+					}
 				},
 				error: function(xhr, status, error) {
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
@@ -303,7 +328,7 @@ $(document).ready(function() {
 			row.appendChild(empAssignedToCell);
 
 			var officeCodeCell = document.createElement('td');
-			officeCodeCell.textContent = item.office_code_to_inspect;
+			officeCodeCell.textContent = item.office_name_to_inspect;
 			row.appendChild(officeCodeCell);
 
 			var fromDateCell = document.createElement('td');
@@ -327,10 +352,11 @@ $(document).ready(function() {
 				btn.setAttribute('data-inspection-id', item.inspection_id);
 				btn.setAttribute('data-from-date', item.inspection_from_date);
 				btn.setAttribute('data-end-date', item.inspection_to_date);
+				btn.setAttribute('office_code_to_inspect', item.office_code_to_inspect);
 				//btn.className = "btn btn-primary"; // Optional: Bootstrap button styling
 				actionCell.appendChild(btn);
 				row.appendChild(actionCell);
-
+				
 				btn.addEventListener('click', function() {
 					//show additional section
 					alert("clicked");
@@ -342,6 +368,9 @@ $(document).ready(function() {
 					document.getElementById('inspection_id').value = inspectionId;
 					//$('#submitBtn').show();
 					//document.getElementById('submitBtn').style.display= 'block';
+					alert(item.office_code_to_inspect);
+					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);
+					alert(getCookie("office_code_to_inspect"));
 				});
 			} else {
 				// If status is not "INSPECTED", just add an empty cell

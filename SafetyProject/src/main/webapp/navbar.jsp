@@ -68,7 +68,8 @@
 
 		const cookieData = JSON.parse(getCookie('empDtls'));
 		const name = cookieData.empDtls.EMNAMCL;
-		const erp_id = cookieData.xUid.slice(0, 8);
+		//const erp_id = cookieData.xUid.slice(0, 8);
+		const erp_id= cookieData.User;
 		const designation = cookieData.empDtls.STEXTCL;
 
 		document.getElementById("cookieDisplay").innerText = cookieData ? name

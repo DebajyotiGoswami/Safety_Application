@@ -71,6 +71,7 @@ function getCookie(name) {
 $(document).ready(function() {
 
 	$('#searchBtn, #allAssignedByMeBtn').click(function() {
+		alert("view assignment button clicked");
 
 		$('#resultsContainer').show();
 
@@ -95,31 +96,12 @@ $(document).ready(function() {
 		jsonObjectInput["KST01CL"] = costCenter;
 		
 
-		console.log(fromDate, toDate, assignedTo, pendingAssignments);
+		alert("data: "+ fromDate+ toDate+ assignedTo+ pendingAssignments);
 
-		var data = [
-			{
-				"inspection_id": "123456785446242",
-				"assigned_date": "2024-08-31",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "ASSIGNED"
-			},
-			{
-				"inspection_id": "12345678425464",
-				"assigned_date": "2024-08-31",
-				"emp_assigned_to": ["90012775", "90012776"],
-				"office_code_to_inspect": "3332103",
-				"inspection_from_date": "2024-12-05",
-				"inspection_to_date": "2024-12-06",
-				"status": "INSPECTED"
-			}	
-		];
+
 		//alert("before calling populate table");
 		//populateTable(data);
-		
+		alert("just before ajax call: "+JSON.stringify(jsonObjectInput));
 		$.ajax({
 			type: 'POST',
 			url: url,
@@ -134,12 +116,14 @@ $(document).ready(function() {
 				alert(msg);*/
 				
 				var empList= response.assignEmpDtls.assignList;
+				alert("empList"+ JSON.stringify(empList));
 				var newToken = response.tkn;
-				if (response.ackMsgCode === "104") {
+				if (response.ackMsgCode === "201") {
 					alert("only employee list: "+ JSON.stringify(empList));					
 					populateTable(empList);
 					setCookie("tkn", newToken, 30);
 				}
+				alert("success ends. new token: "+ newToken);
 			}
 		});
 	});
@@ -166,6 +150,7 @@ $(document).ready(function() {
 	}*/
 
 	function populateTable(data) {
+		alert("inside populateTable");
 		// Get the table body element
 		var tableBody = document.getElementById('resultsTableBody');
 		var index = 1;
@@ -230,5 +215,6 @@ $(document).ready(function() {
 			// Append the row to the table body
 			tableBody.appendChild(row);
 		});
+		alert("populate table ends here");
 	}
 });

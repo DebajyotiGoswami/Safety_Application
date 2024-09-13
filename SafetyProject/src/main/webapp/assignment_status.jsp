@@ -76,28 +76,6 @@
 			</form>
 		</div>
 
-		<!-- Results Container -->
-		<!-- <div class="results-container" id="resultsContainer" style="display: none;">
-           <h3 class="text-center mb-4">Inspection Results</h3>
-           <table class="table table-striped">
-               <thead>
-                   <tr>
-                       <th>Inspection ID</th>
-                       <th>Assigned Date</th>
-                       <th>Assigned To</th>
-                       <th>Office Name</th>
-                       <th>From Date</th>
-                       <th>To Date</th>
-                       <th>Status</th>
-                       <th>Action</th>
-                   </tr>
-               </thead>
-               <tbody id="resultsTableBody">
-                   Rows will be populated via JavaScript
-               </tbody>
-           </table>
-       </div> -->
-
 		<div class="card" id="resultsContainer" style="display: none;">
 			<div class="card-header text-center custom-header">Inspection Assigned By You</div>
 			<div class="card-body">

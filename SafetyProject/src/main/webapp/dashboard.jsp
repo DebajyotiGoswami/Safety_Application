@@ -38,9 +38,9 @@
 							responsibilities to your team and track assignment progress.</p>
 						<div class="btn-container">
 							<a href="new_assignment.jsp"
-								class="btn btn-primary btn-equal">New Assignment</a> 
-							<a href="assignment_status.jsp" class="btn btn-primary btn-equal">View 
-							All Assignments</a>
+								class="btn btn-primary btn-equal">Create New Assignment</a> 
+							<a href="assignment_status.jsp" class="btn btn-primary btn-equal">Inspection Assigned 
+							By You</a>
 						</div>
 					</div>
 				</div>
@@ -57,12 +57,12 @@
 							inspections. Also find a comprehensive inspection history for
 							reference and reporting.</p>
 						<div class="btn-container">
-							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Entry New
+							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Your Pending
 								Inspection</a> 
-					<!-- 	<button type= "button" id="showInspectionReport" name="showInspectionReport" class="btn btn-primary btn-equal">View
+						<!-- <button type= "button" id="showInspectionReport" name="showInspectionReport" class="btn btn-primary btn-equal">View
 								All Inspections</button> -->
-								<a href="http://10.250.34.61:8080/SafetyReportView" class="btn btn-primary btn-equal">View
-								All Inspections</a> 
+								<a href="inspection_status.jsp" class="btn btn-primary btn-equal">View
+								All Inspections</a>
 						</div>
 					</div>
 				</div>
@@ -76,7 +76,7 @@
 						<p class="card-text">Enter the detailed information of
 							corrective actions which was taken after inspections.</p>
 						<div class="btn-container">
-							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Entry New
+							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Your Pending
 								Rectification</a> <a href="#" class="btn btn-primary btn-equal">View
 								All Rectifications</a>
 						</div>

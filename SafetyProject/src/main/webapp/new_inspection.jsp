@@ -68,7 +68,7 @@
 
 	<div class="container mt-5">
 		<div class="form-container">
-<!-- 			<div class="heading-container">
+			<!-- 			<div class="heading-container">
 				<h2>Entry New Inspection</h2>
 			</div> -->
 			<form id="inspectionForm" enctype="multipart/form-data">
@@ -77,12 +77,11 @@
 				<div id="additionalSection1" class="additional-section1">
 					<div class="row form-row">
 						<div class="col-sm-6 form-group">
-							<label for="inspection_id" class="form-label required-label" >Selected
-							Inspection ID</label> 
-								<input type="text" id="inspection_id" name= "inspection_id" 
-								class="form-control" readonly>
-								<!-- Added class "form-control" -->
-								<!-- <option selected="true" disabled>Loading...</option> -->
+							<label for="inspection_id" class="form-label required-label">Selected
+								Inspection ID</label> <input type="text" id="inspection_id"
+								name="inspection_id" class="form-control" readonly>
+							<!-- Added class "form-control" -->
+							<!-- <option selected="true" disabled>Loading...</option> -->
 							<!-- </input> -->
 						</div>
 						<div class="col-sm-6 form-group">
@@ -153,7 +152,6 @@
 								Code</label> <select class="form-control" id="problem_list"
 								name="problem_list" required>
 								<option value="Select Asset Type"></option>
-								<option value="Select Asset Typed">lsdsl</option>
 							</select>
 						</div>
 						<div class="col-sm-6 form-group">
@@ -170,6 +168,29 @@
 								name="problem_details" rows="3" required></textarea>
 						</div>
 					</div>
+					<div class="mb-3 row">
+						<label for="difficulty" class="form-label required-label">Difficulty
+							Level</label>
+						<div class="col-sm-9">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="easyOption"
+									name="difficulty" value="easy"> <label
+									class="form-check-label" for="easyOption">Easy</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="moderateOption"
+									name="difficulty" value="moderate"> <label
+									class="form-check-label" for="moderateOption">Moderate</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="hardOption"
+									name="difficulty" value="hard"> <label
+									class="form-check-label" for="hardOption">Hard</label>
+							</div>
+						</div>
+					</div>
+
+
 					<div class="row form-row">
 						<div class="col-sm-12 form-group image-upload-section">
 							<label for="imageInput" class="form-label">Upload Image 1</label>
@@ -181,19 +202,25 @@
 					</div>
 					<div class="row form-row">
 						<div class="col-sm-6 form-group">
-							<label for="office_name" class="form-label required-label">Concerned
+							<!-- <label for="office_name" class="form-label required-label">Concerned
 								Office Name</label> <input type="text" class="form-control"
-								id="office_name" name="office_name" required>
+								id="office_name" name="office_name" required> -->
+
+							<label for="office_name" class="form-label required-label">Concerned
+								Office Name</label> <select class="form-control" id="office_name"
+								name="office_name" required>
+								<option value="Select Office"></option>
+							</select>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-12 btn-center submitBtn" >
-						<button type="button" class="btn btn-primary" id="submitBtn" >NEXT</button>
+					<div class="col-sm-12 btn-center submitBtn">
+						<button type="button" class="btn btn-primary" id="inspSubmitBtn">NEXT</button>
 					</div>
-					<div class="col-sm-12 btn-center submitBtn" >
-						<button type="button" class="btn btn-primary" id="submitBtn2" >SUBMIT</button>
-					</div>
+					<!-- <div class="col-sm-12 btn-center submitBtn">
+						<button type="button" class="btn btn-primary" id="inspSubmitBtn" >SUBMIT</button>
+					</div> -->
 				</div>
 			</form>
 		</div>
@@ -206,4 +233,5 @@
 
 	<!-- JavaScript to handle LDAP authentication and OTP submission -->
 	<script src="assets/js/entry_inspection.js"></script>
+	<!-- <script src="assets/js/login.js"></script> -->
 </body>

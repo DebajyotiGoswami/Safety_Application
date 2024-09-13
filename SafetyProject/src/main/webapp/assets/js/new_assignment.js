@@ -1,16 +1,10 @@
+var url = 'http://10.251.37.170:8080/testSafety/testSafety'
 
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-//var name = "";
-//var erp_id = "";
-//var designation = "";
-//var office = "";
-//var userRole = "";
-//var tkn = "";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
-var xUidJson = {};
 
 function enCrypt(uid, pwd) {
 	//var uid=devEle["enIdCon"];
@@ -142,29 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	populateOfficeDropdown();
 
-	/*// Fetch employee list from localStorage
-	var empList = JSON.parse(localStorage.getItem('empList'));
-	function populateEmployeeDropdown() {
-		var employeeDropdown = document.getElementById('empDetails');
-
-		// Clear any existing options
-		employeeDropdown.innerHTML = '<option value="">Select Employee Name</option>';
-
-		// Loop through the officeList and append options
-		if (empList && empList.length > 0) {
-			empList.forEach(function(emp) {
-				//officeJSON= JSON.parse(office);
-				var option = document.createElement('option');
-				option.value = emp.empId;
-				option.text = emp.empName + ' (' + emp.empId + ')';
-				employeeDropdown.appendChild(option);
-			});
-		}
-	}
-	//populateEmployeeDropdown();*/
-
-
-
 	document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
@@ -180,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//console.log("token: "+ tkn);
 	var xUid = cookieData.xUid;
-	xUidJson = enCrypt(xUid, "123456");
+	var xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
 	dUidEncrypted = xUidJson.Pwd;
 
@@ -224,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		jsonObject.pageNm = "DASH";
 		jsonObject.ServType = 101;
 		$.ajax({
-			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
+			url: url, // replace with above Servlet URL
 			type: 'POST',
 			data: JSON.stringify(jsonObject),
 			success: function(response) {
@@ -282,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fetch employee list from localStorage
 var empList = JSON.parse(localStorage.getItem('empList'));
 function populateEmployeeDropdown() {
-	alert("populate employee dropdown called");
 	var employeeDropdown = document.getElementById('empDetails');
 
 	// Clear any existing options
@@ -334,8 +304,8 @@ function updateERPFields() {
 	const container = document.getElementById('erpIdContainer');
 	container.innerHTML = ''; // Clear previous fields
 	//var data = cookieData.xUid.slice(0, 8);
-	var data= localStorage.getItem("empList");
-	console.log("request string: "+ data);
+	var data = localStorage.getItem("empList");
+	console.log("request string: " + data);
 
 	$.ajax({
 		url: 'fetchInspectorList', // replace with above Servlet URL
@@ -344,12 +314,12 @@ function updateERPFields() {
 		data: data,
 		contentType: 'application/json', // Specify content type
 		success: function(response) {
-			console.log("response string: "+ JSON.stringify(response));
-			empList= response.empList;
-			console.log("empList string: "+ JSON.stringify(empList));
+			console.log("response string: " + JSON.stringify(response));
+			empList = response.empList;
+			console.log("empList string: " + JSON.stringify(empList));
 			const erpIds = response.empList;
-			console.log("erpIds: "+ erpIds);
-			console.log("erpIds string: "+ JSON.stringify(erpIds));
+			console.log("erpIds: " + erpIds);
+			console.log("erpIds string: " + JSON.stringify(erpIds));
 			for (let i = 1; i <= number; i++) {
 				console.log("inside for loop");
 
@@ -393,7 +363,6 @@ function updateERPFields() {
 			}
 			// Add event listeners to all the dropdowns
 			$('.erp-select').on('change', function() {
-				alert("filterDropdownOptions called from ajax call")
 				filterDropdownOptions();
 			});
 		},
@@ -407,7 +376,6 @@ function updateERPFields() {
 
 // Function to filter options in dropdowns
 function filterDropdownOptions() {
-	alert("inside filterDropDownOptions")
 	const allSelects = document.querySelectorAll('.erp-select');
 	const selectedValues = [];
 

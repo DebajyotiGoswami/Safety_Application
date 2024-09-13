@@ -29,20 +29,6 @@
 		<div class="form-container">
 			<h2 class="text-center mb-4">Assign Inspection</h2>
 			<form>
-				<!-- 				<div class="mb-3 row">
-					<label class="col-sm-3 col-form-label">Hello, <strong>username</strong>
-						(Office Code)
-					</label>
-					<div class="col-sm-9">
-						<p class="form-control-static"></p>
-					</div>
-				</div> -->
-				<!-- <div class="mb-3 row">
-                    <label for="officeCode" class="col-sm-3 col-form-label">Your Office Code</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="officeCode" placeholder="Enter Office Code" required>
-                    </div>
-                </div> -->
 				<div class="mb-3 row">
 					<label for="teamMembers" class="col-sm-3 col-form-label">Number
 						of Team Members<span class="text-danger">*</span></label>
@@ -56,17 +42,6 @@
 						</select>
 					</div>
 				</div>
-				<!-- <div class="mb-3 row">
-					<label for="empDetails" class="col-sm-3 col-form-label">Employee Details
-					<span class="text-danger">*</span></label>
-					<div class="col-sm-9">
-						<select class="form-control" id="empDetails" name="empDetails"
-							required>
-							<option value="">Select Employee Name</option>
-							Add options here dynamically or hardcode them
-						</select>
-					</div>
-				</div> -->
 				<div id="erpIdContainer"></div>
 				<div class="mb-3 row">
 					<label class="col-sm-3 col-form-label">Inspection Date<span class="text-danger">*</span></label>
