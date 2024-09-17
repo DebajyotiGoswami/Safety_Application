@@ -137,7 +137,7 @@ function getCurrentDate(){
 	}
 
 $(document).ready(function() {
-	$('#loginbttn, #submitOtpBtn, #resendOtpBtn').on('click', handleButtonClick);
+	$('#loginbttn, #submitOtpBtn, #resendOtpBtn, #searchBtn').on('click', handleButtonClick);
 });
 		
 function handleButtonClick(event) {
@@ -209,6 +209,9 @@ function handleButtonClick(event) {
     	jsonObjInput.ServType= 101;
 		
 		alert("jsonObjInput in assignment: "+ jsonObjInput);
+	}
+	else if(buttonId === 'searchBtn'){
+		alert("search assignment button clicked.");
 	}
 	else if(buttonId === 'inspSubmitBtn'){
 		inspSubmitflg= true;

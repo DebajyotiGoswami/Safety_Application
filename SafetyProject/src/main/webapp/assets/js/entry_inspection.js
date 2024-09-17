@@ -115,13 +115,11 @@ $(document).ready(function() {
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
 	jsonObjectInput["KST01CL"] = costCenter;
-	alert("before ajax call");
 	$.ajax({
 		url: url,
 		type: 'POST',
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			alert("inside success");
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
 			if (response.ackMsgCode === "202") {
@@ -136,7 +134,6 @@ $(document).ready(function() {
 	});
 
 	$('#inspSubmitBtn, #inspSubmitBtn2').on('click', function() {
-		alert("one of the two button clicked");
 		function disableMouseInteraction(className) {
 			var elements = document.querySelectorAll('.' + className);
 			elements.forEach(function(element) {
@@ -144,7 +141,6 @@ $(document).ready(function() {
 			});
 		}
 		if ($('#inspSubmitBtn').text() === 'NEXT') {
-			alert("next  button clicked");
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
@@ -172,10 +168,7 @@ $(document).ready(function() {
 				"office_code_to_inspect": getCookie("office_code_to_inspect"),
 				"assetId": assetList[network_type+ asset_name]
 			};
-			alert("JSON create: "+ JSON.stringify(jsonObj));
 			//var jsonString = JSON.stringify(jsonObj);
-			console.log("json before ajax call: "+ JSON.stringify(jsonObj));
-			alert("url: "+url);
 			$.ajax({
 				type: 'POST',
 				url: url,
@@ -204,25 +197,20 @@ $(document).ready(function() {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
 					
-					alert("inside success of problem list fetch");
 					var newToken = response.tkn;
 					setCookie("tkn", newToken, 30);
-					alert("newToken: " + newToken + " cookie token: " + getCookie("tkn"));
 				},
 				error: function(xhr, status, error) {
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`)
 				}
 			});
-			alert("outside of ajax");
 			disableMouseInteraction('initial-section');
 			$('#additionalSection2').show(); // Show additional sections
 			$('#inspSubmitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
 			isNextClicked = true; // Update flag
-			alert("if section ends.");
 		} 
 		else if ($('#inspSubmitBtn').text() === 'SUBMIT') {
 		//else if ($('#inspSubmitBtn2').text() === 'SUBMIT'){
-			alert("submit  button clicked");
 			//var inspection_id = $('#inspection_id').val();
 			var inspection_id = $('#inspection_id').val();
 			var location_remarks = $('#location').val();
@@ -233,7 +221,6 @@ $(document).ready(function() {
 			var inspectionBy = $('#erpId').val();
 			var problem_id = $('#problem_list').val();
 
-			alert(problem_id);
 			jsonObjectInput.pageNm = "DASH";
 			jsonObjectInput.ServType = "202";
 			var cookieData = JSON.parse(getCookie('empDtls'));
@@ -268,10 +255,7 @@ $(document).ready(function() {
 				"dUid": dUidEncrypted,
 				"KST01CL": costCenter
 			};
-			alert("inspectionBy: ", inspectionBy);
-			alert("base64String: ", image1);
-			alert("jsonObjInput: ", jsonObjInput);
-			alert("")
+
 			$.ajax({
 				url: 'http://10.251.37.170:8080/testSafety/testSafety',
 				//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
@@ -296,7 +280,6 @@ $(document).ready(function() {
 	});
 
 	function populateTable(data) {
-		alert("inside populate table table");
 		// Get the table body element
 		var tableBody = document.getElementById('resultsTableBody');
 		var index = 1;
@@ -359,7 +342,6 @@ $(document).ready(function() {
 				
 				btn.addEventListener('click', function() {
 					//show additional section
-					alert("clicked");
 					$('#additionalSection1').show();
 					var inspectionId = this.getAttribute('data-inspection-id');
 					var dataFromDate = this.getAttribute('data-from-date');
@@ -368,9 +350,7 @@ $(document).ready(function() {
 					document.getElementById('inspection_id').value = inspectionId;
 					//$('#submitBtn').show();
 					//document.getElementById('submitBtn').style.display= 'block';
-					alert(item.office_code_to_inspect);
 					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);
-					alert(getCookie("office_code_to_inspect"));
 				});
 			} else {
 				// If status is not "INSPECTED", just add an empty cell

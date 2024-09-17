@@ -26,13 +26,13 @@
 	<!-- Main Content -->
 	<div class="container">
 		<div class="form-container">
-			<h2 class="text-center mb-4">Search Assigned Inspection</h2>
+			<h2 class="text-center mb-4">Search All Your Inspection</h2>
 			<form id="searchForm">
 				<!-- Search and All Assigned By Me Buttons -->
 				<div class="mb-3 row">
 					<div class="col-sm-12 text-center">
 						<button type="button" class="btn btn-primary" id="searchBtn">Fetch
-							Full Assignments</button>
+							All Inspection</button>
 					</div>
 					<!-- <div class="col-sm-12 text-center">
 						<button type="button" class="btn btn-primary ml-2"
@@ -40,26 +40,33 @@
 					</div> -->
 				</div>
 				<!-- From Date, To Date, Assigned To Fields Side by Side -->
-				<div class="mb-3 row">
+				<div class="mb-4 row">
 					<!-- From Date -->
-					<div class="col-sm-4 form-group">
-						<label for="fromDate" class="form-label">From Date</label> <input
+					<div class="col-sm-3 form-group">
+						<label for="fromDate" class="form-label">Inspection From</label> <input
 							type="date" class="form-control" id="fromDate" name="fromDate"
 							required>
 					</div>
 					<!-- To Date -->
-					<div class="col-sm-4 form-group">
-						<label for="toDate" class="form-label">To Date</label> <input
+					<div class="col-sm-3 form-group">
+						<label for="toDate" class="form-label">Inspection To</label> <input
 							type="date" class="form-control" id="toDate" name="toDate"
 							required>
 					</div>
 					<!-- Assigned To -->
-					<div class="col-sm-4 form-group">
-						<label for="assignedTo" class="form-label">Assigned To</label> <input
-							type="text" class="form-control" id="assignedTo"
-							name="assignedTo" placeholder="Enter Name">
+					<div class="col-sm-3 form-group">
+						<label for="assignedTo" class="form-label">Problem Name</label> <input
+							type="text" class="form-control" id="probName"
+							name="probName" placeholder="Enter Name">
+					</div>
+					<!-- Assigned Office -->
+					<div class="col-sm-3 form-group">
+						<label for="officeName" class="form-label">Assigned Office</label>
+						<input type="text" class="form-control" id="officeName"
+							name="officeName" placeholder="Office Name">
 					</div>
 				</div>
+
 
 				<!-- Only Pending Assignments Checkbox -->
 				<!-- <div class="mb-3 row">
@@ -89,11 +96,11 @@
 							<tr>
 								<th>Sl No.</th>
 								<th>Inspection ID</th>
-								<th>Assigned On</th>
-								<th>Assigned To</th>
 								<th>Office Name</th>
-								<th>From Date</th>
-								<th>To Date</th>
+								<th>Location</th>
+								<th>Problem Name</th>
+								<th>Problem Details</th>
+								<th>Inspected On</th>
 								<th>Status</th>
 								<th>Action</th>
 							</tr>
@@ -114,6 +121,6 @@
 	</footer>
 
 	<!-- JavaScript to handle the form submission and display results -->
-	<script src="assets/js/assignment_status.js"></script>
+	<script src="assets/js/inspection_status.js"></script>
 </body>
 </html>
