@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	var name = cookieData.empDtls.EMNAMCL;
 	var erp_id = cookieData.xUid.slice(0, 8);
 	var designation = cookieData.empDtls.STEXTCL;
-	var office = cookieData.empDtls.LTEXTCL;
+	var office = cookieData.empDtls.KST01CL;
 	var costCenter = cookieData.empDtls.KST01CL; //cost center
 	var userRole = cookieData.empDtls.STELLCL;
 	//console.log(cookieData.tkn);
@@ -441,12 +441,18 @@ function validateInspectionDates() {
 			endDateInput.classList.add('is-invalid');
 			errorDisplay.classList.add('text-danger');
 			assgnSubmitbtn.disabled = true;
+		} else if ((endDate - startDate) / (1000 * 60 * 60 * 24) > 7) {
+			alert("found");
+			errorDisplay.textContent = "End date";// cannot be more than 7 days from start date.";
+			endDateInput.classList.add('is-invalid');
+			errorDisplay.classList.add('text-danger');
+			assgnSubmitbtn.disabled = true;
 		} else {
 			endDateInput.classList.remove('is-invalid');
 			assgnSubmitbtn.disabled = false;
 		}
 	}
-
+	console.log((endDate - startDate) / (1000 * 60 * 60 * 24));
 	// If both start and end dates are valid, clear the error message
 	if (startDate >= today && (!endDateInput.value || (endDate >= today && endDate >= startDate))) {
 		errorDisplay.textContent = ""; // Clear error message
