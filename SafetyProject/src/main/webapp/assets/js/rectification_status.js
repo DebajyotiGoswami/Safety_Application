@@ -70,16 +70,16 @@ function getCookie(name) {
 
 $(document).ready(function() {
 	var fullData = [];
-	
+
 	var fromDate = $('#fromDate').val();
 	var toDate = $('#toDate').val();
 	var assignedTo = $('#assignedTo').val();
 	//var pendingAssignments = document.querySelector("#pendingAssignments").checked;
-	var assignedOffice= $('#assignedOffice').val();
+	var assignedOffice = $('#assignedOffice').val();
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
-	jsonObjectInput.ServType = "201";
+	jsonObjectInput.ServType = "205";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
 	var xUid = cookieData.xUid;
@@ -90,70 +90,50 @@ $(document).ready(function() {
 	jsonObjectInput.xUid = xUidEncrypted;
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
-	jsonObjectInput["KST01CL"] = costCenter;
+	jsonObjectInput["KST01CL"] = "3532000";
 
-	//alert("before calling populate table");
-	//populateTable(data);
 	$.ajax({
 		type: 'POST',
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			var empList = response.assignEmpDtls.assignList;
+			var empList = response.inspectListEmp.assignList;
 			var newToken = response.tkn;
-			if (response.ackMsgCode === "201") {
+			setCookie("tkn", newToken, 30);
+			if (response.ackMsgCode === "205") {
 				fullData = empList;
 				populateTable(empList);
-				setCookie("tkn", newToken, 30);
 			}
 		}
 	});
 
-	$('#fromDate, #toDate, #assignedTo, #assignedOffice').on('change', function() {
+	$('#fromDate, #toDate, #problemName, #locationName').on('change', function() {
 		filterAndDisplayData();
 	});
 
 	function filterAndDisplayData() {
 		var fromDate = $('#fromDate').val();
 		var toDate = $('#toDate').val();
-		var assignedTo = $('#assignedTo').val().trim().toLowerCase();
-		var assignedOffice = $('#assignedOffice').val().trim().toLowerCase();
-		
+		var problemName = $('#problemName').val().trim().toLowerCase();
+		var locationName = $('#locationName').val().trim().toLowerCase();
 
 		var filteredData = fullData.filter(function(item) {
-			var itemDateFrom = new Date(item.inspection_from_date);
-			var itemDateTo = new Date(item.inspection_to_date);
-			var itemAssignedTo = item.emp_assigned_to_Nm.toLowerCase();
-			var itemAssignedOffice = item.office_code_to_inspect.toLowerCase();
+			var itemInspectionDate = new Date(item.inspection_date);
+			var itemProblemName = item.problem_remarks.toLowerCase() + item.problem_id.toLowerCase();
+			var itemLocationName = item.location_remarks.toLowerCase();
 			
-			console.log("office_code: "+ itemAssignedOffice);
-			console.log("hello "+ assignedOffice);
-			
-			let officeList = JSON.parse(localStorage.getItem("officeList"));
-			let officeName = "";
-			officeList.forEach((office) => {
-				if (office.offCode === itemAssignedOffice) {
-					officeName = office.offName;
-				}
-			});
-			itemAssignedOffice = officeName.toLowerCase(); //toLowerCase not required
-			console.log("after tolower: "+ itemAssignedOffice);
-			console.log(assignedTo+ "-"+ assignedOffice+ "-"+ itemAssignedOffice);
-
-			// Check if the current item matches the filter criteria
 			var match = true;
 
-			if (fromDate && itemDateFrom < new Date(fromDate)) {
+			if (fromDate && itemInspectionDate < new Date(fromDate)) {
 				match = false;
 			}
-			if (toDate && itemDateTo > new Date(toDate)) {
+			if (toDate && itemInspectionDate > new Date(toDate)) {
 				match = false;
 			}
-			if (assignedTo && !itemAssignedTo.includes(assignedTo)) {
+			if (problemName && !itemProblemName.includes(problemName)) {
 				match = false;
 			}
-			console.log("last check: "+ assignedOffice+ itemAssignedOffice);
-			if (assignedOffice && !itemAssignedOffice.includes(assignedOffice)) {
+			if (locationName && !itemLocationName.includes(locationName)) {
 				match = false;
 			}
 
@@ -176,6 +156,7 @@ $(document).ready(function() {
 		data.forEach(function(item) {
 			var row = document.createElement('tr');
 
+			//Serial Number
 			var serialNumber = document.createElement('td');
 			serialNumber.textContent = index++;
 			row.appendChild(serialNumber);
@@ -183,48 +164,47 @@ $(document).ready(function() {
 			//row.append($('<td>').text(index++));
 
 			// Create columns for each field
+
+			//Inspection Id
 			var inspectionIdCell = document.createElement('td');
 			inspectionIdCell.textContent = item.inspection_id;
 			row.appendChild(inspectionIdCell);
 
-			var empAssignedByCell = document.createElement('td');
-			empAssignedByCell.textContent = item.assigned_date;
-			row.appendChild(empAssignedByCell);
+			//Inspection Date
+			var inspectionDateCell = document.createElement('td');
+			inspectionDateCell.textContent = item.inspection_date;
+			row.appendChild(inspectionDateCell);
 
-			var empAssignedToCell = document.createElement('td');
-			empAssignedToCell.textContent = item.emp_assigned_to_Nm;
-			row.appendChild(empAssignedToCell);
+			//Inspected By
+			var inspectedByCell = document.createElement('td');
+			inspectedByCell.textContent = item.inspection_by;
+			row.appendChild(inspectedByCell);
 
-			var officeCodeCell = document.createElement('td');
-			let officeCode = item.office_code_to_inspect;
-			let officeList = JSON.parse(localStorage.getItem("officeList"));
-			let officeName = "";
-			officeList.forEach((office) => {
-				if (office.offCode === officeCode) {
-					officeName = office.offName;
-				}
-			});
-			officeCodeCell.textContent = officeName;
-			row.appendChild(officeCodeCell);
+			//problem name
+			var problemNameCell = document.createElement('td');
+			problemNameCell.textContent = item.problem_id;
+			row.appendChild(problemNameCell);
 
-			var fromDateCell = document.createElement('td');
-			fromDateCell.textContent = item.inspection_from_date;
-			row.appendChild(fromDateCell);
+			//problem details
+			var problemDetailsCell = document.createElement('td');
+			problemDetailsCell.textContent = item.problem_remarks;
+			row.appendChild(problemDetailsCell);
 
-			var toDateCell = document.createElement('td');
-			toDateCell.textContent = item.inspection_to_date;
-			row.appendChild(toDateCell);
+			//location details
+			var locationCell = document.createElement('td');
+			locationCell.textContent = item.location_remarks;
+			row.appendChild(locationCell);
 
 			var statusCell = document.createElement('td');
-			statusCell.textContent = item.status;
+			statusCell.textContent = item.present_status;
 			row.appendChild(statusCell);
 
 			// Create a column for the anchor tag
-			if (item.status === "ASSIGNED") {
+			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
 				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
-				anchor.innerHTML = '<i class="fas fa-trash-alt" title="click to delete"></i>'; // Use Font Awesome icon
+				anchor.innerHTML = '<i class="fas fa-eye fa-lg" title="View Data"></i>'; // Use Font Awesome icon
 				//anchor.textContent = "MODIFY"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
 				actionCell.appendChild(anchor);
@@ -239,4 +219,4 @@ $(document).ready(function() {
 			tableBody.appendChild(row);
 		});
 	}
-});
+});	

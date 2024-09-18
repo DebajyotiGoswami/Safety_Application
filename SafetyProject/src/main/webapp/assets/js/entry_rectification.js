@@ -98,12 +98,39 @@ function getCookie(name) {
 	}
 	return null;
 }
+
+function populateDateDropdown(startDateStr, endDateStr) {
+	// Parse the input dates
+	const startDate = new Date(startDateStr);
+	const endDate = new Date(endDateStr);
+
+	// Get the dropdown element
+	const dropdown = document.getElementById('dateDropdown');
+
+	// Clear the previous options if any
+	dropdown.innerHTML = '';
+
+	// Iterate over the range of dates
+	for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+		// Create an option element
+		const option = document.createElement('option');
+
+		// Format the date to yyyy-mm-dd
+		const formattedDate = date.toISOString().split('T')[0];
+		option.value = formattedDate;
+		option.textContent = formattedDate;
+
+		// Append the option to the dropdown
+		dropdown.appendChild(option);
+	}
+}
+
 $(document).ready(function() {
 	$('#resultsContainer').show();
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
-	jsonObjectInput.ServType = "202";
+	jsonObjectInput.ServType = "205";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
 	var xUid = getCookie("User");
@@ -114,7 +141,8 @@ $(document).ready(function() {
 	jsonObjectInput.xUid = xUidEncrypted;
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
-	jsonObjectInput["KST01CL"] = costCenter;
+	/*jsonObjectInput["KST01CL"] = costCenter;*/
+	jsonObjectInput["KST01CL"] = "3532000";
 	$.ajax({
 		url: url,
 		type: 'POST',
@@ -122,11 +150,9 @@ $(document).ready(function() {
 		success: function(response) {
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
-			if (response.ackMsgCode === "202") {
+			if (response.ackMsgCode === "205") {
 				populateTable(empList);
 				setCookie("tkn", newToken, 30);
-				console.log("new token: " + newToken);
-				console.log("new token in new cookie: " + getCookie("tkn"));
 				//$('#additionalSection1').show();
 				//document.getElementById('additionalSection1').style.display = 'block';
 			}
@@ -153,9 +179,7 @@ $(document).ready(function() {
 		xUidEncrypted = xUidJson.User;
 		dUidEncrypted = xUidJson.Pwd;
 		let assetList = JSON.parse(getCookie("assetList"));
-		/*			alert(assetList);
-					alert(typeof(assetList));
-					alert(assetList[network_type+ asset_name]);*/
+
 		var jsonObj = {
 			"network_type": network_type,
 			"assetId": asset_name,
@@ -174,16 +198,12 @@ $(document).ready(function() {
 			url: url,
 			data: JSON.stringify(jsonObj),
 			success: function(response) {
-				console.log("inside problem fetching success ajax");
-
 				//populate problem dropdown
 				var dropdown = $('#problem_list');
 				dropdown.empty(); // Clear any existing options
 
 				// Assuming response is a JSON array
 				$.each(response.probDtls.probDtls, function(index, item) {
-					console.log("item.key: ", item.probId);
-					console.log("item.value: ", item.probDesc);
 					dropdown.append($('<option></option>').attr('value', item.probId).text(item.probDesc));
 				});
 
@@ -192,8 +212,6 @@ $(document).ready(function() {
 				dropdown.empty(); // Clear any existing options
 				// Assuming response is a JSON array
 				$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
-					console.log("item.key: ", item.offCode);
-					console.log("item.value: ", item.offName);
 					dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 				});
 
@@ -273,11 +291,12 @@ $(document).ready(function() {
 
 				btn.addEventListener('click', function() {
 					//show additional section
-					$('#additionalSection1').show();
 					var inspectionId = this.getAttribute('data-inspection-id');
 					var dataFromDate = this.getAttribute('data-from-date');
 					var dataEndDate = this.getAttribute('data-end-date');
-					alert(`Inspection ID: ${inspectionId} is selected.\nYour inspection entry date should be within \n${dataFromDate} and ${dataEndDate}`);
+					populateDateDropdown(dataFromDate, dataEndDate);
+					$('#additionalSection1').show();
+					alert('Inspection ID: ${inspectionId} is selected.\nYour inspection entry date should be within \n${dataFromDate} and ${dataEndDate}');
 					document.getElementById('inspection_id').value = inspectionId;
 					//$('#submitBtn').show();
 					//document.getElementById('submitBtn').style.display= 'block';
@@ -288,7 +307,6 @@ $(document).ready(function() {
 				var emptyCell = document.createElement('td');
 				row.appendChild(emptyCell);
 			}
-			console.log(row);
 
 			// Append the row to the table body
 			tableBody.appendChild(row);

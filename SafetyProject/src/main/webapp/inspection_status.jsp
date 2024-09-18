@@ -10,6 +10,9 @@
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/inspection_navigation.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/BigInteger.js"></script>
@@ -25,73 +28,13 @@
 
 	<!-- Main Content -->
 	<div class="container">
-		<div class="form-container">
-			<h2 class="text-center mb-4">Search All Your Inspection</h2>
-			<form id="searchForm">
-				<!-- Search and All Assigned By Me Buttons -->
-				<div class="mb-3 row">
-					<div class="col-sm-12 text-center">
-						<button type="button" class="btn btn-primary" id="searchBtn">Fetch
-							All Inspection</button>
-					</div>
-					<!-- <div class="col-sm-12 text-center">
-						<button type="button" class="btn btn-primary ml-2"
-							id="allAssignedByMeBtn">Search All Assignment</button>
-					</div> -->
-				</div>
-				<!-- From Date, To Date, Assigned To Fields Side by Side -->
-				<div class="mb-4 row">
-					<!-- From Date -->
-					<div class="col-sm-3 form-group">
-						<label for="fromDate" class="form-label">Inspection From</label> <input
-							type="date" class="form-control" id="fromDate" name="fromDate"
-							required>
-					</div>
-					<!-- To Date -->
-					<div class="col-sm-3 form-group">
-						<label for="toDate" class="form-label">Inspection To</label> <input
-							type="date" class="form-control" id="toDate" name="toDate"
-							required>
-					</div>
-					<!-- Assigned To -->
-					<div class="col-sm-3 form-group">
-						<label for="assignedTo" class="form-label">Problem Name</label> <input
-							type="text" class="form-control" id="probName"
-							name="probName" placeholder="Enter Name">
-					</div>
-					<!-- Assigned Office -->
-					<div class="col-sm-3 form-group">
-						<label for="officeName" class="form-label">Assigned Office</label>
-						<input type="text" class="form-control" id="officeName"
-							name="officeName" placeholder="Office Name">
-					</div>
-				</div>
-
-
-				<!-- Only Pending Assignments Checkbox -->
-				<!-- <div class="mb-3 row">
-					<div class="col-sm-9 offset-sm-3">
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox"
-								id="pendingAssignments" name="pendingAssignments"> <label
-								class="form-check-label" for="pendingAssignments"> Only
-								Pending Assignments </label>
-						</div>
-					</div>
-				</div> -->
-
-
-			</form>
-		</div>
-
-		<div class="card" id="resultsContainer" style="display: none; height:600px">
+		<div class="card" id="resultsContainer" style="display: block;">
 			<div class="card-header text-center custom-header">Inspection
-				Assigned By You</div>
+				Entered By You</div>
 			<div class="card-body">
-				<div class="table-responsive"
-					style="height: 600px; overflow-y: auto;">
-					<!-- <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> -->
-					<table class="table table-striped table-hover table-sm small-font-table">
+				<div class="table-responsive" style="overflow-y: auto;">
+					<table
+						class="table table-striped table-hover table-sm small-font-table">
 						<thead>
 							<tr>
 								<th>Sl No.</th>
@@ -111,8 +54,33 @@
 					</table>
 				</div>
 			</div>
+			<div class="mb-4 row filterSection">
+				<!-- From Date -->
+				<div class="col-sm-3 form-group">
+					<label for="fromDate" class="form-label">Inspection From</label> <input
+						type="date" class="form-control" id="fromDate" name="fromDate"
+						required>
+				</div>
+				<!-- To Date -->
+				<div class="col-sm-3 form-group">
+					<label for="toDate" class="form-label">Inspection To</label> <input
+						type="date" class="form-control" id="toDate" name="toDate"
+						required>
+				</div>
+				<!-- Assigned To -->
+				<div class="col-sm-3 form-group">
+					<label for="assignedTo" class="form-label">Problem Name</label> <input
+						type="text" class="form-control" id="probName" name="probName"
+						placeholder="Enter Name">
+				</div>
+				<!-- Assigned Office -->
+				<div class="col-sm-3 form-group">
+					<label for="officeName" class="form-label">Assigned Office</label>
+					<input type="text" class="form-control" id="officeName"
+						name="officeName" placeholder="Office Name">
+				</div>
+			</div>
 		</div>
-
 	</div>
 
 	<!-- Footer -->

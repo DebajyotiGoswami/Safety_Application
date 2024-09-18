@@ -29,8 +29,8 @@
 	<!-- Main Content -->
 	<div class="container">
 		<div class="card" id="resultsContainer" style="display: block;">
-			<div class="card-header text-center custom-header">Inspection
-				Assigned By You</div>
+			<div class="card-header text-center custom-header">Rectification
+				Entered By You</div>
 			<div class="card-body">
 				<div class="table-responsive" style="overflow-y: auto;">
 					<table
@@ -39,11 +39,11 @@
 							<tr>
 								<th>Sl No.</th>
 								<th>Inspection ID</th>
-								<th>Assigned On</th>
-								<th>Assigned To</th>
-								<th>Office Name</th>
-								<th>From Date</th>
-								<th>To Date</th>
+								<th>Inspection Date</th>
+								<th>Inspected By</th>
+								<th>Problem Name</th>
+								<th>Problem Details</th>
+								<th>Location</th>
 								<th>Status</th>
 								<th>Action</th>
 							</tr>
@@ -69,17 +69,18 @@
 				</div>
 				<!-- Assigned To -->
 				<div class="col-sm-3 form-group">
-					<label for="assignedTo" class="form-label">Assigned To</label> <input
-						type="text" class="form-control" id="assignedTo" name="assignedTo"
-						placeholder="Enter Name">
+					<label for="problemName" class="form-label">Problem Name</label> <input
+						type="text" class="form-control" id="problemName" name="problemName"
+						placeholder="Enter Problem">
 				</div>
 				<div class="col-sm-3 form-group">
-					<label for="assignedOffice" class="form-label">Assigned
-						Office</label> <input type="text" class="form-control" id="assignedOffice"
-						name="assignedOffice" placeholder="Enter Office Name">
+					<label for="locationName" class="form-label">Location
+						Name</label> <input type="text" class="form-control" id="locationName"
+						name="locationName" placeholder="Enter Location">
 				</div>
 			</div>
 		</div>
+
 	</div>
 
 	<!-- Footer -->
@@ -88,6 +89,6 @@
 	</footer>
 
 	<!-- JavaScript to handle the form submission and display results -->
-	<script src="assets/js/assignment_status.js"></script>
+	<script src="assets/js/rectification_status.js"></script>
 </body>
 </html>

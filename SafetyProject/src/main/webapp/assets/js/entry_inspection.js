@@ -98,6 +98,34 @@ function getCookie(name) {
 	}
 	return null;
 }
+
+function populateDateDropdown(startDateStr, endDateStr) {
+	// Parse the input dates
+	const startDate = new Date(startDateStr);
+	const endDate = new Date(endDateStr);
+
+	// Get the dropdown element
+	const dropdown = document.getElementById('dateDropdown');
+
+	// Clear the previous options if any
+	dropdown.innerHTML = '';
+
+	// Iterate over the range of dates
+	for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+		// Create an option element
+		const option = document.createElement('option');
+
+		// Format the date to yyyy-mm-dd
+		const formattedDate = date.toISOString().split('T')[0];
+		option.value = formattedDate;
+		option.textContent = formattedDate;
+
+		// Append the option to the dropdown
+		dropdown.appendChild(option);
+	}
+}
+
+
 $(document).ready(function() {
 	$('#resultsContainer').show();
 
@@ -125,8 +153,6 @@ $(document).ready(function() {
 			if (response.ackMsgCode === "202") {
 				populateTable(empList);
 				setCookie("tkn", newToken, 30);
-				console.log("new token: " + newToken);
-				console.log("new token in new cookie: " + getCookie("tkn"));
 				//$('#additionalSection1').show();
 				//document.getElementById('additionalSection1').style.display = 'block';
 			}
@@ -152,10 +178,8 @@ $(document).ready(function() {
 			xUidJson = enCrypt(xUid, "123456");
 			xUidEncrypted = xUidJson.User;
 			dUidEncrypted = xUidJson.Pwd;
-			let assetList= JSON.parse(getCookie("assetList"));
-/*			alert(assetList);
-			alert(typeof(assetList));
-			alert(assetList[network_type+ asset_name]);*/
+			let assetList = JSON.parse(getCookie("assetList"));
+
 			var jsonObj = {
 				"network_type": network_type,
 				"assetId": asset_name,
@@ -166,7 +190,7 @@ $(document).ready(function() {
 				"dUid": dUidEncrypted,
 				"KST01CL": costCenter,
 				"office_code_to_inspect": getCookie("office_code_to_inspect"),
-				"assetId": assetList[network_type+ asset_name]
+				"assetId": assetList[network_type + asset_name]
 			};
 			//var jsonString = JSON.stringify(jsonObj);
 			$.ajax({
@@ -174,29 +198,23 @@ $(document).ready(function() {
 				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
-					console.log("inside problem fetching success ajax");
-					
 					//populate problem dropdown
 					var dropdown = $('#problem_list');
 					dropdown.empty(); // Clear any existing options
 
 					// Assuming response is a JSON array
 					$.each(response.probDtls.probDtls, function(index, item) {
-						console.log("item.key: ", item.probId);
-						console.log("item.value: ", item.probDesc);
 						dropdown.append($('<option></option>').attr('value', item.probId).text(item.probDesc));
 					});
-					
+
 					//populate office dropdown
 					var dropdown = $('#office_name');
 					dropdown.empty(); // Clear any existing options
 					// Assuming response is a JSON array
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
-						console.log("item.key: ", item.offCode);
-						console.log("item.value: ", item.offName);
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
-					
+
 					var newToken = response.tkn;
 					setCookie("tkn", newToken, 30);
 				},
@@ -208,19 +226,18 @@ $(document).ready(function() {
 			$('#additionalSection2').show(); // Show additional sections
 			$('#inspSubmitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
 			isNextClicked = true; // Update flag
-		} 
+		}
 		else if ($('#inspSubmitBtn').text() === 'SUBMIT') {
-		//else if ($('#inspSubmitBtn2').text() === 'SUBMIT'){
+			//else if ($('#inspSubmitBtn2').text() === 'SUBMIT'){
 			//var inspection_id = $('#inspection_id').val();
 			var inspection_id = $('#inspection_id').val();
 			var location_remarks = $('#location').val();
 			var problem_details = $('#problem_details').val();
 			var assigned_office_code = $('#office_name').val();
-			var inspection_date = $('#inspection_date').val();
+			var inspection_date = $('#dateDropdown').val();
 			var image1 = $('#base64Output').val();
 			var inspectionBy = $('#erpId').val();
 			var problem_id = $('#problem_list').val();
-
 			jsonObjectInput.pageNm = "DASH";
 			jsonObjectInput.ServType = "202";
 			var cookieData = JSON.parse(getCookie('empDtls'));
@@ -265,9 +282,7 @@ $(document).ready(function() {
 				success: function(response) {
 					var newToken = response.tkn;
 					setCookie("tkn", newToken, 30);
-					console.log("newToken after setting cookie in inspection entry: " + getCookie("tkn"));
-					if(response.ackMsgCode=== "102"){
-						console.log("successful conn");
+					if (response.ackMsgCode === "102") {
 						alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
 						window.location.href = 'new_inspection.jsp';
 					}
@@ -339,17 +354,16 @@ $(document).ready(function() {
 				//btn.className = "btn btn-primary"; // Optional: Bootstrap button styling
 				actionCell.appendChild(btn);
 				row.appendChild(actionCell);
-				
+
 				btn.addEventListener('click', function() {
 					//show additional section
-					$('#additionalSection1').show();
 					var inspectionId = this.getAttribute('data-inspection-id');
 					var dataFromDate = this.getAttribute('data-from-date');
 					var dataEndDate = this.getAttribute('data-end-date');
+					populateDateDropdown(dataFromDate, dataEndDate);
+					$('#additionalSection1').show();
 					alert(`Inspection ID: ${inspectionId} is selected.\nYour inspection entry date should be within \n${dataFromDate} and ${dataEndDate}`);
 					document.getElementById('inspection_id').value = inspectionId;
-					//$('#submitBtn').show();
-					//document.getElementById('submitBtn').style.display= 'block';
 					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);
 				});
 			} else {
@@ -357,7 +371,6 @@ $(document).ready(function() {
 				var emptyCell = document.createElement('td');
 				row.appendChild(emptyCell);
 			}
-			console.log(row);
 
 			// Append the row to the table body
 			tableBody.appendChild(row);

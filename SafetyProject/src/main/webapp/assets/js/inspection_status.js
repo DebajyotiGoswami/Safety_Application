@@ -71,7 +71,7 @@ function getCookie(name) {
 $(document).ready(function() {
 	var fullData = [];
 
-	$('#searchBtn, #allAssignedByMeBtn').click(function() {
+	//$('#searchBtn, #allAssignedByMeBtn').click(function() {
 
 		$('#resultsContainer').show();
 
@@ -102,8 +102,6 @@ $(document).ready(function() {
 			url: url,
 			data: JSON.stringify(jsonObjectInput),
 			success: function(response) {
-				console.log(response);
-				console.log(JSON.stringify(response));
 				var newToken = response.tkn;
 				setCookie("tkn", newToken, 30);
 				var empList = response.inspectListEmp.assignList;
@@ -118,7 +116,7 @@ $(document).ready(function() {
 				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 			}
 		});
-	});
+	//});
 
 	$('#fromDate, #toDate, #probName, #officeName').on('change', function() {
 		filterAndDisplayData();
@@ -133,10 +131,10 @@ $(document).ready(function() {
 		var filteredData = fullData.filter(function(item) {
 			var itemInspDate = new Date(item.inspection_date);
 			//var itemDateTo = new Date(item.inspection_to_date);
-			
-			var itemProblemName = item.problem_id.toLowerCase();
+
+			var itemProblemName = item.problem_id.toLowerCase()+ item.problem_remarks.toLowerCase();
 			var itemAssignedOffice = item.assigned_office_code;
-			
+
 			let officeList = JSON.parse(localStorage.getItem("officeList"));
 			let officeName = "";
 			officeList.forEach((office) => {
@@ -191,7 +189,7 @@ $(document).ready(function() {
 			var inspectionIdCell = document.createElement('td');
 			inspectionIdCell.textContent = item.inspection_id;
 			row.appendChild(inspectionIdCell);
-			
+
 			//office name
 			var officeCodeCell = document.createElement('td');
 			let officeCode = item.assigned_office_code;
@@ -204,12 +202,12 @@ $(document).ready(function() {
 			});
 			officeCodeCell.textContent = officeName;
 			row.appendChild(officeCodeCell);
-			
+
 			//location
 			var probLocationCell = document.createElement('td');
 			probLocationCell.textContent = item.location_remarks;
 			row.appendChild(probLocationCell);
-			
+
 			//problem code/name
 			var probCodeCell = document.createElement('td');
 			probCodeCell.textContent = item.problem_id;
@@ -230,14 +228,18 @@ $(document).ready(function() {
 			row.appendChild(statusCell);
 
 			// Create a column for the anchor tag
-			if (item.status === "INSPECTED" || item.status === "RECTIFIED") {
+			if (item.present_status === "INSPECTED" || item.present_status === "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
 				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
-				anchor.textContent = "View Inspection"; // Anchor text
+				anchor.innerHTML = '<i class="fas fa-eye" title="click to delete"></i>'; // Use Font Awesome icon
+				//anchor.textContent = "View Inspection"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
+
+				
+				//anchor.textContent = "MODIFY"; // Anchor text
 			} else {
 				// If status is not "INSPECTED", just add an empty cell
 				var emptyCell = document.createElement('td');

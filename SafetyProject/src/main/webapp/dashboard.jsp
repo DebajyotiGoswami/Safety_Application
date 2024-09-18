@@ -77,7 +77,7 @@
 							corrective actions which was taken after inspections.</p>
 						<div class="btn-container">
 							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Your Pending
-								Rectification</a> <a href="#" class="btn btn-primary btn-equal">View
+								Rectification</a> <a href="rectification_status.jsp" class="btn btn-primary btn-equal">View
 								All Rectifications</a>
 						</div>
 					</div>

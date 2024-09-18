@@ -86,9 +86,12 @@
 						</div>
 						<div class="col-sm-6 form-group">
 							<label for="inspection_date" class="form-label required-label">Inspection
-								Date</label> <input type="date" class="form-control"
-								id="inspection_date" name="inspection_date" required>
+								Date</label>  <!-- <input type="date" class="form-control"
+								id="inspection_date" name="inspection_date" required> -->
+								<select id="dateDropdown"></select>
 						</div>
+						
+    					
 					</div>
 
 					<div class="row form-row">
