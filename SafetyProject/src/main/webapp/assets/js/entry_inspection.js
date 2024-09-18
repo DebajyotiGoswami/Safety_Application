@@ -361,7 +361,11 @@ $(document).ready(function() {
 					var dataFromDate = this.getAttribute('data-from-date');
 					var dataEndDate = this.getAttribute('data-end-date');
 					populateDateDropdown(dataFromDate, dataEndDate);
+					$('#resultsContainer').hide();
 					$('#additionalSection1').show();
+					alert("first");
+					$('#inspSubmitBtn').show();
+					alert("second");
 					alert(`Inspection ID: ${inspectionId} is selected.\nYour inspection entry date should be within \n${dataFromDate} and ${dataEndDate}`);
 					document.getElementById('inspection_id').value = inspectionId;
 					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);

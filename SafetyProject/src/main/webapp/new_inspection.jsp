@@ -8,7 +8,7 @@
 <title>Entry New Inspection</title>
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="assets/css/inspection_navigation.css">
+<link rel="stylesheet" href="assets/css/inspection_entry.css">
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
@@ -24,9 +24,13 @@
 	display: none;
 }
 
-/* .submitBtn{
+#inspSubmitBtn {
 	display: none;
-} */
+}
+
+#dateDropdown {
+	width: 100%; /* Ensures the dropdown takes the full width */
+}
 </style>
 <%@page import="org.json.*"%>
 </head>
@@ -41,9 +45,7 @@
 		<div class="card-header text-center custom-header">Inspection
 			Assigned To You</div>
 		<div class="card-body">
-			<div class="table-responsive"
-				style="height: 180px; overflow-y: auto;">
-				<!-- <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> -->
+			<div class="table-responsive" style="overflow-y: auto;">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -68,11 +70,7 @@
 
 	<div class="container mt-5">
 		<div class="form-container">
-			<!-- 			<div class="heading-container">
-				<h2>Entry New Inspection</h2>
-			</div> -->
 			<form id="inspectionForm" enctype="multipart/form-data">
-
 				<!-- Initial visible sections -->
 				<div id="additionalSection1" class="additional-section1">
 					<div class="row form-row">
@@ -86,12 +84,11 @@
 						</div>
 						<div class="col-sm-6 form-group">
 							<label for="inspection_date" class="form-label required-label">Inspection
-								Date</label>  <!-- <input type="date" class="form-control"
+								Date</label>
+							<!-- <input type="date" class="form-control"
 								id="inspection_date" name="inspection_date" required> -->
-								<select id="dateDropdown"></select>
+							<select id="dateDropdown"></select>
 						</div>
-						
-    					
 					</div>
 
 					<div class="row form-row">
@@ -192,8 +189,6 @@
 							</div>
 						</div>
 					</div>
-
-
 					<div class="row form-row">
 						<div class="col-sm-12 form-group image-upload-section">
 							<label for="imageInput" class="form-label">Upload Image 1</label>
@@ -217,14 +212,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-12 btn-center submitBtn">
+				<div class="row justify-content-center">
+					<div class="col-auto">
 						<button type="button" class="btn btn-primary" id="inspSubmitBtn">NEXT</button>
 					</div>
-					<!-- <div class="col-sm-12 btn-center submitBtn">
-						<button type="button" class="btn btn-primary" id="inspSubmitBtn" >SUBMIT</button>
-					</div> -->
 				</div>
+
 			</form>
 		</div>
 	</div>
