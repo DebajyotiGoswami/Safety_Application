@@ -342,7 +342,7 @@ $(document).ready(function() {
 			row.appendChild(statusCell);
 
 			// Create a column for the button tag
-			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED") {
+			if (item.status === "INSPECTED" || item.status !== "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var btn = document.createElement('button');
 				//anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
@@ -363,9 +363,7 @@ $(document).ready(function() {
 					populateDateDropdown(dataFromDate, dataEndDate);
 					$('#resultsContainer').hide();
 					$('#additionalSection1').show();
-					alert("first");
 					$('#inspSubmitBtn').show();
-					alert("second");
 					alert(`Inspection ID: ${inspectionId} is selected.\nYour inspection entry date should be within \n${dataFromDate} and ${dataEndDate}`);
 					document.getElementById('inspection_id').value = inspectionId;
 					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);

@@ -5,61 +5,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Entry New Rectification</title>
+<title>Entry New Inspection</title>
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="assets/css/inspection_navigation.css">
+<link rel="stylesheet" href="assets/css/inspection_entry.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/BigInteger.js"></script>
 <!-- Custom JavaScript -->
+<!-- <script src="assets/js/new_inspection.js"></script> -->
 <style>
-.form-container {
-	margin-top: 30px;
+.additional-section1 {
+	display: none;
 }
 
-.form-row {
-	margin-bottom: 15px;
-	display: flex;
-	align-items: center;
+.additional-section2 {
+	display: none;
 }
 
-.form-label {
-	font-weight: bold;
-	width: 25%; /* Adjust label width */
-	margin-right: 15px;
+#inspSubmitBtn {
+	display: none;
 }
 
-.form-control {
-	flex: 1; /* Make the input field take up the remaining space */
+#dateDropdown {
+	width: 100%; /* Ensures the dropdown takes the full width */
 }
 </style>
+<%@page import="org.json.*"%>
 </head>
+
 <body>
 	<!-- Navigation Bar -->
 	<nav>
 		<%@ include file="navbar.jsp"%>
 	</nav>
-	<!-- Main Content -->
 
 	<div class="card" id="resultsContainer" style="display: none;">
 		<div class="card-header text-center custom-header">Rectification
-			Pending At Your End</div>
+			Pending At You</div>
 		<div class="card-body">
-			<div class="table-responsive"
-				style="height: 180px; overflow-y: auto;">
-				<!-- <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> -->
+			<div class="table-responsive" style="overflow-y: auto;">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Sl No.</th>
 							<th>Inspection ID</th>
-							<th>Assigned On</th>
-							<th>Assigned To</th>
-							<th>Office Name</th>
-							<th>From Date</th>
-							<th>To Date</th>
+							<th>Inspection Date</th>
+							<th>Inspected By</th>
+							<th>Problem Name</th>
+							<th>Problem Details</th>
+							<th>Location</th>
 							<th>Status</th>
 							<th>Action</th>
 						</tr>
@@ -72,13 +70,13 @@
 		</div>
 	</div>
 
-	<!-- keep this part hidden at start. It will be populated after clicking button from #resultTableBody -->
 	<div class="container mt-5" id="formContainer" style="display: none;">
 		<div class="row">
 			<!-- Left Section (Form Fields) -->
 			<div class="col-md-6 form-container">
 				<form id="rectificationForm">
-					<div class="initial_section">
+					<div class="initial_section" id="initial_section"
+						name="initial_section">
 						<!-- Inspection ID Text Field -->
 						<div class="form-row">
 							<label for="inspection_id" class="form-label">Inspection
@@ -93,8 +91,8 @@
 								placeholder="Enter Site ID">
 						</div>
 
-					</div>
-					<div class="additional_section">
+						<!-- </div> -->
+						<!-- <div class="additional_section"> -->
 						<!-- Inspection Date -->
 						<div class="form-row">
 							<label for="inspection_date" class="form-label">Inspection
@@ -114,7 +112,7 @@
 							<label for="problem_details" class="form-label">Problem
 								Details</label>
 							<textarea class="form-control" id="problem_details"
-								name="problem_details" rows="3" readonly></textarea>
+								name="problem_details" rows="2" readonly></textarea>
 						</div>
 
 						<!-- Location -->
@@ -130,39 +128,6 @@
 								By</label> <input type="text" class="form-control" id="inspection_by"
 								name="inspection_by" readonly>
 						</div>
-
-						<!-- Rectification Date -->
-						<!-- <div class="form-row">
-							<label for="rectification_date" class="form-label">Rectification
-								Date</label> <input type="date" class="form-control"
-								id="rectification_date" name="rectification_date" required>
-						</div>
-
-						Rectification Remarks
-						<div class="form-row">
-							<label for="rectification_remarks" class="form-label">Rectification
-								Remarks</label>
-							<textarea class="form-control" id="rectification_remarks"
-								name="rectification_remarks" rows="3" required></textarea>
-						</div>
-
-						Upload Rectified Image
-						<div class="form-row mt-3">
-							<div class="col-sm-12">
-								<label for="rectificationImage" class="form-label">Upload
-									Rectification Image</label> <input type="file" class="form-control"
-									id="rectificationImage" name="rectificationImage"
-									accept=".jpg, .jpeg, .png">
-							</div>
-						</div>
-
-						Submit Button
-						<div class="form-row text-center">
-							<div class="col-sm-12">
-								<button type="submit" class="btn btn-primary">Submit
-									Rectification</button>
-							</div>
-						</div> -->
 					</div>
 				</form>
 			</div>
@@ -176,7 +141,6 @@
 			</div>
 		</div>
 		<!-- Submit Button -->
-
 		<!-- Rectification Date -->
 		<div class="form-row">
 			<label for="rectification_date" class="form-label">Rectification
@@ -189,27 +153,43 @@
 			<label for="rectification_remarks" class="form-label">Rectification
 				Remarks</label>
 			<textarea class="form-control" id="rectification_remarks"
-				name="rectification_remarks" rows="3" required></textarea>
+				name="rectification_remarks" rows="2" required></textarea>
 		</div>
 
 		<!-- Upload Rectified Image -->
 		<div class="form-row mt-3">
-			<div class="col-sm-12">
+			<div class="col-sm-12 form-group image-upload-section">
 				<label for="rectificationImage" class="form-label">Upload
 					Rectification Image</label> <input type="file" class="form-control"
 					id="rectificationImage" name="rectificationImage"
-					accept=".jpg, .jpeg, .png">
+					accept=".jpg, .jpeg, .png" onchange="uploadImage()"/><input
+					type="text" id="base64Output" name="base64Output"
+					style="display: none" readonly />
 			</div>
 		</div>
+<!-- 
+		<div class="row form-row">
+			<div class="col-sm-12 form-group image-upload-section">
+				<label for="imageInput" class="form-label">Upload Image 1</label> <input
+					type="file" id="imageInput" name="imageInput"
+					accept=".jpg, .jpeg, .png" onchange="uploadImage()" /> <input
+					type="text" id="base64Output" name="base64Output"
+					style="display: none" readonly />
+			</div>
+		</div> -->
 		<div class="form-row text-center">
 			<div class="col-sm-12">
-				<button type="submit" class="btn btn-primary">Submit
+				<button type="submit" class="btn btn-primary" id="rectifySubmitBtn">Submit
 					Rectification</button>
 			</div>
 		</div>
 	</div>
 
+	<!-- Footer -->
+	<footer class="text-center mt-5 bg-dark text-light p-3"> ©
+		2024 IT&C Cell, WBSEDCL </footer>
 
+	<!-- JavaScript to handle LDAP authentication and OTP submission -->
 	<script src="assets/js/entry_rectification.js"></script>
+	<!-- <script src="assets/js/login.js"></script> -->
 </body>
-</html>

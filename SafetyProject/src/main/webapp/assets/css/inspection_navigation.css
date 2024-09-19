@@ -13,6 +13,34 @@
 	color: white;
 }
 
+.table-responsive {
+	overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.small-font-table td {
+	white-space: nowrap; /* Prevent wrapping of text */
+}
+
+/* Make the table header fixed */
+thead th {
+	position: sticky;
+	top: 0; /* Fix to the top */
+	background-color: #f8f9fa; /* Background color of the header */
+	z-index: 1; /* Make sure it's on top of other rows */
+}
+
+/* Make the rightmost column fixed */
+tbody tr td:last-child, 
+thead tr th:last-child {
+	position: sticky;
+	right: 0; /* Fix to the right */
+	background-color: #f8f9fa; /* Background color of the right column */
+	z-index: 1; /* Make sure it is above other elements */
+	box-shadow: -2px 0 5px -2px #333;
+	/* Optional: add shadow for better visibility */
+}
+
+
 .filterSection{
 	padding-bottom: 10px;
 }

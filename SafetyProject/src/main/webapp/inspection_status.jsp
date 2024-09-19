@@ -19,6 +19,10 @@
 
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
+<style>
+
+</style>
+
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -32,9 +36,8 @@
 			<div class="card-header text-center custom-header">Inspection
 				Entered By You</div>
 			<div class="card-body">
-				<div class="table-responsive" style="overflow-y: auto;">
-					<table
-						class="table table-striped table-hover table-sm small-font-table">
+				<div class="table-responsive" style="overflow-y: auto; overflow-x: auto;">
+					<table class="table table-striped table-hover table-sm small-font-table">
 						<thead>
 							<tr>
 								<th>Sl No.</th>

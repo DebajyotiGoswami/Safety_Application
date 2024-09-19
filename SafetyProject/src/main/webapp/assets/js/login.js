@@ -304,6 +304,7 @@ function handleButtonClick(event) {
 						
 						localStorage.empListCount= JSON.parse(localStorage.getItem("empList")).length;
 						localStorage.officeListCount= JSON.parse(localStorage.getItem("officeList")).length;
+						
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}

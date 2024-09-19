@@ -73,49 +73,49 @@ $(document).ready(function() {
 
 	//$('#searchBtn, #allAssignedByMeBtn').click(function() {
 
-		$('#resultsContainer').show();
+	$('#resultsContainer').show();
 
-		var fromDate = $('#fromDate').val();
-		var toDate = $('#toDate').val();
-		var assignedTo = $('#assignedTo').val();
-		//var pendingAssignments = document.querySelector("#pendingAssignments").checked;
+	var fromDate = $('#fromDate').val();
+	var toDate = $('#toDate').val();
+	var assignedTo = $('#assignedTo').val();
+	//var pendingAssignments = document.querySelector("#pendingAssignments").checked;
 
-		var jsonObjectInput = {};
-		jsonObjectInput.pageNm = "DASH";
-		jsonObjectInput.ServType = "204";
-		var cookieData = JSON.parse(getCookie('empDtls'));
-		var tkn = getCookie('tkn');
-		var xUid = cookieData.xUid;
-		var costCenter = cookieData.empDtls.KST01CL;
-		xUidJson = enCrypt(xUid, "123456");
-		xUidEncrypted = xUidJson.User;
-		dUidEncrypted = xUidJson.Pwd;
-		jsonObjectInput.xUid = xUidEncrypted;
-		jsonObjectInput.dUid = dUidEncrypted;
-		jsonObjectInput.tkn = tkn;
-		jsonObjectInput["KST01CL"] = costCenter;
+	var jsonObjectInput = {};
+	jsonObjectInput.pageNm = "DASH";
+	jsonObjectInput.ServType = "204";
+	var cookieData = JSON.parse(getCookie('empDtls'));
+	var tkn = getCookie('tkn');
+	var xUid = cookieData.xUid;
+	var costCenter = cookieData.empDtls.KST01CL;
+	xUidJson = enCrypt(xUid, "123456");
+	xUidEncrypted = xUidJson.User;
+	dUidEncrypted = xUidJson.Pwd;
+	jsonObjectInput.xUid = xUidEncrypted;
+	jsonObjectInput.dUid = dUidEncrypted;
+	jsonObjectInput.tkn = tkn;
+	jsonObjectInput["KST01CL"] = costCenter;
 
-		//alert("before calling populate table");
-		//populateTable(data);
-		$.ajax({
-			type: 'POST',
-			url: url,
-			data: JSON.stringify(jsonObjectInput),
-			success: function(response) {
-				var newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
-				var empList = response.inspectListEmp.assignList;
+	//alert("before calling populate table");
+	//populateTable(data);
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: JSON.stringify(jsonObjectInput),
+		success: function(response) {
+			var newToken = response.tkn;
+			setCookie("tkn", newToken, 30);
+			var empList = response.inspectListEmp.assignList;
 
-				if (response.ackMsgCode === "204") {
-					fullData = empList;
-					populateTable(empList);
-				}
-			},
-			error: function(xhr, status, error) {
-				//if server not get connected 
-				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+			if (response.ackMsgCode === "204") {
+				fullData = empList;
+				populateTable(empList);
 			}
-		});
+		},
+		error: function(xhr, status, error) {
+			//if server not get connected 
+			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+		}
+	});
 	//});
 
 	$('#fromDate, #toDate, #probName, #officeName').on('change', function() {
@@ -132,7 +132,7 @@ $(document).ready(function() {
 			var itemInspDate = new Date(item.inspection_date);
 			//var itemDateTo = new Date(item.inspection_to_date);
 
-			var itemProblemName = item.problem_id.toLowerCase()+ item.problem_remarks.toLowerCase();
+			var itemProblemName = item.problem_id.toLowerCase() + item.problem_remarks.toLowerCase();
 			var itemAssignedOffice = item.assigned_office_code;
 
 			let officeList = JSON.parse(localStorage.getItem("officeList"));
@@ -235,10 +235,33 @@ $(document).ready(function() {
 				anchor.innerHTML = '<i class="fas fa-eye" title="click to delete"></i>'; // Use Font Awesome icon
 				//anchor.textContent = "View Inspection"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
+
+				// Attach an onclick event to the anchor
+				anchor.onclick = function(event) {
+					alert("clicked outside ajax");
+					event.preventDefault(); // Prevent the default action of the anchor tag
+					$.ajax({
+						url: url, // Replace with your server endpoint
+						type: 'POST', // or 'GET' depending on your server setup
+						data: { inspectionId: item.inspection_id }, // Data to be sent to the server
+						success: function(response) {
+							// Handle the success response
+							alert("clicked inside ajax");
+							// You can also update the DOM or perform other actions here
+						},
+						error: function(xhr, status, error) {
+							// Handle the error response
+							//if server not get connected 
+							console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+						}
+					});
+				};
+
+
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
 
-				
+
 				//anchor.textContent = "MODIFY"; // Anchor text
 			} else {
 				// If status is not "INSPECTED", just add an empty cell

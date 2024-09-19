@@ -5,7 +5,6 @@ var url = "http://10.251.37.170:8080/testSafety/testSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
-var btn = document.createElement('button');
 
 function enCrypt(uid, pwd) {
 	//var uid=devEle["enIdCon"];
@@ -45,8 +44,32 @@ function enCrypt(uid, pwd) {
 	return jsonObj;
 }
 
+function setCookie(name, value, minutes) {
+	//value passed as object
+	let expires = "";
+	if (minutes) {
+		const date = new Date();
+		date.setTime(date.getTime() + (minutes * 60 * 1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+	const nameEQ = name + "=";
+	const ca = document.cookie.split(';');
+	for (let i = 0; i < ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) === 0) {
+			return c.substring(nameEQ.length, c.length);
+		}
+	}
+	return null;
+}
+
 function uploadImage() {
-	var input = document.getElementById('imageInput');
+	var input = document.getElementById('rectificationImage');
 	var file = input.files[0];
 
 	if (!file) {
@@ -75,65 +98,23 @@ function uploadImage() {
 	reader.readAsDataURL(file);
 }
 
-function setCookie(name, value, minutes) {
-	//value passed as object
-	let expires = "";
-	if (minutes) {
-		const date = new Date();
-		date.setTime(date.getTime() + (minutes * 60 * 1000));
-		expires = "; expires=" + date.toUTCString();
-	}
-	document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
-
-function getCookie(name) {
-	const nameEQ = name + "=";
-	const ca = document.cookie.split(';');
-	for (let i = 0; i < ca.length; i++) {
-		let c = ca[i];
-		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) === 0) {
-			return c.substring(nameEQ.length, c.length);
-		}
-	}
-	return null;
-}
-
-function populateDateDropdown(startDateStr, endDateStr) {
-	// Parse the input dates
-	const startDate = new Date(startDateStr);
-	const endDate = new Date(endDateStr);
-
-	// Get the dropdown element
-	const dropdown = document.getElementById('dateDropdown');
-
-	// Clear the previous options if any
-	dropdown.innerHTML = '';
-
-	// Iterate over the range of dates
-	for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-		// Create an option element
-		const option = document.createElement('option');
-
-		// Format the date to yyyy-mm-dd
-		const formattedDate = date.toISOString().split('T')[0];
-		option.value = formattedDate;
-		option.textContent = formattedDate;
-
-		// Append the option to the dropdown
-		dropdown.appendChild(option);
-	}
-}
 
 $(document).ready(function() {
 	$('#resultsContainer').show();
+	var fullData = [];
+
+	var fromDate = $('#fromDate').val();
+	var toDate = $('#toDate').val();
+	var assignedTo = $('#assignedTo').val();
+	//var pendingAssignments = document.querySelector("#pendingAssignments").checked;
+	var assignedOffice = $('#assignedOffice').val();
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
 	jsonObjectInput.ServType = "205";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
-	var xUid = getCookie("User");
+	var xUid = cookieData.xUid;
 	var costCenter = cookieData.empDtls.KST01CL;
 	xUidJson = enCrypt(xUid, "123456");
 	xUidEncrypted = xUidJson.User;
@@ -141,93 +122,78 @@ $(document).ready(function() {
 	jsonObjectInput.xUid = xUidEncrypted;
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
-	/*jsonObjectInput["KST01CL"] = costCenter;*/
 	jsonObjectInput["KST01CL"] = "3532000";
+
 	$.ajax({
-		url: url,
 		type: 'POST',
+		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			var empList = response.assignEmpDtls.assignList;
+			var empList = response.inspectListEmp.assignList;
 			var newToken = response.tkn;
+			setCookie("tkn", newToken, 30);
 			if (response.ackMsgCode === "205") {
+				fullData = empList;
 				populateTable(empList);
-				setCookie("tkn", newToken, 30);
-				//$('#additionalSection1').show();
-				//document.getElementById('additionalSection1').style.display = 'block';
 			}
 		}
 	});
 
-	$('#inspSubmitBtn, #inspSubmitBtn2, #resultsContainer').on('click', function() {
-		function disableMouseInteraction(className) {
-			var elements = document.querySelectorAll('.' + className);
-			elements.forEach(function(element) {
-				element.style.pointerEvents = 'none';
-			});
-		}
+	$('#rectifySubmitBtn').on('click', function() {
+		let inspection_id = $('#inspection_id').val();
+		let rectification_date = $('#inspection_date').val();
+		let rectification_remarks = $('#rectification_date').val();
+		let site_id = $('#site_id').val();
+		let rectified_by = getCookie("User");
+		let image1 = $('#base64Output').val();
+		let User = getCookie("User");
+		let siteId = $('#site_id').val();
+		alert(siteId);
 
-		// Collect values from the input fields
-		var network_type = $('#network_type').val();
-		var asset_name = $('#asset_type').val();
-		var cookieData = JSON.parse(getCookie('empDtls'));
-		var tkn = getCookie('tkn');
-		var xUid = getCookie("User");
-		var costCenter = cookieData.empDtls.KST01CL;
-		//var costCenter = cookieData.empDtls.KST01CL;
-		xUidJson = enCrypt(xUid, "123456");
+		xUidJson = enCrypt(User, "123456");
 		xUidEncrypted = xUidJson.User;
 		dUidEncrypted = xUidJson.Pwd;
-		let assetList = JSON.parse(getCookie("assetList"));
+		let tkn = getCookie('tkn');
+		let xUid = cookieData.xUid;
+		let costCenter = getCookie("KST01CL");
 
-		var jsonObj = {
-			"network_type": network_type,
-			"assetId": asset_name,
+		var jsonObjInput = {
+			"inspectionId": inspection_id,
+			"rectification_date": rectification_date,
+			"rectification_remarks": rectification_remarks,
+			"rectified_by": rectified_by,
+			"preImage": image1,
+			"ServType": "103",  //integer
+			"latitude": 88.32, //double
+			"longitude": 132.12, //double
+			"gisId": "NA",
+			"siteId": site_id,
+			"presentStatus": "RECTIFIED",
 			"pageNm": "DASH",
-			"ServType": "203",
 			"tkn": tkn,
 			"xUid": xUidEncrypted,
 			"dUid": dUidEncrypted,
-			"KST01CL": costCenter,
-			"office_code_to_inspect": getCookie("office_code_to_inspect"),
-			"assetId": assetList[network_type + asset_name]
+			"KST01CL": costCenter
 		};
-		//var jsonString = JSON.stringify(jsonObj);
+
 		$.ajax({
-			type: 'POST',
 			url: url,
-			data: JSON.stringify(jsonObj),
+			type: 'POST',
+			data: JSON.stringify(jsonObjInput),
 			success: function(response) {
-				//populate problem dropdown
-				var dropdown = $('#problem_list');
-				dropdown.empty(); // Clear any existing options
-
-				// Assuming response is a JSON array
-				$.each(response.probDtls.probDtls, function(index, item) {
-					dropdown.append($('<option></option>').attr('value', item.probId).text(item.probDesc));
-				});
-
-				//populate office dropdown
-				var dropdown = $('#office_name');
-				dropdown.empty(); // Clear any existing options
-				// Assuming response is a JSON array
-				$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
-					dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
-				});
-
+				console.log("success");
 				var newToken = response.tkn;
 				setCookie("tkn", newToken, 30);
+				if (response.ackMsgCode === "103") {
+					alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
+					window.location.href = 'new_rectifi.jsp';
+				}
 			},
 			error: function(xhr, status, error) {
-				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`)
+				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 			}
 		});
-		disableMouseInteraction('initial-section');
-		$('#formContainer').show();
-		$('#inspSubmitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
-		isNextClicked = true; // Update flag
 	});
-
 	function populateTable(data) {
 		// Get the table body element
 		var tableBody = document.getElementById('resultsTableBody');
@@ -240,6 +206,7 @@ $(document).ready(function() {
 		data.forEach(function(item) {
 			var row = document.createElement('tr');
 
+			//Serial Number
 			var serialNumber = document.createElement('td');
 			serialNumber.textContent = index++;
 			row.appendChild(serialNumber);
@@ -247,60 +214,145 @@ $(document).ready(function() {
 			//row.append($('<td>').text(index++));
 
 			// Create columns for each field
+
+			//Inspection Id
 			var inspectionIdCell = document.createElement('td');
 			inspectionIdCell.textContent = item.inspection_id;
 			row.appendChild(inspectionIdCell);
 
-			var empAssignedByCell = document.createElement('td');
-			empAssignedByCell.textContent = item.assigned_date;
-			row.appendChild(empAssignedByCell);
+			//Inspection Date
+			var inspectionDateCell = document.createElement('td');
+			inspectionDateCell.textContent = item.inspection_date;
+			row.appendChild(inspectionDateCell);
 
-			var empAssignedToCell = document.createElement('td');
-			empAssignedToCell.textContent = item.emp_assigned_to_Nm;
-			row.appendChild(empAssignedToCell);
+			//Inspected By
+			var inspectedByCell = document.createElement('td');
+			inspectedByCell.textContent = item.inspection_by;
+			row.appendChild(inspectedByCell);
 
-			var officeCodeCell = document.createElement('td');
-			officeCodeCell.textContent = item.office_name_to_inspect;
-			row.appendChild(officeCodeCell);
+			//problem name
+			var problemNameCell = document.createElement('td');
+			problemNameCell.textContent = item.problem_id;
+			row.appendChild(problemNameCell);
 
-			var fromDateCell = document.createElement('td');
-			fromDateCell.textContent = item.inspection_from_date;
-			row.appendChild(fromDateCell);
+			//problem details
+			var problemDetailsCell = document.createElement('td');
+			problemDetailsCell.textContent = item.problem_remarks;
+			row.appendChild(problemDetailsCell);
 
-			var toDateCell = document.createElement('td');
-			toDateCell.textContent = item.inspection_to_date;
-			row.appendChild(toDateCell);
+			//location details
+			var locationCell = document.createElement('td');
+			locationCell.textContent = item.location_remarks;
+			row.appendChild(locationCell);
 
 			var statusCell = document.createElement('td');
-			statusCell.textContent = item.status;
+			statusCell.textContent = item.present_status;
 			row.appendChild(statusCell);
 
-			// Create a column for the button tag
-			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED") {
+			// Create a column for the anchor tag
+			if (item.present_status === "INSPECTED") {
+				/*console.log("start");
+				var actionCell = document.createElement('td');
+				var anchor = document.createElement('a');
+				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
+				anchor.innerHTML = '<i class="fas fa-eye fa-lg" title="View Data"></i>'; // Use Font Awesome icon
+				//anchor.textContent = "MODIFY"; // Anchor text
+				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
+				actionCell.appendChild(anchor);
+				row.appendChild(actionCell);
+				console.log("end");*/
 				var actionCell = document.createElement('td');
 				var btn = document.createElement('button');
+				btn.id = 'fetchInspectButton';
 				//anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
-				btn.textContent = "Enter Inspection";
+				btn.textContent = "RECTIFY";
 				btn.setAttribute('data-inspection-id', item.inspection_id);
-				btn.setAttribute('data-from-date', item.inspection_from_date);
-				btn.setAttribute('data-end-date', item.inspection_to_date);
-				btn.setAttribute('office_code_to_inspect', item.office_code_to_inspect);
+				btn.setAttribute('data-inspection-date', item.inspection_date);
+				btn.setAttribute('data-inspection-by', item.inspection_by);
+				btn.setAttribute('data-problem-name', item.problem_id);
+				btn.setAttribute('data-problem-details', item.problem_remarks);
+				btn.setAttribute('data-location', item.location_remarks);
+				btn.setAttribute('data-site-id', item.site_id);
+				console.log("1: " + item.site_id);
+
+				//btn.setAttribute('data-image', item.image);
+
 				//btn.className = "btn btn-primary"; // Optional: Bootstrap button styling
 				actionCell.appendChild(btn);
 				row.appendChild(actionCell);
 
 				btn.addEventListener('click', function() {
-					//show additional section
-					var inspectionId = this.getAttribute('data-inspection-id');
-					var dataFromDate = this.getAttribute('data-from-date');
-					var dataEndDate = this.getAttribute('data-end-date');
-					populateDateDropdown(dataFromDate, dataEndDate);
-					$('#additionalSection1').show();
-					alert('Inspection ID: ${inspectionId} is selected.\nYour inspection entry date should be within \n${dataFromDate} and ${dataEndDate}');
+					let inspectionId = this.getAttribute('data-inspection-id');
+					let siteId = this.getAttribute('data-site-id');
+					let problemName = this.getAttribute('data-problem-name');
+
+					let User = getCookie("User");
+
+					xUidJson = enCrypt(User, "123456");
+					xUidEncrypted = xUidJson.User;
+					dUidEncrypted = xUidJson.Pwd;
+					let tkn = getCookie('tkn');
+					let costCenter = getCookie("KST01CL");
+
+					var jsonObjInput = {
+						"inspectionId": inspectionId,
+						"siteId": siteId,
+						"problemId": problemName,
+						"ServType": "206",  //integer
+						"pageNm": "DASH",
+						"tkn": tkn,
+						"xUid": xUidEncrypted,
+						"dUid": dUidEncrypted,
+						"KST01CL": costCenter
+					};
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(jsonObjInput),
+						success: function(response) {
+							console.log("success");
+							let newToken = response.tkn;
+							setCookie("tkn", newToken, 30);
+							console.log(getCookie("tkn"));
+							if (response.ackMsgCode === "206") {
+								alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
+								window.location.href = 'new_rectifi.jsp';
+							}
+						},
+						error: function(xhr, status, error) {
+							let newToken = response.tkn;
+							setCookie("tkn", newToken, 30);
+							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+						}
+					});
+					/*//show additional section
+					let inspectionId = this.getAttribute('data-inspection-id');
+					let inspectionDate = this.getAttribute('data-inspection-date');
+					let inspectionBy = this.getAttribute('data-inspection-by');
+					let problemName = this.getAttribute('data-problem-name');
+					let problemDetails = this.getAttribute('data-problem-details');
+					let location = this.getAttribute('data-location');
+					let siteId = this.getAttribute('data-site-id');
+					console.log("2: " + siteId);
+					//let image = this.getAttribute('data-image');
+
+
+					//populateDateDropdown(dataFromDate, dataEndDate);
+					$('#resultsContainer').hide();
+					$('#formContainer').show();
+					$('#inspSubmitBtn').show();
+					alert(`Inspection ID: ${inspectionId} is selected.\nEnter rectification details carefully.`);
 					document.getElementById('inspection_id').value = inspectionId;
-					//$('#submitBtn').show();
-					//document.getElementById('submitBtn').style.display= 'block';
-					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);
+					document.getElementById('inspection_date').value = inspectionDate;
+					document.getElementById('inspection_by').value = inspectionBy;
+					document.getElementById('problem_name').value = problemName;
+					document.getElementById('problem_details').value = problemDetails;
+					document.getElementById('location').value = location;
+					document.getElementById('site_id').value = siteId;
+					console.log("3: " + document.getElementById('site_id').value);
+					//document.getElementById('image').value = image;
+					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);*/
 				});
 			} else {
 				// If status is not "INSPECTED", just add an empty cell
@@ -312,4 +364,4 @@ $(document).ready(function() {
 			tableBody.appendChild(row);
 		});
 	}
-});
+});	
