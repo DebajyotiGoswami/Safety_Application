@@ -99,6 +99,7 @@ function uploadImage() {
 }
 
 
+
 $(document).ready(function() {
 	$('#resultsContainer').show();
 	var fullData = [];
@@ -148,7 +149,6 @@ $(document).ready(function() {
 		let image1 = $('#base64Output').val();
 		let User = getCookie("User");
 		let siteId = $('#site_id').val();
-		alert(siteId);
 
 		xUidJson = enCrypt(User, "123456");
 		xUidEncrypted = xUidJson.User;
@@ -159,10 +159,10 @@ $(document).ready(function() {
 
 		var jsonObjInput = {
 			"inspectionId": inspection_id,
-			"rectification_date": rectification_date,
-			"rectification_remarks": rectification_remarks,
-			"rectified_by": rectified_by,
-			"preImage": image1,
+			"rectificationDate": rectification_date,
+			"rectificationRemarks": rectification_remarks,
+			"rectifiedBy": rectified_by,
+			"postImage": image1,
 			"ServType": "103",  //integer
 			"latitude": 88.32, //double
 			"longitude": 132.12, //double
@@ -173,7 +173,8 @@ $(document).ready(function() {
 			"tkn": tkn,
 			"xUid": xUidEncrypted,
 			"dUid": dUidEncrypted,
-			"KST01CL": costCenter
+			"KST01CL": "3332000",
+			"solutionId": "NA"
 		};
 
 		$.ajax({
@@ -186,7 +187,8 @@ $(document).ready(function() {
 				setCookie("tkn", newToken, 30);
 				if (response.ackMsgCode === "103") {
 					alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
-					window.location.href = 'new_rectifi.jsp';
+					console.log(JSON.stringify(response));
+					//window.location.href = 'new_rectification.jsp';
 				}
 			},
 			error: function(xhr, status, error) {
@@ -295,7 +297,7 @@ $(document).ready(function() {
 					let costCenter = getCookie("KST01CL");
 
 					var jsonObjInput = {
-						"inspectionId": inspectionId,
+						"inspectId": inspectionId,
 						"siteId": siteId,
 						"problemId": problemName,
 						"ServType": "206",  //integer
@@ -303,7 +305,7 @@ $(document).ready(function() {
 						"tkn": tkn,
 						"xUid": xUidEncrypted,
 						"dUid": dUidEncrypted,
-						"KST01CL": costCenter
+						"KST01CL": "3532000"
 					};
 
 					$.ajax({
@@ -311,21 +313,53 @@ $(document).ready(function() {
 						type: 'POST',
 						data: JSON.stringify(jsonObjInput),
 						success: function(response) {
-							console.log("success");
+							console.log("rectify: " + JSON.stringify(response));
 							let newToken = response.tkn;
 							setCookie("tkn", newToken, 30);
 							console.log(getCookie("tkn"));
 							if (response.ackMsgCode === "206") {
-								alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
-								window.location.href = 'new_rectifi.jsp';
+								let inspectionData = response.inspectListEmp.assignList[0];
+								let latitude = inspectionData.latitude
+								let longitude = inspectionData.longitude
+								let location_remarks = inspectionData.location_remarks;
+								let gis_id = inspectionData.gis_id;
+								let inspection_date = inspectionData.inspection_date;
+								let present_status = inspectionData.present_status;
+								let inspection_by = inspectionData.inspection_by;
+								let inspection_id = inspectionData.inspection_id;
+								let problem_id = inspectionData.problem_id;
+								let site_id = inspectionData.site_id;
+								let problem_remarks = inspectionData.problem_remarks;
+								let pre_image = inspectionData.pre_image;
+								
+
+								$('#resultsContainer').hide();
+								$('#formContainer').show();
+								$('#inspSubmitBtn').show();
+								
+								alert(`Inspection ID: ${inspection_id} is selected.\nEnter rectification details carefully.`);
+								document.getElementById('inspection_id').value = inspection_id;
+								document.getElementById('inspection_date').value = inspection_date;
+								document.getElementById('inspection_by').value = inspection_by;
+								document.getElementById('problem_name').value = problem_id;
+								document.getElementById('problem_details').value = problem_remarks;
+								document.getElementById('location').value = location_remarks;
+								document.getElementById('site_id').value = site_id;
+								let img = document.getElementById('imagePreview');
+								img.src = 'data:image/jpeg;base64,' + pre_image;
+								//document.getElementById('image').value = image;
+								setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);
+								//window.location.href = 'new_rectification.jsp';
 							}
 						},
 						error: function(xhr, status, error) {
-							let newToken = response.tkn;
-							setCookie("tkn", newToken, 30);
 							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 						}
 					});
+
+
+
+
 					/*//show additional section
 					let inspectionId = this.getAttribute('data-inspection-id');
 					let inspectionDate = this.getAttribute('data-inspection-date');
@@ -335,24 +369,11 @@ $(document).ready(function() {
 					let location = this.getAttribute('data-location');
 					let siteId = this.getAttribute('data-site-id');
 					console.log("2: " + siteId);
-					//let image = this.getAttribute('data-image');
+					//let image = this.getAttribute('data-image');*/
 
 
 					//populateDateDropdown(dataFromDate, dataEndDate);
-					$('#resultsContainer').hide();
-					$('#formContainer').show();
-					$('#inspSubmitBtn').show();
-					alert(`Inspection ID: ${inspectionId} is selected.\nEnter rectification details carefully.`);
-					document.getElementById('inspection_id').value = inspectionId;
-					document.getElementById('inspection_date').value = inspectionDate;
-					document.getElementById('inspection_by').value = inspectionBy;
-					document.getElementById('problem_name').value = problemName;
-					document.getElementById('problem_details').value = problemDetails;
-					document.getElementById('location').value = location;
-					document.getElementById('site_id').value = siteId;
-					console.log("3: " + document.getElementById('site_id').value);
-					//document.getElementById('image').value = image;
-					setCookie("office_code_to_inspect", item.office_code_to_inspect, 30);*/
+
 				});
 			} else {
 				// If status is not "INSPECTED", just add an empty cell

@@ -135,8 +135,7 @@
 			<!-- Right Section (Image) -->
 			<div class="col-md-6">
 				<div class="image-container">
-					<img src="assets/images/placeholder.png" alt="Placeholder Image"
-						style="width: 100%; height: auto;">
+					<img id="imagePreview" alt="Image_Before_Rectification" style="width: 100%; height: auto;">
 				</div>
 			</div>
 		</div>

@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
 <script src="assets/js/jquery.min.js"></script>
 <!-- <script src="assets/js/login.js"></script> -->
-<!-- <script src="assets/js/dashboard.js"></script> -->
+<script src="assets/js/dashboard.js"></script>
 <%@page import="org.json.*"%>
 </head>
 
@@ -93,7 +93,7 @@
 							inspection and rectification data. Analyze trends, identify
 							recurring issues.</p>
 						<div class="btn-container">
-							<a href="#" class="btn btn-primary btn-equal">Generate
+							<a  class="btn btn-primary btn-equal" onclick="portalAllView()">Generate
 								Reports</a>
 						</div>
 					</div>
