@@ -90,7 +90,7 @@ $(document).ready(function() {
 	jsonObjectInput.xUid = xUidEncrypted;
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
-	jsonObjectInput["KST01CL"] = "3532000";
+	jsonObjectInput["KST01CL"] = costCenter;
 
 	$.ajax({
 		type: 'POST',
@@ -104,6 +104,12 @@ $(document).ready(function() {
 				fullData = empList;
 				populateTable(empList);
 			}
+		},
+		error: function(xhr, status, error) {
+			//if server not get connected 
+			var newToken = response.tkn;
+			setCookie("tkn", newToken, 30);
+			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
 	});
 
@@ -121,7 +127,7 @@ $(document).ready(function() {
 			var itemInspectionDate = new Date(item.inspection_date);
 			var itemProblemName = item.problem_remarks.toLowerCase() + item.problem_id.toLowerCase();
 			var itemLocationName = item.location_remarks.toLowerCase();
-			
+
 			var match = true;
 
 			if (fromDate && itemInspectionDate < new Date(fromDate)) {

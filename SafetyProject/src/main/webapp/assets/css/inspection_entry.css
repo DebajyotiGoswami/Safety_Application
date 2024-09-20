@@ -50,6 +50,8 @@ html, body {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	max-height: 80vh;
+	overflow-y: auto;
 }
 
 /* Add this to your existing CSS file or style tag */
@@ -207,6 +209,7 @@ footer {
 .btn-center {
 	display: flex;
 	justify-content: center;
+	align-center:center;
 }
 
 .heading-container {
@@ -214,6 +217,9 @@ footer {
 	margin-bottom: 5px;
 }
 
+#rectifySubmitBtn{
+	margin-top: 20px;
+}
 .required-label::after {
 	content: '*';
 	color: red;

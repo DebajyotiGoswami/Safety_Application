@@ -231,28 +231,35 @@ $(document).ready(function() {
 			if (item.present_status === "INSPECTED" || item.present_status === "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
-				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
-				anchor.innerHTML = '<i class="fas fa-eye" title="click to delete"></i>'; // Use Font Awesome icon
+				//anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
+				anchor.innerHTML = '<i class="fas fa-eye" title="View Data"></i>'; // Use Font Awesome icon
 				//anchor.textContent = "View Inspection"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
 
 				// Attach an onclick event to the anchor
 				anchor.onclick = function(event) {
-					alert("clicked outside ajax");
-					event.preventDefault(); // Prevent the default action of the anchor tag
+					let jsonInput = {
+						"role_id": "1",
+						"inspection_id": "1234567890",
+						"emp_name": getCookie("empName"),
+						"erp_id": getCookie("User"),
+						"office_name": getCookie("office"),
+						"designation": getCookie("designation"),
+						"office_code": getCookie("KST01CL"),
+						"tkn": getCookie("tkn"),
+						"page_id": "403",
+						"auth": "INSP_PRTL"
+					}
+
 					$.ajax({
-						url: url, // Replace with your server endpoint
-						type: 'POST', // or 'GET' depending on your server setup
-						data: { inspectionId: item.inspection_id }, // Data to be sent to the server
+						url: "localhost:8080/SafetyReportView/frmprtl",
+						type: 'POST',
+						data: JSON.stringify(jsonInput),
 						success: function(response) {
-							// Handle the success response
-							alert("clicked inside ajax");
-							// You can also update the DOM or perform other actions here
+							alert("success");
 						},
 						error: function(xhr, status, error) {
-							// Handle the error response
-							//if server not get connected 
-							console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 						}
 					});
 				};

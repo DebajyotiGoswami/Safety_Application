@@ -270,7 +270,6 @@ function handleButtonClick(event) {
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
 						console.log("after otp: " + JSON.stringify(response));
-						alert("after otp: " + JSON.stringify(response));
 						var employee_list = JSON.stringify(response.empList.empList);
 						var office_list = JSON.stringify(response.offList.officeList);
 						var asset_list = response.assetList.assetDtls;
@@ -281,7 +280,7 @@ function handleButtonClick(event) {
 						}
 						setCookie("assetList", JSON.stringify(new_asset_list), 30);
 
-						//window.location.href = 'dashboard.jsp';
+						window.location.href = 'dashboard.jsp';
 
 						jsonObjInput["tkn"] = response.tkn;
 
@@ -299,6 +298,10 @@ function handleButtonClick(event) {
 						setCookie("office", jsonObjCookie.empDtls.LTEXTCL, 30);
 						setCookie("KST01CL", jsonObjCookie.empDtls.KST01CL, 30);
 						setCookie("costCenter", jsonObjCookie.empDtls.KST01CL, 30);
+						/*if (getCookie("User") === "90012775") {
+							setCookie("KST01CL", "4300000", 30);
+							setCookie("costCenter", "4300000", 30);
+						}*/
 						setCookie("xUid", jsonObjCookie.xUid, 30);
 
 						// Store office list in localStorage
@@ -308,8 +311,6 @@ function handleButtonClick(event) {
 						localStorage.empListCount = JSON.parse(localStorage.getItem("empList")).length;
 						localStorage.officeListCount = JSON.parse(localStorage.getItem("officeList")).length;
 						console.log("after otp: " + JSON.stringify(response));
-						alert("after otp: " + JSON.stringify(response));
-
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}

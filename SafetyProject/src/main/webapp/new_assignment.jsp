@@ -20,8 +20,41 @@
 </head>
 <body>
 	<!-- Navigation Bar -->
-	<nav>
+	<%-- <nav>
 		<%@ include file="navbar.jsp"%>
+	</nav> --%>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<!-- Left side: Welcome message -->
+			<div id="cookieDisplay"></div>
+			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
+			</span> --%>
+			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
+			<!-- Right side: Navigation links -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarNav" aria-controls="navbarNav"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end"
+				id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					</li>
+					<li class="nav-item">
+						<!-- Logout form -->
+						<form action="LogoutServlet" method="POST"
+							onsubmit="clearLocalStorage()" style="display: inline;">
+							<button type="submit" id="logOutSubmit" name="logOutSubmit"
+								class="btn btn-outline-light ml-2">Logout</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="assets/js/navbar.js"></script>
 	</nav>
 
 	<!-- Main Content -->
@@ -31,7 +64,8 @@
 			<form>
 				<div class="mb-3 row">
 					<label for="teamMembers" class="col-sm-3 col-form-label">Number
-						of Team Members<span class="text-danger">*</span></label>
+						of Team Members<span class="text-danger">*</span>
+					</label>
 					<div class="col-sm-9">
 						<select class="form-control team-selection" id="teamMembers"
 							onchange="updateERPFields()">
@@ -44,7 +78,8 @@
 				</div>
 				<div id="erpIdContainer"></div>
 				<div class="mb-3 row">
-					<label class="col-sm-3 col-form-label">Inspection Date<span class="text-danger">*</span></label>
+					<label class="col-sm-3 col-form-label">Inspection Date<span
+						class="text-danger">*</span></label>
 					<div class="col-sm-4">
 						<input type="date" class="form-control" id="inspectionDateStart"
 							required>
@@ -59,7 +94,8 @@
 				<!-- Error message container with red text -->
 				<div class="mb-3 row">
 					<label for="officeName" class="col-sm-3 col-form-label">Office
-						Name<span class="text-danger">*</span></label>
+						Name<span class="text-danger">*</span>
+					</label>
 					<div class="col-sm-9">
 						<select class="form-control" id="officeName" name="officeName"
 							required>
@@ -77,8 +113,8 @@
 				</div>
 				<div class="mb-3 row">
 					<div class="col-sm-12 text-center">
-						<button type="button" class="btn btn-primary" id="assgnSubmitbtn" disabled>Assign
-							Inspection</button>
+						<button type="button" class="btn btn-primary" id="assgnSubmitbtn"
+							disabled>Assign Inspection</button>
 					</div>
 				</div>
 			</form>

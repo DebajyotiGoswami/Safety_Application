@@ -123,7 +123,7 @@ $(document).ready(function() {
 	jsonObjectInput.xUid = xUidEncrypted;
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
-	jsonObjectInput["KST01CL"] = "3532000";
+	jsonObjectInput["KST01CL"] = costCenter;
 
 	$.ajax({
 		type: 'POST',
@@ -173,7 +173,7 @@ $(document).ready(function() {
 			"tkn": tkn,
 			"xUid": xUidEncrypted,
 			"dUid": dUidEncrypted,
-			"KST01CL": "3332000",
+			"KST01CL": costCenter,
 			"solutionId": "NA"
 		};
 
@@ -188,7 +188,7 @@ $(document).ready(function() {
 				if (response.ackMsgCode === "103") {
 					alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
 					console.log(JSON.stringify(response));
-					//window.location.href = 'new_rectification.jsp';
+					window.location.href = 'new_rectification.jsp';
 				}
 			},
 			error: function(xhr, status, error) {
@@ -305,7 +305,7 @@ $(document).ready(function() {
 						"tkn": tkn,
 						"xUid": xUidEncrypted,
 						"dUid": dUidEncrypted,
-						"KST01CL": "3532000"
+						"KST01CL": costCenter
 					};
 
 					$.ajax({

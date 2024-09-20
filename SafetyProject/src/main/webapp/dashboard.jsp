@@ -19,9 +19,42 @@
 
 <body>
 	<!-- Navigation Bar -->
-<%-- 	<%@ include file="navbar.jsp" % --%>
-	<nav>
+	<%-- 	<%@ include file="navbar.jsp" % --%>
+	<%-- <nav>
 			<%@ include file="navbar.jsp"%>
+	</nav> --%>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<!-- Left side: Welcome message -->
+			<div id="cookieDisplay"></div>
+			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
+			</span> --%>
+			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
+			<!-- Right side: Navigation links -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarNav" aria-controls="navbarNav"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end"
+				id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					</li>
+					<li class="nav-item">
+						<!-- Logout form -->
+						<form action="LogoutServlet" method="POST"
+							onsubmit="clearLocalStorage()" style="display: inline;">
+							<button type="submit" id="logOutSubmit" name="logOutSubmit"
+								class="btn btn-outline-light ml-2">Logout</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="assets/js/navbar.js"></script>
 	</nav>
 
 	<!-- Dashboard Content -->
@@ -37,16 +70,15 @@
 						<p class="card-text">Manage inspection tasks by assigning
 							responsibilities to your team and track assignment progress.</p>
 						<div class="btn-container">
-							<a href="new_assignment.jsp"
-								class="btn btn-primary btn-equal">Create New Assignment</a> 
-							<a href="assignment_status.jsp" class="btn btn-primary btn-equal">Inspection Assigned 
-							By You</a>
+							<a href="new_assignment.jsp" class="btn btn-primary btn-equal">Create
+								New Assignment</a> <a href="assignment_status.jsp"
+								class="btn btn-primary btn-equal">Inspection Assigned By You</a>
 						</div>
 					</div>
 				</div>
 			</div>
-<%-- <%String str= request.getSession().getAttribute("empDtls").toString(); %> --%>
-<%-- <%=str %>  --%>
+			<%-- <%String str= request.getSession().getAttribute("empDtls").toString(); %> --%>
+			<%-- <%=str %>  --%>
 
 			<!-- Inspection Entry section -->
 			<div class="col-md-6 mb-4">
@@ -57,11 +89,11 @@
 							inspections. Also find a comprehensive inspection history for
 							reference and reporting.</p>
 						<div class="btn-container">
-							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Your Pending
-								Inspection</a> 
-						<!-- <button type= "button" id="showInspectionReport" name="showInspectionReport" class="btn btn-primary btn-equal">View
+							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Your
+								Pending Inspection</a>
+							<!-- <button type= "button" id="showInspectionReport" name="showInspectionReport" class="btn btn-primary btn-equal">View
 								All Inspections</button> -->
-								<a href="inspection_status.jsp" class="btn btn-primary btn-equal">View
+							<a href="inspection_status.jsp" class="btn btn-primary btn-equal">View
 								All Inspections</a>
 						</div>
 					</div>
@@ -76,9 +108,9 @@
 						<p class="card-text">Enter the detailed information of
 							corrective actions which was taken after inspections.</p>
 						<div class="btn-container">
-							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Your Pending
-								Rectification</a> <a href="rectification_status.jsp" class="btn btn-primary btn-equal">View
-								All Rectifications</a>
+							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Your
+								Pending Rectification</a> <a href="rectification_status.jsp"
+								class="btn btn-primary btn-equal">View All Rectifications</a>
 						</div>
 					</div>
 				</div>
@@ -93,7 +125,7 @@
 							inspection and rectification data. Analyze trends, identify
 							recurring issues.</p>
 						<div class="btn-container">
-							<a  class="btn btn-primary btn-equal" onclick="portalAllView()">Generate
+							<a class="btn btn-primary btn-equal" onclick="portalAllView()">Generate
 								Reports</a>
 						</div>
 					</div>
@@ -106,14 +138,14 @@
 	<footer class="text-center mt-auto">
 		<div class="text-center p-3">© 2024 IT&C Cell, WBSEDCL</div>
 	</footer>
-	<!-- <script src="assets/js/new_login.js"></script> --> 
+	<!-- <script src="assets/js/new_login.js"></script> -->
 	<!-- Above script might not be required as it was only for jewel report page
 	before CE(Safety) meeting -->
-	
+
 	<!-- Link to Bootstrap JS -->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
-    
+
 </body>
 </html>

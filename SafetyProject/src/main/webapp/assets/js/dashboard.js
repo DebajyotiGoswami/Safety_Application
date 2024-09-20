@@ -19,7 +19,8 @@ function getCookie(name) {
 }
 
 function portalAllView() {
-	alert("clicked");
+	window.location.href = 'http://10.251.37.170:8080/SafetyReportView';
+	/*alert("clicked");
 	let jsonInput = {
 		"role_id": "1",
 		"inspection_id": "1234567890",
@@ -44,7 +45,7 @@ function portalAllView() {
 			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
-	alert("button click function ends");
+	alert("button click function ends");*/
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -54,24 +55,41 @@ document.addEventListener('DOMContentLoaded', () => {
 	const erp_id = cookieData.xUid.slice(0, 8);
 	const designation = cookieData.empDtls.STEXTCL;
 	const office = cookieData.empDtls.LTEXTCL;
-	const userRole = cookieData.empDtls.STELLCL;
+	const userRole = cookieData.empDtls.STELLCL; //50032705
 
 	//document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
 
-	/*  if (userRole === "1"){
-		//Disable "Inspection Assignment" section for role 1
-		$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
-	}
-	if (userRole === "2") {
-		// Disable "Inspection Entry" section for role 2
+	/*if (userRole === "50032662" || userRole === "50032705") {
+		//Chief Engineers and above
+		//$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
 		$(".card-title:contains('Inspection Entry')").closest(".card").addClass("disabled-card");
-	} else if (userRole === "3") {
-		// Disable "Rectification Entry" section for role 3
 		$(".card-title:contains('Rectification Entry')").closest(".card").addClass("disabled-card");
-	} else if (userRole === "4") {
-		// Disable "Reports" section for role 4
+		//$(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
+	}
+	if (userRole === "50032624") {
+		//Additional Chief Engineer
+		//$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
+		//$(".card-title:contains('Inspection Entry')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Rectification Entry')").closest(".card").addClass("disabled-card");
+		//$(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
+	} else if (userRole === "50032737" || userRole === "50032552" || userRole === "50032567") {
+		//SE and DE and AE
+		//$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Inspection Entry')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Rectification Entry')").closest(".card").addClass("disabled-card");
 		$(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
-	} */
+	} else if (userRole === "50032588" || userRole === "50032722") {
+		//JE Gr 1 and JE Gr 2
+		$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Inspection Entry')").closest(".card").addClass("disabled-card");
+		//$(".card-title:contains('Rectification Entry')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
+	} else {
+		$(".card-title:contains('Inspection Assignment')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Inspection Entry')").closest(".card").addClass("disabled-card");
+		//$(".card-title:contains('Rectification Entry')").closest(".card").addClass("disabled-card");
+		$(".card-title:contains('Reports')").closest(".card").addClass("disabled-card");
+	}*/
 
 
 	preventBack();

@@ -70,12 +70,12 @@ function getCookie(name) {
 
 $(document).ready(function() {
 	var fullData = [];
-	
+
 	var fromDate = $('#fromDate').val();
 	var toDate = $('#toDate').val();
 	var assignedTo = $('#assignedTo').val();
 	//var pendingAssignments = document.querySelector("#pendingAssignments").checked;
-	var assignedOffice= $('#assignedOffice').val();
+	var assignedOffice = $('#assignedOffice').val();
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
@@ -118,17 +118,17 @@ $(document).ready(function() {
 		var toDate = $('#toDate').val();
 		var assignedTo = $('#assignedTo').val().trim().toLowerCase();
 		var assignedOffice = $('#assignedOffice').val().trim().toLowerCase();
-		
+
 
 		var filteredData = fullData.filter(function(item) {
 			var itemDateFrom = new Date(item.inspection_from_date);
 			var itemDateTo = new Date(item.inspection_to_date);
 			var itemAssignedTo = item.emp_assigned_to_Nm.toLowerCase();
 			var itemAssignedOffice = item.office_code_to_inspect.toLowerCase();
-			
-			console.log("office_code: "+ itemAssignedOffice);
-			console.log("hello "+ assignedOffice);
-			
+
+			console.log("office_code: " + itemAssignedOffice);
+			console.log("hello " + assignedOffice);
+
 			let officeList = JSON.parse(localStorage.getItem("officeList"));
 			let officeName = "";
 			officeList.forEach((office) => {
@@ -136,9 +136,10 @@ $(document).ready(function() {
 					officeName = office.offName;
 				}
 			});
+
 			itemAssignedOffice = officeName.toLowerCase(); //toLowerCase not required
-			console.log("after tolower: "+ itemAssignedOffice);
-			console.log(assignedTo+ "-"+ assignedOffice+ "-"+ itemAssignedOffice);
+			console.log("after tolower: " + itemAssignedOffice);
+			console.log(assignedTo + "-" + assignedOffice + "-" + itemAssignedOffice);
 
 			// Check if the current item matches the filter criteria
 			var match = true;
@@ -152,7 +153,7 @@ $(document).ready(function() {
 			if (assignedTo && !itemAssignedTo.includes(assignedTo)) {
 				match = false;
 			}
-			console.log("last check: "+ assignedOffice+ itemAssignedOffice);
+			console.log("last check: " + assignedOffice + itemAssignedOffice);
 			if (assignedOffice && !itemAssignedOffice.includes(assignedOffice)) {
 				match = false;
 			}
@@ -204,6 +205,9 @@ $(document).ready(function() {
 					officeName = office.offName;
 				}
 			});
+			if (officeName == "") {
+				officeName = officeCode;
+			}
 			officeCodeCell.textContent = officeName;
 			row.appendChild(officeCodeCell);
 
@@ -223,10 +227,12 @@ $(document).ready(function() {
 			if (item.status === "ASSIGNED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
+
 				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
 				anchor.innerHTML = '<i class="fas fa-trash-alt" title="click to delete"></i>'; // Use Font Awesome icon
 				//anchor.textContent = "MODIFY"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
+				
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
 			} else {

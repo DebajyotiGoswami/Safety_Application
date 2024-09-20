@@ -39,9 +39,44 @@
 
 <body>
 	<!-- Navigation Bar -->
-	<nav>
+	<%-- <nav>
 		<%@ include file="navbar.jsp"%>
+	</nav> --%>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<!-- Left side: Welcome message -->
+			<div id="cookieDisplay"></div>
+			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
+			</span> --%>
+			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
+			<!-- Right side: Navigation links -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarNav" aria-controls="navbarNav"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end"
+				id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					</li>
+					<li class="nav-item">
+						<!-- Logout form -->
+						<form action="LogoutServlet" method="POST"
+							onsubmit="clearLocalStorage()" style="display: inline;">
+							<button type="submit" id="logOutSubmit" name="logOutSubmit"
+								class="btn btn-outline-light ml-2">Logout</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="assets/js/navbar.js"></script>
 	</nav>
+
 
 	<div class="card" id="resultsContainer" style="display: none;">
 		<div class="card-header text-center custom-header">Rectification
@@ -135,7 +170,8 @@
 			<!-- Right Section (Image) -->
 			<div class="col-md-6">
 				<div class="image-container">
-					<img id="imagePreview" alt="Image_Before_Rectification" style="width: 100%; height: auto;">
+					<img id="imagePreview" alt="Image_Before_Rectification"
+						style="width: 100%; height: auto;">
 				</div>
 			</div>
 		</div>
@@ -161,12 +197,12 @@
 				<label for="rectificationImage" class="form-label">Upload
 					Rectification Image</label> <input type="file" class="form-control"
 					id="rectificationImage" name="rectificationImage"
-					accept=".jpg, .jpeg, .png" onchange="uploadImage()"/><input
+					accept=".jpg, .jpeg, .png" onchange="uploadImage()" /><input
 					type="text" id="base64Output" name="base64Output"
 					style="display: none" readonly />
 			</div>
 		</div>
-<!-- 
+		<!-- 
 		<div class="row form-row">
 			<div class="col-sm-12 form-group image-upload-section">
 				<label for="imageInput" class="form-label">Upload Image 1</label> <input

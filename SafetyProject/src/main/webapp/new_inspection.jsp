@@ -37,8 +37,41 @@
 
 <body>
 	<!-- Navigation Bar -->
-	<nav>
+	<%-- <nav>
 		<%@ include file="navbar.jsp"%>
+	</nav> --%>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<!-- Left side: Welcome message -->
+			<div id="cookieDisplay"></div>
+			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
+			</span> --%>
+			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
+			<!-- Right side: Navigation links -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarNav" aria-controls="navbarNav"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end"
+				id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					</li>
+					<li class="nav-item">
+						<!-- Logout form -->
+						<form action="LogoutServlet" method="POST"
+							onsubmit="clearLocalStorage()" style="display: inline;">
+							<button type="submit" id="logOutSubmit" name="logOutSubmit"
+								class="btn btn-outline-light ml-2">Logout</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="assets/js/navbar.js"></script>
 	</nav>
 
 	<div class="card" id="resultsContainer" style="display: none;">
@@ -169,23 +202,23 @@
 						</div>
 					</div>
 					<div class="mb-3 row">
-						<label for="difficulty" class="form-label required-label">Difficulty
+						<label for="difficulty" class="form-label required-label">Severity
 							Level</label>
 						<div class="col-sm-9">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" id="easyOption"
-									name="difficulty" value="easy"> <label
-									class="form-check-label" for="easyOption">Easy</label>
+								<input class="form-check-input" type="radio" id="lowOption"
+									name="difficulty" value="low"> <label
+									class="form-check-label" for="lowOption">Low</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" id="moderateOption"
-									name="difficulty" value="moderate"> <label
-									class="form-check-label" for="moderateOption">Moderate</label>
+								<input class="form-check-input" type="radio" id="mediumOption"
+									name="difficulty" value="medium"> <label
+									class="form-check-label" for="mediumOption">Medium</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" id="hardOption"
-									name="difficulty" value="hard"> <label
-									class="form-check-label" for="hardOption">Hard</label>
+								<input class="form-check-input" type="radio" id="highOption"
+									name="difficulty" value="high"> <label
+									class="form-check-label" for="highOption">High</label>
 							</div>
 						</div>
 					</div>
