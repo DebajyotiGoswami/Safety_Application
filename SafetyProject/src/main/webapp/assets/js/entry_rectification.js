@@ -142,8 +142,8 @@ $(document).ready(function() {
 
 	$('#rectifySubmitBtn').on('click', function() {
 		let inspection_id = $('#inspection_id').val();
-		let rectification_date = $('#inspection_date').val();
-		let rectification_remarks = $('#rectification_date').val();
+		let rectification_date = $('#rectification_date').val();
+		let rectification_remarks = $('#rectification_remarks').val();
 		let site_id = $('#site_id').val();
 		let rectified_by = getCookie("User");
 		let image1 = $('#base64Output').val();

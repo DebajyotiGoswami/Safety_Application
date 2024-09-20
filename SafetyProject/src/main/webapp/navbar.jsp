@@ -23,11 +23,18 @@
 				</li>
 				<li class="nav-item">
 					<!-- Logout form -->
-					<form action="LogoutServlet" method="POST"
+					<!-- <form action="LogoutServlet" method="POST"
 						onsubmit="clearLocalStorage()" style="display: inline;">
 						<button type="submit" id="logOutSubmit" name="logOutSubmit"
 							class="btn btn-outline-light ml-2">Logout</button>
+					</form> -->
+					
+					<form style="display: inline;">
+						<button type="submit" id="logOutSubmit" name="logOutSubmit"
+							onsubmit="clearLocalStorage()" 
+							class="btn btn-outline-light ml-2">Logout</button>
 					</form>
+					
 				</li>
 			</ul>
 		</div>

@@ -47,9 +47,13 @@
 					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
 					</li>
 					<li class="nav-item">
-						<!-- Logout form -->
-						<form action="LogoutServlet" method="POST"
-							onsubmit="clearLocalStorage()" style="display: inline;">
+						<!-- Logout form --> <!-- <form action="LogoutServlet" method="POST"
+						onsubmit="clearLocalStorage()" style="display: inline;">
+						<button type="submit" id="logOutSubmit" name="logOutSubmit"
+							class="btn btn-outline-light ml-2">Logout</button>
+					</form> -->
+
+						<form style="display: inline;">
 							<button type="submit" id="logOutSubmit" name="logOutSubmit"
 								class="btn btn-outline-light ml-2">Logout</button>
 						</form>
@@ -73,11 +77,13 @@
 							<tr>
 								<th>Sl No.</th>
 								<th>Inspection ID</th>
-								<th>Inspection Date</th>
+								<th>Inspected On</th>
 								<th>Inspected By</th>
 								<th>Problem Name</th>
 								<th>Problem Details</th>
 								<th>Location</th>
+								<th>Rectified On</th>
+								<th>Rectification Remarks</th>
 								<th>Status</th>
 								<th>Action</th>
 							</tr>

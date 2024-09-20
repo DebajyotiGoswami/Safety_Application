@@ -215,11 +215,13 @@ $(document).ready(function() {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
 
-					var newToken = response.tkn;
+					let newToken = response.tkn;
 					setCookie("tkn", newToken, 30);
 				},
 				error: function(xhr, status, error) {
-					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`)
+					let newToken = response.tkn;
+					setCookie("tkn", newToken, 30);
+					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
 			});
 			disableMouseInteraction('initial-section');
@@ -317,9 +319,9 @@ $(document).ready(function() {
 			inspectionIdCell.textContent = item.inspection_id;
 			row.appendChild(inspectionIdCell);
 
-			var empAssignedByCell = document.createElement('td');
-			empAssignedByCell.textContent = item.assigned_date;
-			row.appendChild(empAssignedByCell);
+			var empAssignedDateCell = document.createElement('td');
+			empAssignedDateCell.textContent = item.assigned_date;
+			row.appendChild(empAssignedDateCell);
 
 			var empAssignedToCell = document.createElement('td');
 			empAssignedToCell.textContent = item.emp_assigned_to_Nm;

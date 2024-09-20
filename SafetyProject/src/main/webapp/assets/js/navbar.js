@@ -1,4 +1,5 @@
 function clearLocalStorage() {
+	alert("this function is not required.");
 	localStorage.clear();
 	console.log("Local Storage Cleared.");
 }
@@ -30,23 +31,28 @@ function preventBack() {
 
 // Call preventBack() when the page loads
 window.onload = preventBack;
+try{
+	const cookieData = JSON.parse(getCookie('empDtls'));
+	const name = cookieData.empDtls.EMNAMCL;
+	//const erp_id = cookieData.xUid.slice(0, 8);
+	const erp_id = cookieData.User;
+	const designation = cookieData.empDtls.STEXTCL;
 
-const cookieData = JSON.parse(getCookie('empDtls'));
-const name = cookieData.empDtls.EMNAMCL;
-//const erp_id = cookieData.xUid.slice(0, 8);
-const erp_id = cookieData.User;
-const designation = cookieData.empDtls.STEXTCL;
-
-document.getElementById("cookieDisplay").innerText = cookieData ? name
-	+ ", " + designation + " (ERP ID: " + erp_id + ") "
-	: "Cookie not found.";
-
+	document.getElementById("cookieDisplay").innerText = cookieData ? name
+		+ ", " + designation + " (ERP ID: " + erp_id + ") "
+		: "Cookie not found.";
+}
+catch(e){
+	console.error("not an active session."+ e);
+}
 //$("#logOutSubmit").on('click', handleLogout);
 
-document.getElementById('logOutSubmit').addEventListener('click',
-	handleLogout);
+document.getElementById('logOutSubmit').addEventListener('click', handleLogout);
+
 
 function handleLogout() {
+	localStorage.clear();
+	sessionStorage.clear();
 	// Function to delete all cookies
 	function deleteAllCookies() {
 		const cookies = document.cookie.split(";");

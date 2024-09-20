@@ -61,9 +61,13 @@
 					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
 					</li>
 					<li class="nav-item">
-						<!-- Logout form -->
-						<form action="LogoutServlet" method="POST"
-							onsubmit="clearLocalStorage()" style="display: inline;">
+						<!-- Logout form --> <!-- <form action="LogoutServlet" method="POST"
+						onsubmit="clearLocalStorage()" style="display: inline;">
+						<button type="submit" id="logOutSubmit" name="logOutSubmit"
+							class="btn btn-outline-light ml-2">Logout</button>
+					</form> -->
+
+						<form style="display: inline;">
 							<button type="submit" id="logOutSubmit" name="logOutSubmit"
 								class="btn btn-outline-light ml-2">Logout</button>
 						</form>
@@ -224,8 +228,8 @@
 					</div>
 					<div class="row form-row">
 						<div class="col-sm-12 form-group image-upload-section">
-							<label for="imageInput" class="form-label">Upload Image 1</label>
-							<input type="file" id="imageInput" name="imageInput"
+							<label for="imageInput" class="form-label">Upload Image</label> <input
+								type="file" id="imageInput" name="imageInput"
 								accept=".jpg, .jpeg, .png" onchange="uploadImage()" /> <input
 								type="text" id="base64Output" name="base64Output"
 								style="display: none" readonly />

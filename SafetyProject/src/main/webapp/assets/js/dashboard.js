@@ -19,7 +19,8 @@ function getCookie(name) {
 }
 
 function portalAllView() {
-	window.location.href = 'http://10.251.37.170:8080/SafetyReportView';
+	//window.location.href = 'http://10.251.37.170:8080/SafetyReportView';
+	window.open('http://10.251.37.170:8080/SafetyReportView', '_blank');
 	/*alert("clicked");
 	let jsonInput = {
 		"role_id": "1",

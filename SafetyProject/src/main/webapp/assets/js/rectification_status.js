@@ -79,7 +79,7 @@ $(document).ready(function() {
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
-	jsonObjectInput.ServType = "205";
+	jsonObjectInput.ServType = "207";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
 	var xUid = cookieData.xUid;
@@ -98,16 +98,16 @@ $(document).ready(function() {
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			var empList = response.inspectListEmp.assignList;
-			var newToken = response.tkn;
+			let newToken = response.tkn;
 			setCookie("tkn", newToken, 30);
-			if (response.ackMsgCode === "205") {
+			if (response.ackMsgCode === "207") {
 				fullData = empList;
 				populateTable(empList);
 			}
 		},
 		error: function(xhr, status, error) {
 			//if server not get connected 
-			var newToken = response.tkn;
+			let newToken = response.tkn;
 			setCookie("tkn", newToken, 30);
 			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
@@ -200,6 +200,14 @@ $(document).ready(function() {
 			var locationCell = document.createElement('td');
 			locationCell.textContent = item.location_remarks;
 			row.appendChild(locationCell);
+
+			var rectifiedOn = document.createElement('td');
+			rectifiedOn.textContent = item.rectification_date;
+			row.appendChild(rectifiedOn);
+
+			var rectifyRemarks = document.createElement('td');
+			rectifyRemarks.textContent = item.rectification_remarks;
+			row.appendChild(rectifyRemarks);
 
 			var statusCell = document.createElement('td');
 			statusCell.textContent = item.present_status;
