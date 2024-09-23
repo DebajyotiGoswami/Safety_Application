@@ -205,7 +205,44 @@ $(document).ready(function() {
 				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
-					//populate problem dropdown
+					var problemContainer = $('#problem_list');
+					problemContainer.empty(); // Clear any existing options
+
+					// Assuming response is a JSON array
+					$.each(response.probDtls.probDtls, function(index, item) {
+						problemContainer.append(
+							$('<div></div>').append(
+								$('<input>').attr({
+									type: 'checkbox',
+									id: 'problem_' + item.probId,
+									name: 'problem_list',
+									value: item.probId
+								}),
+								$('<label></label>').attr('for', 'problem_' + item.probId).text(item.probDesc)
+							)
+						);
+					});
+
+					// Populate office list with checkboxes
+					var officeContainer = $('#office_name');
+					officeContainer.empty(); // Clear any existing options
+
+					// Assuming response is a JSON array
+					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
+						officeContainer.append(
+							$('<div></div>').append(
+								$('<input>').attr({
+									type: 'checkbox',
+									id: 'office_' + item.offCode,
+									name: 'office_name',
+									value: item.offCode
+								}),
+								$('<label></label>').attr('for', 'office_' + item.offCode).text(item.offName)
+							)
+						);
+					});
+
+					/*//populate problem dropdown
 					var dropdown = $('#problem_list');
 					dropdown.empty(); // Clear any existing options
 
@@ -220,7 +257,7 @@ $(document).ready(function() {
 					// Assuming response is a JSON array
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
-					});
+					});*/
 
 					let newToken = response.tkn;
 					setCookie("tkn", newToken, 30);
