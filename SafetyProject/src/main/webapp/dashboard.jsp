@@ -52,6 +52,7 @@
 
 						<form style="display: inline;">
 							<button type="submit" id="logOutSubmit" name="logOutSubmit"
+								onsubmit="clearLocalStorage()"
 								class="btn btn-outline-light ml-2">Logout</button>
 						</form>
 					</li>

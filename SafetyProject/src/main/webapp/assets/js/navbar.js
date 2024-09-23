@@ -31,7 +31,7 @@ function preventBack() {
 
 // Call preventBack() when the page loads
 window.onload = preventBack;
-try{
+try {
 	const cookieData = JSON.parse(getCookie('empDtls'));
 	const name = cookieData.empDtls.EMNAMCL;
 	//const erp_id = cookieData.xUid.slice(0, 8);
@@ -42,8 +42,9 @@ try{
 		+ ", " + designation + " (ERP ID: " + erp_id + ") "
 		: "Cookie not found.";
 }
-catch(e){
-	console.error("not an active session."+ e);
+catch (e) {
+	window.location.href="http://10.251.37.170:8080/SafetyProject/"
+	console.error("not an active session." + e);
 }
 //$("#logOutSubmit").on('click', handleLogout);
 
@@ -66,4 +67,16 @@ function handleLogout() {
 	}
 
 	deleteAllCookies();
+
+	//alert("before");
+	// Get the application's context path
+	var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+
+	// Redirect to the login page with the context path
+	//window.location.href = contextPath + '/login.jsp';
+	window.location.href="http://10.251.37.170:8080/SafetyProject/"
+
+	//window.location.href = '/login.jsp';
+	//alert("after");
+	return;
 }

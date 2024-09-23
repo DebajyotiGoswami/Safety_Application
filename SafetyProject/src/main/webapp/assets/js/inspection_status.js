@@ -256,7 +256,7 @@ $(document).ready(function() {
 						type: 'POST',
 						data: JSON.stringify(jsonInput),
 						success: function(response) {
-							alert("success");
+							console.log("success");
 							window.location.href = response.redirectURL;
 						},
 						error: function(xhr, status, error) {

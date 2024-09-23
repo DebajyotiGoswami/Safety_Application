@@ -217,10 +217,41 @@ $(document).ready(function() {
 			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
-				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
+				//anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
 				anchor.innerHTML = '<i class="fas fa-eye fa-lg" title="View Data"></i>'; // Use Font Awesome icon
 				//anchor.textContent = "MODIFY"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
+
+				// Attach an onclick event to the anchor
+				anchor.onclick = function(event) {
+					let jsonInput = {
+						"role_id": "1",
+						"inspection_id": item.inspection_id,
+						"emp_name": getCookie("empName"),
+						"erp_id": getCookie("User"),
+						"office_name": getCookie("office"),
+						"designation": getCookie("designation"),
+						"office_code": getCookie("KST01CL"),
+						"tkn": getCookie("tkn"),
+						"page_id": "401",
+						"auth": "INSP_PRTL"
+					}
+
+					$.ajax({
+						url: "http://10.251.37.170:8080/SafetyReportView/frmprtl",
+						type: 'POST',
+						data: JSON.stringify(jsonInput),
+						success: function(response) {
+							console.log("success");
+							window.location.href = response.redirectURL;
+						},
+						error: function(xhr, status, error) {
+							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+						}
+					});
+				};
+
+
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
 			} else {

@@ -345,6 +345,7 @@ function validateInspectionDates() {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0); // Reset time to midnight
 
+	
 	// Validate start date
 	if (startDate < today) {
 		errorDisplay.textContent = ""; // Clear previous error

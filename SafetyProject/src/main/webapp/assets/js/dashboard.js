@@ -1,6 +1,6 @@
 // Function to prevent back navigation
 function preventBack() {
-	alert("prevent back called");
+	//alert("prevent back called");
 	history.pushState(null, null, location.href);
 	window.onpopstate = function() {
 		history.go(1);
@@ -21,10 +21,10 @@ function getCookie(name) {
 function portalAllView() {
 	//window.location.href = 'http://10.251.37.170:8080/SafetyReportView';
 	window.open('http://10.251.37.170:8080/SafetyReportView', '_blank');
-	/*alert("clicked");
-	let jsonInput = {
+	//alert("clicked");
+	/*let jsonInput = {
 		"role_id": "1",
-		"inspection_id": "1234567890",
+		"inspection_id": "3332000240923065708",
 		"emp_name": getCookie("empName"),
 		"erp_id": getCookie("User"),
 		"office_name": getCookie("office"),
@@ -40,13 +40,15 @@ function portalAllView() {
 		type: 'POST',
 		data: JSON.stringify(jsonInput),
 		success: function(response) {
-			alert("success");
+			console.log("success");
+			//alert("success");
+			window.location.href = response.redirectURL;
 		},
 		error: function(xhr, status, error) {
 			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
-	});
-	alert("button click function ends");*/
+	});*/
+	console.log("button click function ends");
 }
 
 document.addEventListener('DOMContentLoaded', () => {
