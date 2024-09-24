@@ -281,7 +281,6 @@ $(document).ready(function() {
 				"dUid": dUidEncrypted,
 				"KST01CL": costCenter
 			};
-
 			$.ajax({
 				url: 'http://10.251.37.170:8080/testSafety/testSafety',
 				//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL

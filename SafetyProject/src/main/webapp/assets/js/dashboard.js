@@ -20,11 +20,11 @@ function getCookie(name) {
 
 function portalAllView() {
 	//window.location.href = 'http://10.251.37.170:8080/SafetyReportView';
-	window.open('http://10.251.37.170:8080/SafetyReportView', '_blank');
+	//window.open('http://10.251.37.170:8080/SafetyReportView', '_blank');
 	//alert("clicked");
-	/*let jsonInput = {
+	let jsonInput = {
 		"role_id": "1",
-		"inspection_id": "3332000240923065708",
+		//"inspection_id": "3332000240923065708",
 		"emp_name": getCookie("empName"),
 		"erp_id": getCookie("User"),
 		"office_name": getCookie("office"),
@@ -47,7 +47,7 @@ function portalAllView() {
 		error: function(xhr, status, error) {
 			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
-	});*/
+	});
 	console.log("button click function ends");
 }
 

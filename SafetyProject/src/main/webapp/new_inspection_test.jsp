@@ -13,6 +13,7 @@
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/BigInteger.js"></script>
+<script src="assets/js/popper.min.js"></script>
 <!-- Custom JavaScript -->
 <!-- <script src="assets/js/new_inspection.js"></script> -->
 <style>
@@ -196,43 +197,30 @@
 				<!-- Hidden sections initially -->
 				<div id="additionalSection2" class="additional-section2">
 					<div class="row form-row">
-						<!-- <div class="col-sm-6 form-group">
-							<label for="problem_code" class="form-label required-label">Problem
-								Code</label> <select class="form-control" id="problem_list"
-								name="problem_list" required>
-								<option value="Select Asset Type"></option>
-							</select>
-						</div> -->
 
 						<div id="problem_list_container" class="form-group">
-							<label for="problem_list">Problem List</label>
+							<!-- <label for="problem_list">Problem List</label> -->
 							<div id="problem_list"></div>
 						</div>
 
-						<!-- Container for office checkboxes -->
-						<div id="office_name_container" class="form-group">
-							<label for="office_name">Office Name</label>
-							<div id="office_name"></div>
-						</div>
-						
-						<!-- <div class="col-sm-6 form-group">
-							<label for="location" class="form-label required-label">Location
-								Details</label> <input type="text" class="form-control" id="location"
-								name="location" required>
-						</div> -->
 					</div>
-					<div class="row form-row">
+					<!-- <div class="row form-row">
 						<div class="col-sm-12 form-group">
 							<label for="problem_details" class="form-label required-label">Problem
 								Details</label>
 							<textarea class="form-control" id="problem_details"
 								name="problem_details" rows="3" required></textarea>
 						</div>
-					</div>
+					</div> -->
 					<div class="mb-3 row">
 						<label for="difficulty" class="form-label required-label">Severity
 							Level</label>
 						<div class="col-sm-9">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="lowOption"
+									name="difficulty" value="none" checked> <label
+									class="form-check-label" for="noneOption">No Option</label>
+							</div>
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" id="lowOption"
 									name="difficulty" value="low"> <label
@@ -273,6 +261,54 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Bootstrap Modal -->
+				<div class="modal fade" id="confirmationModal" tabindex="-1"
+					aria-labelledby="confirmationModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="confirmationModalLabel" align="center">Check and confirm
+									the submission</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<!-- Dynamic content will be populated here with JavaScript -->
+								<p>
+									<strong>Inspection ID:</strong> <span id="confirmInspectionId"></span>
+								</p>
+								<p>
+									<strong>Assigned Office:</strong> <span
+										id="confirmAssignedOffice"></span>
+								</p>
+								<p>
+									<strong>Location Remarks:</strong> <span
+										id="confirmLocationRemarks"></span>
+								</p>
+								<p>
+									<strong>Inspection Date:</strong> <span
+										id="confirmInspectionDate"></span>
+								</p>
+								<p>
+									<strong>Problem Details:</strong> <span
+										id="confirmProblemDetails"></span>
+								</p>
+								<p>
+									<strong>Severity Level:</strong> <span
+										id="confirmSeverityLevel"></span>
+								</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-primary"
+									id="finalSubmitBtn">Submit</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="row justify-content-center">
 					<div class="col-auto">
 						<button type="button" class="btn btn-primary" id="inspSubmitBtn">NEXT</button>
