@@ -269,7 +269,6 @@ function handleButtonClick(event) {
 			else if (submitotpflg || resendotpflg) {
 				if (submitotpflg) {
 					if (response.ackMsgCode == '100') {
-						console.log("after otp: " + JSON.stringify(response));
 						var employee_list = JSON.stringify(response.empList.empList);
 						var office_list = JSON.stringify(response.offList.officeList);
 						var asset_list = response.assetList.assetDtls;
@@ -310,7 +309,6 @@ function handleButtonClick(event) {
 
 						localStorage.empListCount = JSON.parse(localStorage.getItem("empList")).length;
 						localStorage.officeListCount = JSON.parse(localStorage.getItem("officeList")).length;
-						console.log("after otp: " + JSON.stringify(response));
 					} else {
 						alert("Incorrect OTP. Please check the OTP and try again.");
 					}

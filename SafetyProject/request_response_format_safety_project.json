@@ -1,0 +1,217 @@
+LOGIN PAYLOAD 
+
+{
+	"User": "9f046b071a9c024b",
+	"Pwd": "e2505160dd246432b",
+	"userAgent": "Mozilla 5.0  Windows NT 10.0  Win64  x64  AppleWebKit 537.36  KHTML  like Gecko  Chrome 128.0.0.0 Safari 537.36",
+	"pageNm": "LOGIN"
+}
+
+LOGIN RESPONSE SUCCESS
+
+{
+	"ackMsg": "OTP sent Sucessfully",
+	"ackMsgCode": "105",
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	},
+	"xUid": "900127759432177024"
+}
+
+LOGIN RESPONSE ERROR
+
+{
+	"ackMsg": "Authentication Mismatch",
+	"ackMsgCode": "901"
+}
+
+OTP PAYLOAD 
+{
+	"User": "9f046b071a9c024bb7406d9",
+	"Pwd": "e2505160dd246432bb85604?",
+	"userAgent": "Mozilla 5.0  Windows NT 10.0  Win64  x64  AppleWebKit 537.36  KHTML  like Gecko  Chrome 128.0.0.0 Safari 537.36",
+	"pageNm": "OTP",
+	"otp": "12256",
+	"xUid": "9f046b071a9c024bb7406d9@",
+	"dUid": "450fbe5d298146ad7cb93371",
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	}
+}
+
+OTP RESPONSE SUCCESS
+
+{
+	"ackMsg": "Authentication OK",
+	"empList": {
+		"empList": [
+			{
+				"desig": "JUNIOR MANAGER (HR&A)",
+				"empId": "90005694",
+				"empName": "Shibamoyee Majumder (Roy)"
+			},
+			{
+				"desig": "DE(E)",
+				"empId": "90006656",
+				"empName": "Satya Ranjan Sarkar"
+			}
+		],
+		"stat": "true"
+	},
+	"role": {
+		"stat": "true",
+		"empRole": [
+			{
+				"roleDesc": "INSPECTOR",
+				"roleId": "1"
+			}
+		]
+	},
+	"ackMsgCode": "100",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MD",
+	"assetList": {
+		"stat": "true",
+		"assetDtls": [
+			{
+				"assetId": "1",
+				"networkType": "HT",
+				"assetDesc": "4P STRUCTURE"
+			},
+			{
+				"assetId": "2",
+				"networkType": "HT",
+				"assetDesc": "AB CABLE"
+			}
+		]
+	},
+	"offList": {
+		"stat": "true",
+		"officeList": [
+			{
+				"offCode": "3332000",
+				"offName": "KALYANI"
+			},
+			{
+				"offCode": "3332103",
+				"offName": "CHAKDAH(WEST) CCC"
+			},
+			{
+				"offCode": "3332201",
+				"offName": "SUBARNAPUR CCC"
+			}
+		]
+	},
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	},
+	"xUid": "900127759432177024"
+}
+
+OTP RESPONSE ERROR
+
+{"ackMsg":"OTPMISMATCH","ackMsgCode":"902"}
+
+NEW ASSIGNMENT PAYLOAD
+
+{
+	"KST01CL": "3332000",
+	"assignedDate": "2024-24-09",
+	"inspectionFromDate": "2024-09-27",
+	"inspectionToDate": "2024-09-28",
+	"remarks": "Guy insulator checking",
+	"inspectionId": "",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c6e82bb771dd4ad",
+	"dUid": "450fbe5d298146ad7cb93371?72623f5c2ca51ee6823",
+	"empAssignedTo": [
+		{
+			"erpId": "90009924",
+			"erpName": "Sanku Biswas"
+		}
+	],
+	"empAssignedBy": "90012775",
+	"rectifiedBy": "",
+	"assignedFromOff": "3332000",
+	"officeCodeToInspect": "3332103",
+	"status": "ASSIGNED",
+	"inspectedBy": "",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjdCI6MTc",
+	"empAssignedByNm": "Debajyoti Goswami",
+	"pageNm": "DASH",
+	"ServType": 101
+}
+
+NEW ASSIGNMENT SUCCESS
+
+{
+	"ackMsg": "Assignment Enetered Successfully",
+	"inspectionId": "3332000240924113644",
+	"ackMsgCode": "101",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MD"
+}
+
+NEW ASSIGNMENT ERROR 
+
+{
+	"ackMsg": "Error in assignment entry",
+	"ackMsgCode": "301",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5M"
+}
+
+ASSIGNMENT STATUS PAYLOAD
+
+{
+	"pageNm": "DASH",
+	"ServType": "201",
+	"xUid": "9f046b071a9c024bb7406d9@3e634",
+	"dUid": "450fbe5d298146ad7cb93371?7262",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiO",
+	"KST01CL": "3332000"
+}
+
+ASSIGNMENT STATUS RESPONSE SUCCESS
+
+{
+	"assignEmpDtls": {
+		"assignList": [
+			{
+				"inspection_from_date": "2024-11-15",
+				"inspection_to_date": "2024-11-16",
+				"assigned_date": "2024-09-10",
+				"inspection_id": "3500000240910094335",
+				"emp_assigned_to_Nm": "Jewel Daw",
+				"office_code_to_inspect": "3500000",
+				"status": "ASSIGNED"
+			},
+			{
+				"inspection_from_date": "2024-11-15",
+				"inspection_to_date": "2024-11-16",
+				"assigned_date": "2024-09-10",
+				"inspection_id": "3500000240910094335",
+				"emp_assigned_to_Nm": "Tuhin Sovan Koley",
+				"office_code_to_inspect": "3500000",
+				"status": "ASSIGNED"
+			}
+		],
+		"stat": "true"
+	},
+	"ackMsg": "Assign Entry selected successfully",
+	"ackMsgCode": "201",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjc"
+}
+
+

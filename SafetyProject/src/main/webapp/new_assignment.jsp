@@ -111,8 +111,8 @@
 				<div class="mb-3 row">
 					<label for="remarks" class="col-sm-3 col-form-label">Remarks</label>
 					<div class="col-sm-9">
-						<textarea class="form-control" id="remarks" rows="3"
-							placeholder="Enter remarks"></textarea>
+						<textarea class="form-control" id="remarks" rows="3" maxlength="100"
+							placeholder="Enter remarks(Max 100 characters)"></textarea>
 					</div>
 				</div>
 				<div class="mb-3 row">

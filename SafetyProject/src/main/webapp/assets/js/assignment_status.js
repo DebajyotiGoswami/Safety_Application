@@ -94,11 +94,13 @@ $(document).ready(function() {
 
 	//alert("before calling populate table");
 	//populateTable(data);
+	console.log("request: "+ JSON.stringify(jsonObjectInput));
 	$.ajax({
 		type: 'POST',
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
+			console.log("response: "+ JSON.stringify(response));
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
 			if (response.ackMsgCode === "201") {

@@ -3,30 +3,25 @@ var url = 'http://10.251.37.170:8080/testSafety/testSafety'
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var xUidEncrypted = "";
-var dUidEncrypted = "";
-
 function enCrypt(uid, pwd) {
-	//var uid=devEle["enIdCon"];
-	//var pwd=devEle["enAuthCon"];
-	var uidConver = [];
-	var pwdConver = [];
-	var enIden = [];
-	var enAuth = [];
-	var enIdCon = "";
-	var enAuthCon = "";
-	var jsonObj = {};
+	let uidConver = [];
+	let pwdConver = [];
+	let enIden = [];
+	let enAuth = [];
+	let enIdCon = "";
+	let enAuthCon = "";
+	let jsonObj = {};
 
-	for (var i = 0; i < uid.length; i++) {
+	for (let i = 0; i < uid.length; i++) {
 		uidConver[i] = uid.charCodeAt(i);
-		var bigtemp = bigInt(uidConver[i]);
+		let bigtemp = bigInt(uidConver[i]);
 		enIden[i] = bigInt(uidConver[i]).modPow(KEY1, KEY2).toString(16);
 		enIdCon = enIdCon.concat(enIden[i]);
 		if (i != (uid.length - 1)) {
 			enIdCon = enIdCon.concat("@");
 		}
 	}
-	for (var i = 0; i < pwd.length; i++) {
+	for (let i = 0; i < pwd.length; i++) {
 		pwdConver[i] = pwd.charCodeAt(i);
 		enAuth[i] = bigInt(pwdConver[i]).modPow(KEY1, KEY2).toString(16);
 		enAuthCon = enAuthCon.concat(enAuth[i]);
@@ -94,7 +89,7 @@ function fetchERPIds() {
 
 function validateForm() {
 	const button = document.getElementById('assgnSubmitbtn');
-	var isFormValid;
+	let isFormValid;
 
 	inspectStartDate = document.getElementById('inspectionDateStart').value
 	inspectEndDate = document.getElementById('inspectionDateEnd').value
@@ -116,9 +111,9 @@ function validateForm() {
 
 document.addEventListener('DOMContentLoaded', () => {
 	// Fetch office list from localStorage
-	var officeList = JSON.parse(localStorage.getItem('officeList'));
+	let officeList = JSON.parse(localStorage.getItem('officeList'));
 	function populateOfficeDropdown() {
-		var officeDropdown = document.getElementById('officeName');
+		let officeDropdown = document.getElementById('officeName');
 
 		// Clear any existing options
 		officeDropdown.innerHTML = '<option value="">Select Office Name</option>';
@@ -127,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (officeList && officeList.length > 0) {
 			officeList.forEach(function(office) {
 				//officeJSON= JSON.parse(office);
-				var option = document.createElement('option');
+				let option = document.createElement('option');
 				option.value = office.offCode;
 				option.text = office.offName + ' (' + office.offCode + ')';
 				officeDropdown.appendChild(option);
@@ -139,26 +134,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('inspectionDateStart').addEventListener('input', validateInspectionDates);
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
-	var cookieData = JSON.parse(getCookie('empDtls'));
 	//get different value based on key of cookieData json
-	var name = cookieData.empDtls.EMNAMCL;
-	var erp_id = cookieData.xUid.slice(0, 8);
-	var designation = cookieData.empDtls.STEXTCL;
-	var office = cookieData.empDtls.KST01CL;
-	var costCenter = cookieData.empDtls.KST01CL; //cost center
-	var userRole = cookieData.empDtls.STELLCL;
-
-	var xUid = cookieData.xUid;
-	var xUidJson = enCrypt(xUid, "123456");
-	xUidEncrypted = xUidJson.User;
-	dUidEncrypted = xUidJson.Pwd;
+	let xUid = getCookie("User");
+	let xUidJson = enCrypt(xUid, "123456");
+	let xUidEncrypted = xUidJson.User;
+	let dUidEncrypted = xUidJson.Pwd;
 
 	//validateForm();
 	$('#assgnSubmitbtn').on('click', function() {
-		var cookieDataToken = getCookie('tkn');
-		var tkn = cookieDataToken; //cookieData.tkn;
-		var jsonObject = {};
-		jsonObject["KST01CL"] = costCenter;
+		let tkn = getCookie('tkn'); //cookieData.tkn;
+		let jsonObject = {};
+		jsonObject["KST01CL"] = getCookie("costCenter");
 		jsonObject.assignedDate = getCurrentDate();
 		jsonObject.inspectionFromDate = document.getElementById('inspectionDateStart').value;
 		jsonObject.inspectionToDate = document.getElementById('inspectionDateEnd').value;
@@ -166,9 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		jsonObject.inspectionId = "";
 
 		// Collect all ERP IDs
-		var erpIds = [];
+		let erpIds = [];
 		$('.erp-select').each(function() {
-			var erpId = $(this).val();
+			let erpId = $(this).val();
 			if (erpId !== 'Select Team Member') {
 				let tempJson = {};
 				erpName = erpId.slice(0, erpId.indexOf("(") - 1);
@@ -182,14 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		jsonObject.xUid = xUidEncrypted;
 		jsonObject.dUid = dUidEncrypted
 		jsonObject.empAssignedTo = erpIds;
-		jsonObject.empAssignedBy = erp_id;
+		jsonObject.empAssignedBy = getCookie("User");
 		jsonObject.rectifiedBy = "";
-		jsonObject.assignedFromOff = office;
+		jsonObject.assignedFromOff = getCookie("KST01CL");
 		jsonObject.officeCodeToInspect = document.getElementById('officeName').value;
 		jsonObject.status = "ASSIGNED";
 		jsonObject.inspectedBy = "";
 		jsonObject.tkn = tkn;
-		jsonObject.empAssignedByNm = name;
+		jsonObject.empAssignedByNm = getCookie("empName");
 		jsonObject.pageNm = "DASH";
 		jsonObject.ServType = 101;
 		$.ajax({
@@ -197,17 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			type: 'POST',
 			data: JSON.stringify(jsonObject),
 			success: function(response) {
-				if (response.ackMsgCode == '101') {
-					var newToken = response.tkn;
-					var ackMsg = response.ackMsg;
-					var ackMsgCode = response.ackMsgCode;
-					var inspectionId = response.inspectionId;
-					if (ackMsgCode === "101") {
-						alert(`${ackMsg}. Inspection ID: ${inspectionId}`);
-						setCookie("tkn", newToken, 30);
-						window.location.href = 'new_assignment.jsp';
-					}
-
+				let newToken = response.tkn;
+				setCookie("tkn", newToken, 30);
+				let ackMsg = response.ackMsg;
+				let ackMsgCode = response.ackMsgCode;
+				let inspectionId = response.inspectionId;
+				alert(`${ackMsg}. Inspection ID: ${inspectionId}`);
+				if (ackMsgCode == '101') {
+					window.location.href = 'new_assignment.jsp';
 				}
 			},
 			error: function(xhr, status, error) {
@@ -218,18 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Fetch employee list from localStorage
-var empList = JSON.parse(localStorage.getItem('empList'));
+
 function populateEmployeeDropdown() {
-	var employeeDropdown = document.getElementById('empDetails');
+	let empList = JSON.parse(localStorage.getItem('empList'));
+	let employeeDropdown = document.getElementById('empDetails');
 
 	// Clear any existing options
 	employeeDropdown.innerHTML = '<option value="">Select Employee Name</option>';
 
-	// Loop through the officeList and append options
+	// Loop through the empList and append options
 	if (empList && empList.length > 0) {
 		empList.forEach(function(emp) {
 			//officeJSON= JSON.parse(office);
-			var option = document.createElement('option');
+			let option = document.createElement('option');
 			option.value = emp.empId;
 			option.text = emp.empName + ' (' + emp.empId + ')';
 			employeeDropdown.appendChild(option);
@@ -251,10 +235,10 @@ function updateERPFields() {
 	const number = document.getElementById('teamMembers').value;
 	const container = document.getElementById('erpIdContainer');
 	container.innerHTML = ''; // Clear previous fields
-	
-	var data = localStorage.getItem("empList");
-	const erpIds= formatEmployeeData(JSON.parse(data)).empList;
-	
+
+	let data = localStorage.getItem("empList");
+	const erpIds = formatEmployeeData(JSON.parse(data)).empList;
+
 	for (let i = 1; i <= number; i++) {
 
 		const div = document.createElement('div');
@@ -345,7 +329,7 @@ function validateInspectionDates() {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0); // Reset time to midnight
 
-	
+
 	// Validate start date
 	if (startDate < today) {
 		errorDisplay.textContent = ""; // Clear previous error
