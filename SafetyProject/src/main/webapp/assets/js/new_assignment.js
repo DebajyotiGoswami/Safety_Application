@@ -29,13 +29,10 @@ function enCrypt(uid, pwd) {
 			enAuthCon = enAuthCon.concat("?");
 		}
 	}
-
-
 	jsonObj = {
 		"User": enIdCon,
 		"Pwd": enAuthCon
 	};
-
 	return jsonObj;
 }
 
@@ -76,24 +73,16 @@ const getCurrentDate = () => {
 	return year + "-" + day + "-" + month;
 }
 
-function fetchERPIds() {
-	// Simulate an async fetch from an ERP server via RFC
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			// Example ERP IDs
-			const erpIds = ["90012775", "90009977", "90009981", "900012774", "90012776"];
-			resolve(erpIds);
-		}, 1000); // Simulates a 1-second delay
-	});
-}
-
-function validateForm() {
+/*function validateForm() {
+	alert("inside validate");
 	const button = document.getElementById('assgnSubmitbtn');
-	let isFormValid;
+	let isFormValid = false;
 
 	inspectStartDate = document.getElementById('inspectionDateStart').value
 	inspectEndDate = document.getElementById('inspectionDateEnd').value
 	officeName = document.getElementById('officeName').value;
+
+	alert(inspectStartDate, inspectEndDate, officename);
 
 	if (inspectStartDate === null || inspectEndDate === null || officeName === null) {
 		isFormValid = false;
@@ -107,9 +96,31 @@ function validateForm() {
 	} else {
 		button.disabled = true;
 	}
-}
+}*/
 
 document.addEventListener('DOMContentLoaded', () => {
+	$('#assgnSubmitbtn').prop('disabled', true);
+	// Function to check if all fields are valid
+	function checkFormValidity() {
+		var teamMembers = $('#teamMembers').val();
+		var inspectionDateStart = $('#inspectionDateStart').val();
+		var inspectionDateEnd = $('#inspectionDateEnd').val();
+		var officeName = $('#officeName').val();
+
+		// Check if all fields are non-empty
+		if (teamMembers && inspectionDateStart && inspectionDateEnd && officeName) {
+			$('#assgnSubmitbtn').prop('disabled', false);  // Enable the button
+		} else {
+			$('#assgnSubmitbtn').prop('disabled', true);   // Keep it disabled
+		}
+	}
+
+	// Attach event listeners to form fields
+	$('#teamMembers').on('change', checkFormValidity);
+	$('#inspectionDateStart').on('input', checkFormValidity);
+	$('#inspectionDateEnd').on('change', checkFormValidity);
+	$('#officeName').on('change', checkFormValidity);
+
 	// Fetch office list from localStorage
 	let officeList = JSON.parse(localStorage.getItem('officeList'));
 	function populateOfficeDropdown() {
@@ -346,7 +357,7 @@ function validateInspectionDates() {
 	}
 	else {
 		startDateInput.classList.remove('is-invalid');
-		assgnSubmitbtn.disabled = false;
+		//assgnSubmitbtn.disabled = false;
 	}
 
 	// Validate end date only if it's entered
@@ -371,7 +382,7 @@ function validateInspectionDates() {
 			assgnSubmitbtn.disabled = true;
 		} else {
 			endDateInput.classList.remove('is-invalid');
-			assgnSubmitbtn.disabled = false;
+			//assgnSubmitbtn.disabled = false;
 		}
 	}
 
