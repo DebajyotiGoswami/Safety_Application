@@ -132,7 +132,7 @@
 							<div class="col-sm-6 form-group image-upload-section">
 								<label for="imageInput" class="form-label">Upload Image</label>
 								<input type="file" id="imageInput" name="imageInput"
-									accept=".jpg, .jpeg, .png" onchange="uploadImage()" /> <input
+									accept=".jpg, .jpeg, .png" /> <input
 									type="text" id="base64Output" name="base64Output"
 									style="display: none" readonly />
 							</div>
@@ -300,8 +300,8 @@
 								</p>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-primary"
+									id="resetInspBtn" data-bs-dismiss="modal">RESET</button>
 								<button type="button" class="btn btn-primary"
 									id="finalSubmitBtn">Submit</button>
 							</div>
@@ -311,7 +311,8 @@
 
 				<div class="row justify-content-center">
 					<div class="col-auto">
-						<button type="button" class="btn btn-primary" id="inspSubmitBtn">NEXT</button>
+						<!-- <button type="button" class="btn btn-primary" id="inspSubmitBtn">NEXT</button> -->
+						<button type="button" class="btn btn-primary" id="inspSubmitBtn" disabled>NEXT</button>
 					</div>
 				</div>
 

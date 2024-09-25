@@ -132,6 +132,38 @@ function populateDateDropdown(startDateStr, endDateStr) {
 
 
 $(document).ready(function() {
+	// Initially disable the submit button
+	$('#inspSubmitBtn').prop('disabled', true);
+
+	// Function to check if all fields are valid
+	function checkFormValidity() {
+		var inspectionDate = $('#dateDropdown').val();
+		var location = $('#location').val();
+		var image = $('#base64Output').val();
+		var networkType = $('#network_type').val();
+		var assetType = $('#asset_type').val();
+
+		// Check if all fields are non-empty
+		if (inspectionDate && location && image && networkType && assetType) {
+			$('#inspSubmitBtn').prop('disabled', false);  // Enable the button
+		} else {
+			$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
+		}
+	}
+
+	// Attach event listeners to form fields
+	$('#dateDropdown').on('change', checkFormValidity);
+	$('#location').on('input', checkFormValidity);
+	$('#network_type').on('change', checkFormValidity);
+	$('#asset_type').on('change', checkFormValidity);
+
+	// For image upload, trigger the check when the image is uploaded
+	$('#imageInput').on('change', function() {
+		uploadImage();  // Call the existing uploadImage function
+		checkFormValidity();  // Check form validity
+	});
+
+
 	$('#resultsContainer').show();
 
 	var jsonObjectInput = {};
@@ -410,8 +442,8 @@ $(document).ready(function() {
 	});
 
 
+
 	$('#finalSubmitBtn').on('click', function() {
-		alert("new test again");
 		// Proceed with the AJAX submission 
 		var xUid = getCookie("User");
 		xUidJson = enCrypt(xUid, "123456");
@@ -475,6 +507,11 @@ $(document).ready(function() {
 				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 			}
 		});
+	});
+
+	// Event listener for the RESET button
+	$('#resetInspBtn').on('click', function() {
+		location.reload();  // This will reload the entire page
 	});
 
 	function populateTable(data) {
