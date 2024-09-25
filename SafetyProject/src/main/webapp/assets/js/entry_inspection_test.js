@@ -187,11 +187,17 @@ $(document).ready(function() {
 		success: function(response) {
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
-			if (response.ackMsgCode === "202") {
+			setCookie("tkn", newToken, 30);
+			if (response.ackMsgCode === "502") {
 				populateTable(empList);
-				setCookie("tkn", newToken, 30);
-				//$('#additionalSection1').show();
-				//document.getElementById('additionalSection1').style.display = 'block';
+			}
+			else if (response.ackMsgCode === "202") {
+				//no inspection assigned to this user"
+				let tableBody = document.getElementById('resultsTableBody');
+				tableBody.innerHTML = "";
+				let h2 = document.createElement('h2');
+				h2.textContent = "No rectification entry found to show.";
+				tableBody.appendChild(h2);
 			}
 		}
 	});
@@ -489,6 +495,8 @@ $(document).ready(function() {
 			"severityLevel": severityLevel
 		};
 
+		console.log("Request: " + JSON.stringify(jsonObjInput));
+
 		$.ajax({
 			url: 'http://10.251.37.170:8080/testSafety/testSafety',
 			//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
@@ -496,6 +504,7 @@ $(document).ready(function() {
 			//contentType: 'application/json',
 			data: JSON.stringify(jsonObjInput),
 			success: function(response) {
+				console.log("Response: " + JSON.stringify(response));
 				var newToken = response.tkn;
 				setCookie("tkn", newToken, 30);
 				if (response.ackMsgCode === "102") {

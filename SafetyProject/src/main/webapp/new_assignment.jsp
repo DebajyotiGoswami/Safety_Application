@@ -94,8 +94,7 @@
 							required>
 					</div>
 				</div>
-				<!-- <p id="dateError" class="error text-danger" aria-live="assertive"></p> -->
-				<div id="dateError" class="error-message"></div>
+				<p id="dateError" class="error text-danger" aria-live="assertive"></p>
 				<!-- Error message container with red text -->
 				<div class="mb-3 row">
 					<label for="officeName" class="col-sm-3 col-form-label">Office

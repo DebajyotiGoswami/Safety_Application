@@ -13,9 +13,18 @@
 	color: white;
 }
 
-.filterSection{
+#wipCheckbox {
+	margin-left: 10px; /* Adjust margin as needed */
+}
+
+.form-label {
+	font-size: 1.2rem; /* Customize the label font size */
+}
+
+.filterSection {
 	padding-bottom: 10px;
 }
+
 .navbar .navbar-brand, .navbar .nav-link {
 	color: #ffffff; /* White text */
 }
@@ -209,7 +218,7 @@ footer {
 .btn-center {
 	display: flex;
 	justify-content: center;
-	align-center:center;
+	align-center: center;
 }
 
 .heading-container {
@@ -217,9 +226,10 @@ footer {
 	margin-bottom: 5px;
 }
 
-#rectifySubmitBtn{
+#rectifySubmitBtn {
 	margin-top: 20px;
 }
+
 .required-label::after {
 	content: '*';
 	color: red;

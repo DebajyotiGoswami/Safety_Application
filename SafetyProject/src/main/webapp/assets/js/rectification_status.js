@@ -91,7 +91,6 @@ $(document).ready(function() {
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
 	jsonObjectInput["KST01CL"] = costCenter;
-
 	$.ajax({
 		type: 'POST',
 		url: url,
@@ -103,6 +102,14 @@ $(document).ready(function() {
 			if (response.ackMsgCode === "207") {
 				fullData = empList;
 				populateTable(empList);
+			}
+			else if(response.ackMsgCode === "507"){
+				//no rectification done by the user"
+				let tableBody = document.getElementById('resultsTableBody');
+				tableBody.innerHTML= "";
+				let h2 = document.createElement('h2');
+				h2.textContent= "No rectification entry found to show.";
+				tableBody.appendChild(h2);
 			}
 		},
 		error: function(xhr, status, error) {

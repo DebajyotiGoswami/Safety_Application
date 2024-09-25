@@ -101,6 +101,44 @@ function uploadImage() {
 
 
 $(document).ready(function() {
+
+	const wipCheckbox = document.getElementById('wipCheckbox');
+	const rectificationDateLabel = document.querySelector('label[for="rectification_date"]');
+	const rectificationRemarksLabel = document.querySelector('label[for="rectification_remarks"]');
+	const rectificationDateInput = document.getElementById('rectification_date');
+	const rectificationRemarksInput = document.getElementById('rectification_remarks');
+	const rectificationImage = document.getElementById('rectificationImage');
+	const rectifySubmitBtn = document.getElementById('rectifySubmitBtn');
+
+	// Add event listener to the checkbox
+	wipCheckbox.addEventListener('change', function() {
+		// Clear the input fields
+		rectificationDateInput.value = ""; // Clear rectification date
+		rectificationRemarksInput.value = ""; // Clear rectification remarks
+		rectificationImage.value = ""; // Clear the rectified image input
+
+		if (this.checked) {
+			// Change the labels
+			rectificationDateLabel.textContent = "Target Date";
+			rectificationRemarksLabel.textContent = "Problem Remarks";
+			
+			// Disable the rectification image input
+			rectificationImage.disabled = true;
+
+			// Change the submit button text
+			rectifySubmitBtn.textContent = "SUBMIT PENDING";
+		} else {
+			// Revert the label changes
+			rectificationDateLabel.textContent = "Rectification Date";
+			rectificationRemarksLabel.textContent = "Rectification Remarks";
+
+			// Enable the rectification image input
+			rectificationImage.disabled = false;
+
+			// Revert the submit button text
+			rectifySubmitBtn.textContent = "Submit Rectification";
+		}
+	});
 	$('#resultsContainer').show();
 	var fullData = [];
 
@@ -141,59 +179,116 @@ $(document).ready(function() {
 	});
 
 	$('#rectifySubmitBtn').on('click', function() {
-		let inspection_id = $('#inspection_id').val();
-		let rectification_date = $('#rectification_date').val();
-		let rectification_remarks = $('#rectification_remarks').val();
-		let site_id = $('#site_id').val();
-		let rectified_by = getCookie("User");
-		let image1 = $('#base64Output').val();
-		let User = getCookie("User");
-		let siteId = $('#site_id').val();
+		if (wipCheckbox.checked) {
+			alert("WIP");
+			let inspection_id = $('#inspection_id').val();
+			let rectification_date = $('#rectification_date').val();
+			let rectification_remarks = $('#rectification_remarks').val();
+			let site_id = $('#site_id').val();
+			let rectified_by = getCookie("User");
+			let image1 = ""; //no image is required WIP entry
+			let User = getCookie("User");
 
-		xUidJson = enCrypt(User, "123456");
-		xUidEncrypted = xUidJson.User;
-		dUidEncrypted = xUidJson.Pwd;
-		let tkn = getCookie('tkn');
-		let xUid = cookieData.xUid;
-		let costCenter = getCookie("KST01CL");
+			xUidJson = enCrypt(User, "123456");
+			xUidEncrypted = xUidJson.User;
+			dUidEncrypted = xUidJson.Pwd;
+			let tkn = getCookie('tkn');
+			let xUid = cookieData.xUid;
+			let costCenter = getCookie("KST01CL");
 
-		var jsonObjInput = {
-			"inspectionId": inspection_id,
-			"rectificationDate": rectification_date,
-			"rectificationRemarks": rectification_remarks,
-			"rectifiedBy": rectified_by,
-			"postImage": image1,
-			"ServType": "103",  //integer
-			"latitude": 88.32, //double
-			"longitude": 132.12, //double
-			"gisId": "NA",
-			"siteId": site_id,
-			"presentStatus": "RECTIFIED",
-			"pageNm": "DASH",
-			"tkn": tkn,
-			"xUid": xUidEncrypted,
-			"dUid": dUidEncrypted,
-			"KST01CL": costCenter,
-			"solutionId": "NA"
-		};
-		$.ajax({
-			url: url,
-			type: 'POST',
-			data: JSON.stringify(jsonObjInput),
-			success: function(response) {
-				var newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
-				if (response.ackMsgCode === "103") {
-					alert(`${response.ackMsg}\nwith Site Id: ${siteId}\nagainst Inspection Id: ${inspection_id}.`);
-					console.log(JSON.stringify(response));
-					window.location.href = 'new_rectification.jsp';
+			var jsonObjInput = {
+				"inspectionId": inspection_id,
+				//"rectificationDate": rectification_date,
+				"targetDate": rectification_date,
+				//"rectificationRemarks": rectification_remarks,
+				"problemRemarks": rectification_remarks,
+				"rectifiedBy": rectified_by,
+				"postImage": image1,
+				"ServType": "104",  //integer
+				"latitude": 0.0, //double
+				"longitude": 0.0, //double
+				"gisId": "NA",
+				"siteId": site_id,
+				"presentStatus": "WIP",
+				"pageNm": "DASH",
+				"tkn": tkn,
+				"xUid": xUidEncrypted,
+				"dUid": dUidEncrypted,
+				"KST01CL": costCenter,
+				"solutionId": "NA"
+			};
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: JSON.stringify(jsonObjInput),
+				success: function(response) {
+					var newToken = response.tkn;
+					setCookie("tkn", newToken, 30);
+					if (response.ackMsgCode === "104") {
+						alert(`${response.ackMsg}\nwith Site Id: ${site_id}\nagainst Inspection Id: ${inspection_id}.`);
+						window.location.href = 'new_rectification.jsp';
+					}
+				},
+				error: function(xhr, status, error) {
+					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
-			},
-			error: function(xhr, status, error) {
-				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
-			}
-		});
+			});
+		}
+		else {
+			alert("RECTIFICATION");
+			let inspection_id = $('#inspection_id').val();
+			let rectification_date = $('#rectification_date').val();
+			let rectification_remarks = $('#rectification_remarks').val();
+			let site_id = $('#site_id').val();
+			let rectified_by = getCookie("User");
+			let image1 = $('#base64Output').val();
+			let User = getCookie("User");
+
+			xUidJson = enCrypt(User, "123456");
+			xUidEncrypted = xUidJson.User;
+			dUidEncrypted = xUidJson.Pwd;
+			let tkn = getCookie('tkn');
+			let xUid = cookieData.xUid;
+			let costCenter = getCookie("KST01CL");
+
+			var jsonObjInput = {
+				"inspectionId": inspection_id,
+				"rectificationDate": rectification_date,
+				"rectificationRemarks": rectification_remarks,
+				"rectifiedBy": rectified_by,
+				"postImage": image1,
+				"ServType": "103",  //integer
+				"latitude": 0.0, //double
+				"longitude": 0.0, //double
+				"gisId": "NA",
+				"siteId": site_id,
+				"presentStatus": "RECTIFIED",
+				"pageNm": "DASH",
+				"tkn": tkn,
+				"xUid": xUidEncrypted,
+				"dUid": dUidEncrypted,
+				"KST01CL": costCenter,
+				"solutionId": "NA"
+			};
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: JSON.stringify(jsonObjInput),
+				success: function(response) {
+					var newToken = response.tkn;
+					setCookie("tkn", newToken, 30);
+					if (response.ackMsgCode === "103") {
+						alert(`${response.ackMsg}\nwith Site Id: ${site_id}\nagainst Inspection Id: ${inspection_id}.`);
+						window.location.href = 'new_rectification.jsp';
+					}
+				},
+				error: function(xhr, status, error) {
+					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+				}
+			});
+		}
 	});
+
 	function populateTable(data) {
 		// Get the table body element
 		var tableBody = document.getElementById('resultsTableBody');
@@ -251,16 +346,6 @@ $(document).ready(function() {
 
 			// Create a column for the anchor tag
 			if (item.present_status === "INSPECTED") {
-				/*console.log("start");
-				var actionCell = document.createElement('td');
-				var anchor = document.createElement('a');
-				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
-				anchor.innerHTML = '<i class="fas fa-eye fa-lg" title="View Data"></i>'; // Use Font Awesome icon
-				//anchor.textContent = "MODIFY"; // Anchor text
-				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
-				actionCell.appendChild(anchor);
-				row.appendChild(actionCell);
-				console.log("end");*/
 				var actionCell = document.createElement('td');
 				var btn = document.createElement('button');
 				btn.id = 'fetchInspectButton';
@@ -273,8 +358,6 @@ $(document).ready(function() {
 				btn.setAttribute('data-problem-details', item.problem_remarks);
 				btn.setAttribute('data-location', item.location_remarks);
 				btn.setAttribute('data-site-id', item.site_id);
-				console.log("1: " + item.site_id);
-
 				//btn.setAttribute('data-image', item.image);
 
 				//btn.className = "btn btn-primary"; // Optional: Bootstrap button styling
@@ -305,16 +388,13 @@ $(document).ready(function() {
 						"dUid": dUidEncrypted,
 						"KST01CL": costCenter
 					};
-					console.log("Request: "+ JSON.stringify(jsonObjInput));
 					$.ajax({
 						url: url,
 						type: 'POST',
 						data: JSON.stringify(jsonObjInput),
 						success: function(response) {
-							console.log("rectify: " + JSON.stringify(response));
 							let newToken = response.tkn;
 							setCookie("tkn", newToken, 30);
-							console.log(getCookie("tkn"));
 							if (response.ackMsgCode === "206") {
 								let inspectionData = response.inspectListEmp.assignList[0];
 								let latitude = inspectionData.latitude
@@ -329,13 +409,13 @@ $(document).ready(function() {
 								let site_id = inspectionData.site_id;
 								let problem_remarks = inspectionData.problem_remarks;
 								let pre_image = inspectionData.pre_image;
-								
+
 
 								$('#resultsContainer').hide();
 								$('#formContainer').show();
 								$('#inspSubmitBtn').show();
-								
-								alert(`Inspection ID: ${inspection_id} \nunder ${site_id} is selected.\nEnter rectification details carefully.`);
+
+								alert(`Inspection ID: ${inspection_id} \nwith ${site_id} is selected.\nEnter rectification details carefully.`);
 								document.getElementById('inspection_id').value = inspection_id;
 								document.getElementById('inspection_date').value = inspection_date;
 								document.getElementById('inspection_by').value = inspection_by;
@@ -354,24 +434,6 @@ $(document).ready(function() {
 							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 						}
 					});
-
-
-
-
-					/*//show additional section
-					let inspectionId = this.getAttribute('data-inspection-id');
-					let inspectionDate = this.getAttribute('data-inspection-date');
-					let inspectionBy = this.getAttribute('data-inspection-by');
-					let problemName = this.getAttribute('data-problem-name');
-					let problemDetails = this.getAttribute('data-problem-details');
-					let location = this.getAttribute('data-location');
-					let siteId = this.getAttribute('data-site-id');
-					console.log("2: " + siteId);
-					//let image = this.getAttribute('data-image');*/
-
-
-					//populateDateDropdown(dataFromDate, dataEndDate);
-
 				});
 			} else {
 				// If status is not "INSPECTED", just add an empty cell
