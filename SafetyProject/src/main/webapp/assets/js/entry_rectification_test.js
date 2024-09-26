@@ -121,7 +121,7 @@ $(document).ready(function() {
 			// Change the labels
 			rectificationDateLabel.textContent = "Target Date";
 			rectificationRemarksLabel.textContent = "Problem Remarks";
-			
+
 			// Disable the rectification image input
 			rectificationImage.disabled = true;
 
@@ -174,6 +174,15 @@ $(document).ready(function() {
 			if (response.ackMsgCode === "205") {
 				fullData = empList;
 				populateTable(empList);
+				// Hide the no data alert and show the table
+				$('#noDataAlert').hide();
+				$('#tableContainer').show();
+				populateTable(empList);
+			}
+			else {
+				// Hide the table and show the no data alert
+				$('#tableContainer').hide();
+				$('#noDataAlert').show().text("No rectification task pending at you to show.");
 			}
 		}
 	});

@@ -106,9 +106,18 @@ $(document).ready(function() {
 			setCookie("tkn", newToken, 30);
 			var empList = response.inspectListEmp.assignList;
 
-			if (response.ackMsgCode === "204") {
+			if (response.ackMsgCode=== "204") {
+				// If data is available, hide the no-data alert and show the table
+				$('#noDataAlert').hide();
+				$('#tableContainer').show();
+
 				fullData = empList;
 				populateTable(empList);
+			} else {
+				// If no data is found, show the no-data alert and hide the table
+				$('#tableContainer').hide();
+				$('#filterSection').hide();
+				$('#noDataAlert').show().text("No inspection data available to show.");
 			}
 		},
 		error: function(xhr, status, error) {

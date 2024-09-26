@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="assets/css/inspection_navigation.css">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
  -->
- 
- <link rel="stylesheet" href="assets/fontAwesome/css/all.min.css">
+
+<link rel="stylesheet" href="assets/fontAwesome/css/all.min.css">
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/BigInteger.js"></script>
@@ -76,7 +76,12 @@
 			<div class="card-header text-center custom-header">Inspection
 				Entered By You</div>
 			<div class="card-body">
-				<div class="table-responsive"
+				<div id="noDataAlert" class="alert alert-info text-center"
+					role="alert" style="display: none;">No inspection data
+					available to show.</div>
+
+				<!-- Table for displaying inspection data -->
+				<div class="table-responsive" id="tableContainer"
 					style="overflow-y: auto; overflow-x: auto;">
 					<table
 						class="table table-striped table-hover table-sm small-font-table">
@@ -99,7 +104,8 @@
 					</table>
 				</div>
 			</div>
-			<div class="mb-4 row filterSection">
+
+			<div class="mb-4 row filterSection" id="filterSection">
 				<!-- From Date -->
 				<div class="col-sm-3 form-group">
 					<label for="fromDate" class="form-label">Inspection From</label> <input

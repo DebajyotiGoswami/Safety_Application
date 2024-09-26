@@ -83,7 +83,14 @@
 		<div class="card-header text-center custom-header">Inspection
 			Assigned To You</div>
 		<div class="card-body">
-			<div class="table-responsive" style="overflow-y: auto;">
+			<!-- Alert message for no data, initially hidden -->
+			<div id="noDataAlert" class="alert alert-info text-center"
+				role="alert" style="display: none;">No inspection task
+				pending at you to show.</div>
+
+			<!-- Table for displaying inspection data -->
+			<div class="table-responsive" id="tableContainer"
+				style="overflow-y: auto;">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -105,6 +112,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	<div class="container mt-5">
 		<div class="form-container">
@@ -132,9 +140,9 @@
 							<div class="col-sm-6 form-group image-upload-section">
 								<label for="imageInput" class="form-label">Upload Image</label>
 								<input type="file" id="imageInput" name="imageInput"
-									accept=".jpg, .jpeg, .png" /> <input
-									type="text" id="base64Output" name="base64Output"
-									style="display: none" readonly />
+									accept=".jpg, .jpeg, .png" /> <input type="text"
+									id="base64Output" name="base64Output" style="display: none"
+									readonly />
 							</div>
 						</div>
 
@@ -268,8 +276,8 @@
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="confirmationModalLabel" align="center">Check and confirm
-									the submission</h5>
+								<h5 class="modal-title" id="confirmationModalLabel"
+									align="center">Check and confirm the submission</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal"
 									aria-label="Close"></button>
 							</div>
@@ -300,8 +308,8 @@
 								</p>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary"
-									id="resetInspBtn" data-bs-dismiss="modal">RESET</button>
+								<button type="button" class="btn btn-primary" id="resetInspBtn"
+									data-bs-dismiss="modal">RESET</button>
 								<button type="button" class="btn btn-primary"
 									id="finalSubmitBtn">Submit</button>
 							</div>
@@ -312,7 +320,8 @@
 				<div class="row justify-content-center">
 					<div class="col-auto">
 						<!-- <button type="button" class="btn btn-primary" id="inspSubmitBtn">NEXT</button> -->
-						<button type="button" class="btn btn-primary" id="inspSubmitBtn" disabled>NEXT</button>
+						<button type="button" class="btn btn-primary" id="inspSubmitBtn"
+							disabled>NEXT</button>
 					</div>
 				</div>
 

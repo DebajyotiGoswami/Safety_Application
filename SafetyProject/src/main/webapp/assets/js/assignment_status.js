@@ -94,19 +94,28 @@ $(document).ready(function() {
 
 	//alert("before calling populate table");
 	//populateTable(data);
-	console.log("request: "+ JSON.stringify(jsonObjectInput));
+	console.log("request: " + JSON.stringify(jsonObjectInput));
 	$.ajax({
 		type: 'POST',
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			console.log("response: "+ JSON.stringify(response));
+			console.log("response: " + JSON.stringify(response));
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
+			setCookie("tkn", newToken, 30);
 			if (response.ackMsgCode === "201") {
+				// If data is available, hide the no-data alert and show the table
 				fullData = empList;
 				populateTable(empList);
-				setCookie("tkn", newToken, 30);
+				$('#noDataAlert').hide();
+				$('#tableContainer').show();
+			}
+			else {
+				// If no data is found, show the no-data alert and hide the table
+				$('#tableContainer').hide();
+				$('#filterSection').hide();
+				$('#noDataAlert').show().text("No inspection data available to show.");
 			}
 		}
 	});
@@ -234,7 +243,7 @@ $(document).ready(function() {
 				anchor.innerHTML = '<i class="fas fa-trash-alt" title="click to delete"></i>'; // Use Font Awesome icon
 				//anchor.textContent = "MODIFY"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
-				
+
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
 			} else {

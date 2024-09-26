@@ -188,16 +188,15 @@ $(document).ready(function() {
 			var empList = response.assignEmpDtls.assignList;
 			var newToken = response.tkn;
 			setCookie("tkn", newToken, 30);
-			if (response.ackMsgCode === "502") {
+			if (response.ackMsgCode === "202") {
+				// Hide the no data alert and show the table
+				$('#noDataAlert').hide();
+				$('#tableContainer').show();
 				populateTable(empList);
-			}
-			else if (response.ackMsgCode === "202") {
-				//no inspection assigned to this user"
-				let tableBody = document.getElementById('resultsTableBody');
-				tableBody.innerHTML = "";
-				let h2 = document.createElement('h2');
-				h2.textContent = "No rectification entry found to show.";
-				tableBody.appendChild(h2);
+			} else{
+				// Hide the table and show the no data alert
+				$('#tableContainer').hide();
+				$('#noDataAlert').show().text("No inspection task pending at you to show.");
 			}
 		}
 	});
@@ -510,6 +509,9 @@ $(document).ready(function() {
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
 					window.location.href = 'new_inspection.jsp';
+				}
+				else{
+					alert(`ERROR!! ${response.ackMsg}\nagainst Inspection Id: ${inspection_id}.`);
 				}
 			},
 			error: function(xhr, status, error) {

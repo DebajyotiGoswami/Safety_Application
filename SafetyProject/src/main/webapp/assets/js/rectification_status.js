@@ -100,16 +100,20 @@ $(document).ready(function() {
 			let newToken = response.tkn;
 			setCookie("tkn", newToken, 30);
 			if (response.ackMsgCode === "207") {
+				// If data is available, hide the no-data alert and show the table
 				fullData = empList;
 				populateTable(empList);
+				$('#noDataAlert').hide();
+				$('#tableContainer').show();
+
+				fullData = empList;
+				populateTable(empList)
 			}
-			else if(response.ackMsgCode === "507"){
-				//no rectification done by the user"
-				let tableBody = document.getElementById('resultsTableBody');
-				tableBody.innerHTML= "";
-				let h2 = document.createElement('h2');
-				h2.textContent= "No rectification entry found to show.";
-				tableBody.appendChild(h2);
+			else {
+				// If no data is found, show the no-data alert and hide the table
+				$('#tableContainer').hide();
+				$('#filterSection').hide();
+				$('#noDataAlert').show().text("No rectification data available to show.");
 			}
 		},
 		error: function(xhr, status, error) {

@@ -85,8 +85,13 @@
 	<div class="card" id="resultsContainer" style="display: none;">
 		<div class="card-header text-center custom-header">Rectification
 			Pending At You</div>
+			
+		<div id="noDataAlert" class="alert alert-info text-center"
+			role="alert" style="display: none;">No rectification task
+			pending at you to show.</div>
+			
 		<div class="card-body">
-			<div class="table-responsive" style="overflow-y: auto;">
+			<div id="tableContainer" class="table-responsive" style="overflow-y: auto;">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>

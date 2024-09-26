@@ -70,7 +70,12 @@
 			<div class="card-header text-center custom-header">Rectification
 				Entered By You</div>
 			<div class="card-body">
-				<div class="table-responsive" style="overflow-y: auto;">
+
+				<div id="noDataAlert" class="alert alert-info text-center"
+					role="alert" style="display: none;">No rectification data
+					available to show.</div>
+
+				<div class="table-responsive" id="tableContainer" style="overflow-y: auto;">
 					<table
 						class="table table-striped table-hover table-sm small-font-table">
 						<thead>
@@ -94,7 +99,7 @@
 					</table>
 				</div>
 			</div>
-			<div class="mb-4 row filterSection">
+			<div class="mb-4 row filterSection" id="filterSection">
 				<!-- From Date -->
 				<div class="col-sm-3 form-group">
 					<label for="fromDate" class="form-label">Inspection From
