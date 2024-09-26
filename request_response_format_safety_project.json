@@ -1,0 +1,669 @@
+LOGIN PAYLOAD 
+
+{
+	"User": "9f046b071a9c024b",
+	"Pwd": "e2505160dd246432b",
+	"userAgent": "Mozilla 5.0  Windows NT 10.0  Win64  x64  AppleWebKit 537.36  KHTML  like Gecko  Chrome 128.0.0.0 Safari 537.36",
+	"pageNm": "LOGIN"
+}
+
+LOGIN RESPONSE SUCCESS
+
+{
+	"ackMsg": "OTP sent Sucessfully",
+	"ackMsgCode": "105",
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	},
+	"xUid": "900127759432177024"
+}
+
+LOGIN RESPONSE ERROR
+
+{
+	"ackMsg": "Authentication Mismatch",
+	"ackMsgCode": "901"
+}
+
+OTP PAYLOAD 
+
+{
+	"User": "9f046b071a9c024bb7406d9",
+	"Pwd": "e2505160dd246432bb85604?",
+	"userAgent": "Mozilla 5.0  Windows NT 10.0  Win64  x64  AppleWebKit 537.36  KHTML  like Gecko  Chrome 128.0.0.0 Safari 537.36",
+	"pageNm": "OTP",
+	"otp": "12256",
+	"xUid": "9f046b071a9c024bb7406d9@",
+	"dUid": "450fbe5d298146ad7cb93371",
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	}
+}
+
+OTP RESPONSE SUCCESS
+
+{
+	"ackMsg": "Authentication OK",
+	"empList": {
+		"empList": [
+			{
+				"desig": "JUNIOR MANAGER (HR&A)",
+				"empId": "90005694",
+				"empName": "Shibamoyee Majumder (Roy)"
+			},
+			{
+				"desig": "DE(E)",
+				"empId": "90006656",
+				"empName": "Satya Ranjan Sarkar"
+			}
+		],
+		"stat": "true"
+	},
+	"role": {
+		"stat": "true",
+		"empRole": [
+			{
+				"roleDesc": "INSPECTOR",
+				"roleId": "1"
+			}
+		]
+	},
+	"ackMsgCode": "100",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MD",
+	"assetList": {
+		"stat": "true",
+		"assetDtls": [
+			{
+				"assetId": "1",
+				"networkType": "HT",
+				"assetDesc": "4P STRUCTURE"
+			},
+			{
+				"assetId": "2",
+				"networkType": "HT",
+				"assetDesc": "AB CABLE"
+			}
+		]
+	},
+	"offList": {
+		"stat": "true",
+		"officeList": [
+			{
+				"offCode": "3332000",
+				"offName": "KALYANI"
+			},
+			{
+				"offCode": "3332103",
+				"offName": "CHAKDAH(WEST) CCC"
+			},
+			{
+				"offCode": "3332201",
+				"offName": "SUBARNAPUR CCC"
+			}
+		]
+	},
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	},
+	"xUid": "900127759432177024"
+}
+
+OTP RESPONSE ERROR
+
+{"ackMsg":"OTPMISMATCH","ackMsgCode":"902"}
+
+RESEND OTP PAYLOAD
+
+{
+	"User": "9f046b071a9c024bb74",
+	"Pwd": "e2505160dd246432bb85",
+	"userAgent": "Mozilla 5.0  Windows NT 10.0  Win64  x64  AppleWebKit 537.36  KHTML  like Gecko  Chrome 129.0.0.0 Safari 537.36",
+	"pageNm": "RESOTP",
+	"otp": "",
+	"xUid": "9f046b071a9c024bb7406",
+	"dUid": "450fbe5d298146ad7cb93d3",
+	"empDtls": {
+		"STELLCL": "50032588",
+		"LTEXTCL": "KALYANI (D) DIVISION",
+		"EMNAMCL": "Debajyoti Goswami",
+		"STEXTCL": "DE(IT&C)",
+		"KST02CL": "C333320000",
+		"KST01CL": "3332000"
+	}
+}
+
+RESEND OTP SUCCESS
+
+{
+	"ackMsg": "OTP sent Sucessfully",
+	"ackMsgCode": "105",
+	"xUid": "900127759432177024"
+}
+
+NEW ASSIGNMENT PAYLOAD
+
+{
+	"KST01CL": "3332000",
+	"assignedDate": "2024-24-09",
+	"inspectionFromDate": "2024-09-27",
+	"inspectionToDate": "2024-09-28",
+	"remarks": "Guy insulator checking",
+	"inspectionId": "",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c6e82bb771dd4ad",
+	"dUid": "450fbe5d298146ad7cb93371?72623f5c2ca51ee6823",
+	"empAssignedTo": [
+		{
+			"erpId": "90009924",
+			"erpName": "Sanku Biswas"
+		}
+	],
+	"empAssignedBy": "90012775",
+	"rectifiedBy": "",
+	"assignedFromOff": "3332000",
+	"officeCodeToInspect": "3332103",
+	"status": "ASSIGNED",
+	"inspectedBy": "",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjdCI6MTc",
+	"empAssignedByNm": "Debajyoti Goswami",
+	"pageNm": "DASH",
+	"ServType": 101
+}
+
+NEW ASSIGNMENT SUCCESS
+
+{
+	"ackMsg": "Assignment Enetered Successfully",
+	"inspectionId": "3332000240924113644",
+	"ackMsgCode": "101",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MD"
+}
+
+NEW ASSIGNMENT ERROR 
+
+{
+	"ackMsg": "Error in assignment entry",
+	"ackMsgCode": "301",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5M"
+}
+
+ASSIGNMENT STATUS PAYLOAD
+
+{
+	"pageNm": "DASH",
+	"ServType": "201",
+	"xUid": "9f046b071a9c024bb7406d9@3e634",
+	"dUid": "450fbe5d298146ad7cb93371?7262",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiO",
+	"KST01CL": "3332000"
+}
+
+ASSIGNMENT STATUS RESPONSE SUCCESS
+
+{
+	"assignEmpDtls": {
+		"assignList": [
+			{
+				"inspection_from_date": "2024-11-15",
+				"inspection_to_date": "2024-11-16",
+				"assigned_date": "2024-09-10",
+				"inspection_id": "3500000240910094335",
+				"emp_assigned_to_Nm": "Jewel Daw",
+				"office_code_to_inspect": "3500000",
+				"status": "ASSIGNED"
+			},
+			{
+				"inspection_from_date": "2024-11-15",
+				"inspection_to_date": "2024-11-16",
+				"assigned_date": "2024-09-10",
+				"inspection_id": "3500000240910094335",
+				"emp_assigned_to_Nm": "Tuhin Sovan Koley",
+				"office_code_to_inspect": "3500000",
+				"status": "ASSIGNED"
+			}
+		],
+		"stat": "true"
+	},
+	"ackMsg": "Assign Entry selected successfully",
+	"ackMsgCode": "201",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjc"
+}
+
+NEW INSPECTION (list of inspection) PAYLOAD
+{
+	"pageNm": "DASH",
+	"ServType": "202",
+	"xUid": "9f046b071a9c024bb7406d9@3e6",
+	"dUid": "450fbe5d298146ad7cb93371?72",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGk",
+	"KST01CL": "3332000"
+}
+
+NEW INSPECTION (list of inspection) RESPONSE SUCCESS
+
+{
+    "assignEmpDtls": {
+        "assignList": [
+            {
+                "inspection_from_date": "2025-01-01",
+                "inspection_to_date": "2025-01-02",
+                "assigned_date": "2024-09-10",
+                "inspection_id": "3153402240910094609",
+                "office_name_to_inspect": "NABAPALLY CCC",
+                "office_code_to_inspect": "3153402",
+                "status": "ASSIGNED"
+            },
+            {
+                "inspection_from_date": "2024-09-10",
+                "inspection_to_date": "2024-09-10",
+                "assigned_date": "2024-09-10",
+                "inspection_id": "3430000240910094850",
+                "office_name_to_inspect": "RAIGUNJ REGION",
+                "office_code_to_inspect": "3430000",
+                "status": "ASSIGNED"
+            }
+        ],
+        "stat": "true"
+    },
+    "ackMsg": "Assigned Inspection selected successfully",
+    "ackMsgCode": "202",
+    "tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5"
+}
+
+NEW INSPECTION (list of inspection) RESPONSE SUCCESS
+REQUIRED 502
+
+
+NEW INSPECTION (fetch problem code list) PAYLOAD
+
+{
+	"network_type": "LT",
+	"assetId": "22",
+	"pageNm": "DASH",
+	"ServType": "203",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGki",
+	"xUid": "9f046b071a9c024bb7406d9@3e63",
+	"dUid": "450fbe5d298146ad7cb93371?726",
+	"KST01CL": "3332000",
+	"office_code_to_inspect": "3332000"
+}
+
+NEW INSPECTION (fetch problem code list) RESPONSE SUCCESS
+
+{
+	"ackMsg": "Data retrieved successfully",
+	"ackMsgCode": "203",
+	"probDtls": {
+		"stat": "true",
+		"probDtls": [
+			{
+				"probId": "LT00037",
+				"probDesc": "LT DTR Damaged & Live Part Exposed"
+			},
+			{
+				"probId": "LT00038",
+				"probDesc": "LT DTR Fire or Glow at Bushings"
+			}
+		]
+	},
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI",
+	"rectifyOfficeDtls": {
+		"stat": "true",
+		"officeList": [
+			{
+				"offCode": "3332000",
+				"offName": "KALYANI"
+			},
+			{
+				"offCode": "3332103",
+				"offName": "CHAKDAH(WEST) CCC"
+			}
+		]
+	}
+}
+
+NEW INSPECTION (fetch problem code list) RESPONSE ERROR
+
+REQUIRED
+
+NEW INSPECTION (final submission) PAYLOAD
+(SINGLE PROBLEM)
+
+{
+	"inspectionId": "3332000240923065708",
+	"locationRemarks": "Rathtala Bus Stop",
+	"problemRemarks": "man height",
+	"assignedOfficeCode": "3332000",
+	"inspectionDate": "2024-10-08",
+	"preImage": "/9j/4AAQSkZJRgABAQEAYABgAAD/4QA",
+	"ServType": "102",
+	"latitude": 88.32,
+	"longitude": 132.12,
+	"gisId": "NA",
+	"siteId": "NA",
+	"presentStatus": "INSPECTED",
+	"pageNm": "DASH",
+	"inspectionBy": "90012775",
+	"problemId": "LT00041",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOe",
+	"xUid": "9f046b071a9c024bb7406d9@3e634",
+	"dUid": "450fbe5d298146ad7cb93371?7262",
+	"KST01CL": "3332000"
+}
+
+NEW INSPECTION (final submission) PAYLOAD
+(MULTIPLE PROBLEM)
+
+{
+	"inspectionId": "3332000240923065708",
+	"locationRemarks": "Beside SBI ATM",
+	"assignedOfficeCode": "3332103",
+	"inspectionDate": "2024-10-08",
+	"preImage": "/9j/4AAQSkZJRgABAQEAYABgAAD/4QAi",
+	"ServType": "102",
+	"latitude": 0,
+	"longitude": 0,
+	"gisId": "NA",
+	"siteId": "NA",
+	"presentStatus": "INSPECTED",
+	"pageNm": "DASH",
+	"inspectionBy": "90012775",
+	"problems": [
+		{
+			"problemId": "LT00037",
+			"problemRemarks": "damaged expose DTR"
+		},
+		{
+			"problemId": "LT00041",
+			"problemRemarks": "DTR in man height"
+		}
+	],
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5M",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c6e8",
+	"dUid": "450fbe5d298146ad7cb93371?72623f5c",
+	"KST01CL": "3332000",
+	"severityLevel": "medium"
+}
+
+NEW INSPECTION (final submission) RESPONSE SUCCESS
+
+{
+	"ackMsg": "Inspection Enetered Successfully",
+	"ackMsgCode": "102",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiO",
+	"siteId": "333200024092538"
+}
+
+INSPECTION STATUS (all inspection fetch) PAYLOAD
+{
+	"pageNm": "DASH",
+	"ServType": "204",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c",
+	"dUid": "450fbe5d298146ad7cb93371?72623",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOi",
+	"KST01CL": "3332000"
+}
+
+INSPECTION STATUS (all inspection fetch) RESPONSE SUCCESS
+
+{
+    "ackMsg": "Inspectioned List selected successfully",
+    "ackMsgCode": "204",
+    "tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MD",
+    "inspectListEmp": {
+        "assignList": [
+            {
+                "inspection_by": "90012775",
+                "assigned_office_code": "3532000",
+                "inspection_id": "3500000240910094335",
+                "problem_id": "LT00022",
+                "site_id": "353200024091329",
+                "location_remarks": "Test",
+                "inspection_date": "2024-11-15",
+                "problem_remarks": "Test",
+                "present_status": "INSPECTED"
+            },
+            {
+                "inspection_by": "90012775",
+                "assigned_office_code": "3532000",
+                "inspection_id": "3500000240910094335",
+                "problem_id": "LT00022",
+                "site_id": "353200024091330",
+                "location_remarks": "Test",
+                "inspection_date": "2024-11-15",
+                "problem_remarks": "Test",
+                "present_status": "INSPECTED"
+            }
+        ],
+        "stat": "true"
+    }
+}
+
+INSPECTION STATUS (single inspection fetch) PAYLOAD
+(from Jewel)
+{
+	"role_id": "1",
+	"inspection_id": "3500000240910094335",
+	"emp_name": "Debajyoti Goswami",
+	"erp_id": "90012775",
+	"office_name": "KALYANI (D) DIVISION",
+	"designation": "DE(IT&C)",
+	"office_code": "3332000",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxM",
+	"page_id": "401",
+	"auth": "INSP_PRTL"
+}
+
+INSPECTION STATUS (single inspection fetch) RESPONSE SUCCESS
+(from Jewel)
+
+an webpage
+
+NEW RECTIFICATION (list of inspection) PAYLOAD
+
+{
+	"pageNm": "DASH",
+	"ServType": "205",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c6e8",
+	"dUid": "450fbe5d298146ad7cb93371?72623f5c",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5M",
+	"KST01CL": "3332000"
+}
+
+NEW RECTIFICATION (list of inspection) SUCCESS
+
+{
+    "ackMsg": "Inspectioned List selected successfully",
+    "ackMsgCode": "205",
+    "tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxM",
+    "inspectListEmp": {
+        "assignList": [
+            {
+                "inspection_by": "90017401",
+                "assigned_office_code": "3332000",
+                "inspection_id": "4300000240920064843",
+                "problem_id": "LT00007",
+                "site_id": "333200024092038",
+                "location_remarks": "JIS college entrance",
+                "inspection_date": "2024-10-16",
+                "problem_remarks": "long span with old bare conductor",
+                "present_status": "INSPECTED"
+            },
+            {
+                "inspection_by": "90012775",
+                "assigned_office_code": "3332000",
+                "inspection_id": "3332000240923065708",
+                "problem_id": "LT00009",
+                "site_id": "333200024092304",
+                "location_remarks": "Central Park crossing ",
+                "inspection_date": "2024-10-10",
+                "problem_remarks": "Live AB Cable snapped ",
+                "present_status": "INSPECTED"
+            }
+        ],
+        "stat": "true"
+    }
+}
+
+NEW RECTIFICATION (fetch details of single inspection) PAYLOAD
+
+{
+	"inspectId": "4300000240920064843",
+	"siteId": "333200024092038",
+	"problemId": "LT00007",
+	"ServType": "206",
+	"pageNm": "DASH",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGd",
+	"xUid": "9f046b071a9c024bb7406d9@3e6",
+	"dUid": "450fbe5d298146ad7cb93371?72",
+	"KST01CL": "3332000"
+}
+
+NEW RECTIFICATION (fetch details of single inspection) SUCCESS
+
+{
+	"ackMsg": "Inspectioned List selected successfully",
+	"ackMsgCode": "206",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjc3NSI",
+	"inspectListEmp": {
+		"assignList": [
+			{
+				"assigned_office_code": "3332000",
+				"latitude": 88.32,
+				"location_remarks": "Rathtala Bus Stop",
+				"gis_id": "NA",
+				"inspection_date": "2024-10-08",
+				"present_status": "INSPECTED",
+				"inspection_by": "90012775",
+				"inspection_id": "3332000240923065708",
+				"problem_id": "LT00041",
+				"site_id": "333200024092538",
+				"problem_remarks": "man height",
+				"pre_image": "/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiR",
+				"longitude": 132.12
+			}
+		],
+		"stat": "true"
+	}
+}
+
+NEW RECTIFICATION (final submission) PAYLOAD
+
+{
+	"inspectionId": "3332000240923065708",
+	"rectificationDate": "2024-09-25",
+	"rectificationRemarks": "Safety measure taken",
+	"rectifiedBy": "90012775",
+	"postImage": "/9j/4AAQSkZJRgABAQEAYABgAAD",
+	"ServType": "103",
+	"latitude": 88.32,
+	"longitude": 132.12,
+	"gisId": "NA",
+	"siteId": "333200024092549",
+	"presentStatus": "RECTIFIED",
+	"pageNm": "DASH",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c6e",
+	"dUid": "450fbe5d298146ad7cb93371?72623f5",
+	"KST01CL": "3332000",
+	"solutionId": "NA"
+}
+
+NEW RECTIFICATION (final submission) SUCCESS
+
+{
+	"ackMsg": "Inspection Details rectified Successfully",
+	"ackMsgCode": "103",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxM"
+}
+
+RECTIFICATION STATUS (all inspection fetch) PAYLOAD
+
+{
+	"pageNm": "DASH",
+	"ServType": "207",
+	"xUid": "9f046b071a9c024bb7406d9@3e634c6",
+	"dUid": "450fbe5d298146ad7cb93371?72623f5",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5",
+	"KST01CL": "3332000"
+}
+
+RECTIFICATION STATUS (all inspection fetch) SUCCESS
+
+{
+	"ackMsg": "Inspectioned List selected successfully",
+	"ackMsgCode": "207",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjc3NSIsImlhdCI6MTcyNzI1NTA0MCwic3ViIjoiOTAwMTI3NzU5NDMyMTc3MDI0IiwiaXNzIjoiV0JTRURDTF9JTlNQRUNUQVBQX0EiLCJhdWQiOiIzMzMyMDAwIiwiZXhwIjoxNzI3MjU2MjQwfQ.dIlLqqisi7Kqada_Sz_BlDHH4yvMCadKbr1Zu-8-cL4",
+	"inspectListEmp": {
+		"assignList": [
+			{
+				"inspection_by": "90012775",
+				"assigned_office_code": "3532000",
+				"inspection_id": "4300000240919103211",
+				"problem_id": "LT00030",
+				"site_id": "353200024091938",
+				"location_remarks": "Central School Playground",
+				"inspection_date": "2024-09-20",
+				"problem_remarks": "Inadequate Spacers near school",
+				"present_status": "RECTIFIED",
+				"solution_id": "NA",
+				"rectification_date": "2024-09-20",
+				"rectification_remarks": "2024-09-20"
+			},
+			{
+				"inspection_by": "90012775",
+				"assigned_office_code": "3532000",
+				"inspection_id": "4300000240918053202",
+				"problem_id": "LT00034",
+				"site_id": "353200024091847",
+				"location_remarks": "Model Primary School",
+				"inspection_date": "2024-12-06",
+				"problem_remarks": "School and Busy Area. Numerous tree branches.",
+				"present_status": "RECTIFIED",
+				"solution_id": "NA",
+				"rectification_date": "2024-12-06",
+				"rectification_remarks": "2024-09-20"
+			}
+		],
+		"stat": "true"
+	}
+}
+
+RECTIFICATION STATUS (single inspection fetch) PAYLOAD
+(from Jewel)
+
+{
+	"role_id": "1",
+	"inspection_id": "3332000240923065708",
+	"emp_name": "Debajyoti Goswami",
+	"erp_id": "90012775",
+	"office_name": "KALYANI (D) DIVISION",
+	"designation": "DE(IT&C)",
+	"office_code": "3332000",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5M",
+	"page_id": "401",
+	"auth": "INSP_PRTL"
+}
+
+RECTIFICATION STATUS (single inspection fetch) RESPONSE SUCCESS
+(from Jewel)
+
+an webpage
+
+
+
+
