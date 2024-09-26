@@ -552,9 +552,9 @@ $(document).ready(function() {
 			empAssignedDateCell.textContent = item.assigned_date;
 			row.appendChild(empAssignedDateCell);
 
-			var empAssignedToCell = document.createElement('td');
+			/*var empAssignedToCell = document.createElement('td');
 			empAssignedToCell.textContent = item.emp_assigned_to_Nm;
-			row.appendChild(empAssignedToCell);
+			row.appendChild(empAssignedToCell);*/
 
 			var officeCodeCell = document.createElement('td');
 			officeCodeCell.textContent = item.office_name_to_inspect;

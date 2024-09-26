@@ -314,6 +314,13 @@ $(document).ready(function() {
 		});
 	}*/
 
+	function capitalize(string) {
+		let newName = [];
+		string = string.trim().replace("  ", " ").split(" ");
+		string.forEach(word => newName.push(word[0].toUpperCase() + word.slice(1).toLowerCase()));
+		return newName.join(" ");
+	}
+	
 	function populateTable(data) {
 		var tableBody = document.getElementById('resultsTableBody');
 		var index = 1;
@@ -340,7 +347,8 @@ $(document).ready(function() {
 			var empAssignedToCell = document.createElement('td');
 			let name = item.emp_assigned_to_Nm;
 			name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-			empAssignedToCell.textContent = name;
+			//empAssignedToCell.textContent = name;
+			empAssignedToCell.textContent = capitalize(name);
 			row.appendChild(empAssignedToCell);
 
 			var officeCodeCell = document.createElement('td');

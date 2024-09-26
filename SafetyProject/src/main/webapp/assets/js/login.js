@@ -227,7 +227,7 @@ function handleButtonClick(event) {
 						}
 						setCookie("assetList", JSON.stringify(new_asset_list), 30);
 
-						window.location.href = 'dashboard.jsp';
+						//window.location.href = 'dashboard.jsp';
 
 						jsonObjInput["tkn"] = response.tkn;
 

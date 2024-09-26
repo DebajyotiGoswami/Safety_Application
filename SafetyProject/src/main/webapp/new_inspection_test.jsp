@@ -97,7 +97,7 @@
 							<th>Sl No.</th>
 							<th>Inspection ID</th>
 							<th>Assigned On</th>
-							<th>Assigned To</th>
+							<!-- <th>Assigned To</th> -->
 							<th>Office Name</th>
 							<th>From Date</th>
 							<th>To Date</th>
@@ -112,6 +112,8 @@
 			</div>
 		</div>
 	</div>
+	
+	
 
 
 	<div class="container mt-5">

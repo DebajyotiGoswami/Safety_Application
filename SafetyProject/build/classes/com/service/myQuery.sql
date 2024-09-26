@@ -84,3 +84,14 @@ select inspection_id, emp_assigned_by, emp_assigned_to,office_code_to_inspect, i
 select * from safety_schema.dev_otp
 order by cr_dt;
 ;
+
+
+select * from safety_schema.inspectdtls 
+where inspection_id='3332000240923065708'
+and inspection_date >='2024-09-26'
+and location_remarks= 'New Testing';
+
+alter table safety_schema.inspectdtls add column severity varchar(20);
+
+select * from safety_schema.problems;
+

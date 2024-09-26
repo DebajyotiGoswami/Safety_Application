@@ -106,7 +106,7 @@ $(document).ready(function() {
 			setCookie("tkn", newToken, 30);
 			var empList = response.inspectListEmp.assignList;
 
-			if (response.ackMsgCode=== "204") {
+			if (response.ackMsgCode === "204") {
 				// If data is available, hide the no-data alert and show the table
 				$('#noDataAlert').hide();
 				$('#tableContainer').show();
@@ -127,7 +127,7 @@ $(document).ready(function() {
 	});
 	//});
 
-	$('#fromDate, #toDate, #probName, #officeName').on('change', function() {
+	$('#fromDate, #toDate, #probName, #officeName').on('input', function() {
 		filterAndDisplayData();
 	});
 
@@ -175,6 +175,13 @@ $(document).ready(function() {
 		populateTable(filteredData); // Display the filtered data
 	}
 
+	function capitalize(string) {
+		let newName = [];
+		string = string.trim().replace("  ", " ").split(" ");
+		string.forEach(word => newName.push(word[0].toUpperCase() + word.slice(1).toLowerCase()));
+		return newName.join(" ");
+	}
+
 
 	function populateTable(data) {
 		// Get the table body element
@@ -209,12 +216,13 @@ $(document).ready(function() {
 					officeName = office.offName;
 				}
 			});
+			officeName = officeName === "" ? officeCode : officeName;
 			officeCodeCell.textContent = officeName;
 			row.appendChild(officeCodeCell);
 
 			//location
 			var probLocationCell = document.createElement('td');
-			probLocationCell.textContent = item.location_remarks;
+			probLocationCell.textContent = item.location_remarks.slice(0, 20);
 			row.appendChild(probLocationCell);
 
 			//problem code/name
@@ -224,7 +232,7 @@ $(document).ready(function() {
 
 			//problem details
 			var probDetailsCell = document.createElement('td');
-			probDetailsCell.textContent = item.problem_remarks;
+			probDetailsCell.textContent = item.problem_remarks.slice(0, 20);
 			row.appendChild(probDetailsCell);
 
 			//inspection date
