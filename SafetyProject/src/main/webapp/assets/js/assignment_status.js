@@ -69,7 +69,7 @@ function getCookie(name) {
 }
 
 $(document).ready(function() {
-	var fullData = [];
+	var fullData = [];   // test numerous time before turning it to let
 
 	var fromDate = $('#fromDate').val();
 	var toDate = $('#toDate').val();
@@ -94,33 +94,32 @@ $(document).ready(function() {
 
 	//alert("before calling populate table");
 	//populateTable(data);
-	console.log("request: " + JSON.stringify(jsonObjectInput));
 	$.ajax({
 		type: 'POST',
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			console.log("response: " + JSON.stringify(response));
-			var empList = response.assignEmpDtls.assignList;
-			var newToken = response.tkn;
+			let newToken = response.tkn;
 			setCookie("tkn", newToken, 30);
 			if (response.ackMsgCode === "201") {
 				// If data is available, hide the no-data alert and show the table
+				var empList = response.assignEmpDtls.assignList;
 				fullData = empList;
 				populateTable(empList);
 				$('#noDataAlert').hide();
 				$('#tableContainer').show();
 			}
-			else {
+			else if (response.ackMsgCode === "501") {
 				// If no data is found, show the no-data alert and hide the table
 				$('#tableContainer').hide();
 				$('#filterSection').hide();
-				$('#noDataAlert').show().text("No inspection data available to show.");
+				$('#noDataAlert').show().text("No assignment data available to show.");
 			}
 		}
 	});
 
-	$('#fromDate, #toDate, #assignedTo, #assignedOffice').on('change', function() {
+	$('#fromDate, #toDate, #assignedTo, #assignedOffice').on('input', function() {
 		filterAndDisplayData();
 	});
 
@@ -176,7 +175,7 @@ $(document).ready(function() {
 	}
 
 
-	function populateTable(data) {
+	/*function populateTable(data) {
 		// Get the table body element
 		var tableBody = document.getElementById('resultsTableBody');
 		var index = 1;
@@ -204,7 +203,9 @@ $(document).ready(function() {
 			row.appendChild(empAssignedByCell);
 
 			var empAssignedToCell = document.createElement('td');
-			empAssignedToCell.textContent = item.emp_assigned_to_Nm;
+			let name = item.emp_assigned_to_Nm;
+			name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+			empAssignedToCell.textContent = name;
 			row.appendChild(empAssignedToCell);
 
 			var officeCodeCell = document.createElement('td');
@@ -239,10 +240,66 @@ $(document).ready(function() {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
 
-				anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
 				anchor.innerHTML = '<i class="fas fa-trash-alt" title="click to delete"></i>'; // Use Font Awesome icon
-				//anchor.textContent = "MODIFY"; // Anchor text
-				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
+
+				// Add click event listener for the anchor element
+				anchor.addEventListener('click', function(event) {
+					event.preventDefault(); // Prevent the default anchor click behavior
+					// Initialize Bootstrap 5 modal without jQuery
+					var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+
+					// Event listener for the anchor (trash icon) to open modal
+					document.querySelectorAll('.fas.fa-trash-alt').forEach(anchor => {
+						anchor.addEventListener('click', function(event) {
+							event.preventDefault();
+							// Open the modal when clicking the trash icon
+							modal.show();
+						});
+					});
+
+					// When Yes button is clicked
+					document.getElementById('yesBtn').addEventListener('click', function() {
+						// Get the comment from the modal
+						var comment = document.getElementById('commentField').value; // Get the comment
+
+						let xUidJson = enCrypt(getCookie("User"), "123456");
+						let jsonInput = {
+							"inspection_id": item.inspection_id,
+							"tkn": getCookie("tkn"),
+							"remarks": comment,
+							"xUid": xUidJson.User,
+							"dUid": xUidJson.Pwd,
+							"status": "CANCELLED",
+							"pageNm": "DASH",
+							"ServType": "208"
+						}
+
+						$.ajax({
+							url: url,
+							type: 'POST',
+							data: JSON.stringify(jsonInput),
+							success: function(response) {
+								console.log("success");
+								setCookie("tkn", response.tkn, 30);
+								window.location.href = response.redirectURL;
+							},
+							error: function(xhr, status, error) {
+								console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+							}
+						});
+					});
+
+					document.getElementById('noBtn').addEventListener('click', function() {
+						modal.hide(); // Just close the modal without any action
+					});
+
+					// Ensure the modal close button works
+					document.querySelector('.btn-close').addEventListener('click', function() {
+						modal.hide(); // Close the modal when the X button is clicked
+					});
+				});
+
+
 
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
@@ -255,5 +312,142 @@ $(document).ready(function() {
 			// Append the row to the table body
 			tableBody.appendChild(row);
 		});
+	}*/
+
+	function populateTable(data) {
+		var tableBody = document.getElementById('resultsTableBody');
+		var index = 1;
+
+		// Clear any existing rows in the table
+		tableBody.innerHTML = '';
+
+		// Loop through the data and create rows
+		data.forEach(function(item) {
+			var row = document.createElement('tr');
+
+			var serialNumber = document.createElement('td');
+			serialNumber.textContent = index++;
+			row.appendChild(serialNumber);
+
+			var inspectionIdCell = document.createElement('td');
+			inspectionIdCell.textContent = item.inspection_id;
+			row.appendChild(inspectionIdCell);
+
+			var empAssignedByCell = document.createElement('td');
+			empAssignedByCell.textContent = item.assigned_date;
+			row.appendChild(empAssignedByCell);
+
+			var empAssignedToCell = document.createElement('td');
+			let name = item.emp_assigned_to_Nm;
+			name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+			empAssignedToCell.textContent = name;
+			row.appendChild(empAssignedToCell);
+
+			var officeCodeCell = document.createElement('td');
+			let officeCode = item.office_code_to_inspect;
+			let officeList = JSON.parse(localStorage.getItem("officeList"));
+			let officeName = "";
+			officeList.forEach((office) => {
+				if (office.offCode === officeCode) {
+					officeName = office.offName;
+				}
+			});
+			officeName = officeName === "" ? officeCode : officeName;
+			officeCodeCell.textContent = officeName;
+			row.appendChild(officeCodeCell);
+
+			var fromDateCell = document.createElement('td');
+			fromDateCell.textContent = item.inspection_from_date;
+			row.appendChild(fromDateCell);
+
+			var toDateCell = document.createElement('td');
+			toDateCell.textContent = item.inspection_to_date;
+			row.appendChild(toDateCell);
+
+			var statusCell = document.createElement('td');
+			statusCell.textContent = item.status;
+			row.appendChild(statusCell);
+
+			// Create a column for the anchor tag
+			if (item.status === "ASSIGNED") {
+				var actionCell = document.createElement('td');
+				var anchor = document.createElement('a');
+				anchor.innerHTML = '<i class="fas fa-trash-alt" title="click to delete"></i>';
+
+				// Add click event listener for the anchor element
+				anchor.addEventListener('click', function(event) {
+					event.preventDefault(); // Prevent the default anchor click behavior
+
+					// Initialize Bootstrap 5 modal without jQuery
+					var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+					modal.show(); // Show the modal immediately
+
+					// Clear the previous comment and ensure no multiple event listeners
+					document.getElementById('commentField').value = '';
+
+					// Remove old event listeners before adding new ones
+					const yesBtn = document.getElementById('yesBtn');
+					const noBtn = document.getElementById('noBtn');
+					const closeBtn = document.querySelector('.btn-close');
+
+					yesBtn.replaceWith(yesBtn.cloneNode(true));  // Remove old event listeners
+					noBtn.replaceWith(noBtn.cloneNode(true));    // Remove old event listeners
+					closeBtn.replaceWith(closeBtn.cloneNode(true));  // Remove old event listeners
+
+					document.getElementById('yesBtn').addEventListener('click', function() {
+						// Get the comment from the modal
+						var comment = document.getElementById('commentField').value;
+
+						let xUidJson = enCrypt(getCookie("User"), "123456");
+						let jsonInput = {
+							"inspection_id": item.inspection_id,
+							"tkn": getCookie("tkn"),
+							"remarks": comment,
+							"xUid": xUidJson.User,
+							"dUid": xUidJson.Pwd,
+							"status": "CANCELLED",
+							"pageNm": "DASH",
+							"ServType": "208"
+						};
+
+						// Make the AJAX call
+						$.ajax({
+							url: url,
+							type: 'POST',
+							data: JSON.stringify(jsonInput),
+							success: function(response) {
+								console.log("success");
+								setCookie("tkn", response.tkn, 30);
+								window.location.href = response.redirectURL;
+							},
+							error: function(xhr, status, error) {
+								console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+							},
+							complete: function() {
+								modal.hide(); // Hide the modal after the AJAX call
+							}
+						});
+					});
+
+					document.getElementById('noBtn').addEventListener('click', function() {
+						modal.hide(); // Close the modal without any action
+					});
+
+					document.querySelector('.btn-close').addEventListener('click', function() {
+						modal.hide(); // Close the modal when the X button is clicked
+					});
+				});
+
+				actionCell.appendChild(anchor);
+				row.appendChild(actionCell);
+			} else {
+				var emptyCell = document.createElement('td');
+				row.appendChild(emptyCell);
+			}
+
+			// Append the row to the table body
+			tableBody.appendChild(row);
+		});
 	}
+
 });

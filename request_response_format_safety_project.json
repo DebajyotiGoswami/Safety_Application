@@ -243,6 +243,27 @@ ASSIGNMENT STATUS RESPONSE SUCCESS
 	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MDAxMjc"
 }
 
+
+ASSIGNMENT DELETE/ MODIFY PAYLOAD
+
+{
+	"inspection_id": "3410000240912050154",
+	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJq",
+	"remarks": "Typing Mistake",
+	"xUid": "9f046b071a9c024bb7406d9@",
+	"dUid": "450fbe5d298146ad7cb93371",
+	"status": "CANCELLED",
+	"pageNm": "DASH",
+	"ServType": "208"
+}
+
+ASSIGNMENT DELETE/ MODIFY SUCCESS
+pending
+
+ASSIGNMENT DELETE/ MODIFY ERROR
+pending
+
+
 NEW INSPECTION (list of inspection) PAYLOAD
 {
 	"pageNm": "DASH",
@@ -252,6 +273,7 @@ NEW INSPECTION (list of inspection) PAYLOAD
 	"tkn": "eyJhbGciOiJIUzI1NiJ9.eyJqdGk",
 	"KST01CL": "3332000"
 }
+
 
 NEW INSPECTION (list of inspection) RESPONSE SUCCESS
 

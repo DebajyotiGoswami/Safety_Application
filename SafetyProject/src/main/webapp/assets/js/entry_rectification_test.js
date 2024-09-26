@@ -424,7 +424,7 @@ $(document).ready(function() {
 								$('#formContainer').show();
 								$('#inspSubmitBtn').show();
 
-								alert(`Inspection ID: ${inspection_id} \nwith ${site_id} is selected.\nEnter rectification details carefully.`);
+								alert(`Inspection ID: ${inspection_id} \nwith Site ID: ${site_id} is selected.\nEnter rectification details carefully.`);
 								document.getElementById('inspection_id').value = inspection_id;
 								document.getElementById('inspection_date').value = inspection_date;
 								document.getElementById('inspection_by').value = inspection_by;

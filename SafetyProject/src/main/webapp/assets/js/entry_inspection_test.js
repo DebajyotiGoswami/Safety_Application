@@ -507,7 +507,7 @@ $(document).ready(function() {
 				var newToken = response.tkn;
 				setCookie("tkn", newToken, 30);
 				if (response.ackMsgCode === "102") {
-					alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
+					alert(`${response.ackMsg}`);
 					window.location.href = 'new_inspection.jsp';
 				}
 				else{

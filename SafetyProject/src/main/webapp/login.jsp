@@ -1,32 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safety Application</title>
 
 <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
-
-
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
 <!-- Link to custom CSS -->
 <link rel="stylesheet" href="assets/css/before_login.css">
 
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
-
 <script src="assets/js/BigInteger.js"></script>
 <script src="assets/js/BigInteger.min.js"></script>
 
-
 <!-- JavaScript to handle LDAP authentication and OTP submission -->
 <script src="assets/js/login.js"></script>
-
-<!-- <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script> -->
-
 </head>
 
 <body>
@@ -97,15 +90,11 @@
 						</button>
 				</div>
 				<p id="otpError" class="error"></p>
-<!-- 				<div id="otpError" class="alert alert-danger" role="alert"
-					style="display: none;"></div> -->
 			</div>
 		</form>
 	</div>
 
 	<!-- Footer -->
 	<div class="footer">© 2024 WBSEDCL</div>
-
-
 </body>
 </html>

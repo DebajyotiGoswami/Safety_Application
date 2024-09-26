@@ -1,16 +1,11 @@
 var url = "http://10.251.37.170:8080/testSafety/testSafety";
 
-var KEY1 = bigInt("10953483997285864814773860729");
-var KEY2 = bigInt("37997636186218092599949125647");
-
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var jsonObjInput = {};
 var jsonObjCookie = {};
 
 function enCrypt(uid, pwd) {
-	//var uid=devEle["enIdCon"];
-	//var pwd=devEle["enAuthCon"];
 	let uidConver = [];
 	let pwdConver = [];
 	let enIden = [];
@@ -18,6 +13,8 @@ function enCrypt(uid, pwd) {
 	let enIdCon = "";
 	let enAuthCon = "";
 	let jsonObj = {};
+	let KEY1 = bigInt("10953483997285864814773860729");
+	let KEY2 = bigInt("37997636186218092599949125647");
 
 	for (let i = 0; i < uid.length; i++) {
 		uidConver[i] = uid.charCodeAt(i);
@@ -49,10 +46,12 @@ function isValidNumber(input) {
 	const numericRegex = /^[0-9]+$/;
 	return numericRegex.test(input) && input.length === 8 && input.startsWith('9');
 }
+
 function isValidOtp(input) {
 	const numericRegex = /^[0-9]+$/;
 	return numericRegex.test(input) && input.length == 5
 }
+
 function validateOtpAndSubmit(otp) {
 	const errorDisplay = document.getElementById('otpError');
 	if (!isValidOtp(otp)) {
@@ -88,7 +87,8 @@ function startResendOtpTimer() {
 	const resendButton = document.getElementById('resendOtpBtn');
 	resendButton.disabled = true;
 	let countdown = 5;
-	resendButton.textContent = "Resend OTP (" + String(countdown) + "s)";
+	//resendButton.textContent = "Resend OTP (" + String(countdown) + "s)";
+	resendButton.textContent = `Resend OTP (${String(countdown)}s)`;
 
 	const interval = setInterval(() => {
 		countdown--;
@@ -137,16 +137,14 @@ function getCurrentDate() {
 }
 
 $(document).ready(function() {
-	$('#loginbttn, #submitOtpBtn, #resendOtpBtn, #searchBtn').on('click', handleButtonClick);
+	$('#loginbttn, #submitOtpBtn, #resendOtpBtn').on('click', handleButtonClick);
 });
 
 function handleButtonClick(event) {
 	const buttonId = event.target.id;
-	var loginflg = false;
-	var submitotpflg = false;
-	var resendotpflg = false;
-	var assignmentflg = false;
-	var inspSubmitflg = false;
+	let loginflg = false;
+	let submitotpflg = false;
+	let resendotpflg = false;
 
 	if (buttonId === 'loginbttn') {
 		var User = $('#userId').val();
@@ -175,7 +173,6 @@ function handleButtonClick(event) {
 		jsonObjInput["dUid"] = dUidEncrypted;
 		jsonObjInput["empDtls"] = jsonObjCookie.empDtls;
 		jsonObjInput["stell"] = jsonObjCookie.userRole;
-		//jsonObjInput["KST02CL"]= jsonObjCookie.userRole;
 
 		if (buttonId === 'submitOtpBtn') {
 			submitotpflg = true;
@@ -186,60 +183,11 @@ function handleButtonClick(event) {
 			}
 		}
 		else if (buttonId === 'resendOtpBtn') {
+			document.getElementById("otp").clear
 			jsonObjInput["pageNm"] = "RESOTP";
 			resendotpflg = true;
 		}
 	}
-	else if (buttonId === 'assgnSubmitbtn') {
-		assignmentflg = true;
-		var cookieData = JSON.parse(getCookie('empDtls'));
-
-		jsonObjInput.assignedDate = getCurrentDate();
-		jsonObjInput.inspectionFromDate = document.getElementById('inspectionDateStart').value;
-		jsonObjInput.inspectionToDate = document.getElementById('inspectionDateEnd').value;
-		jsonObjInput.inspectionId = "";
-		jsonObjInput.empAssignedTo = document.getElementById('erpId1').value;
-		jsonObjInput.empAssignedBy = cookieData.User;
-		jsonObjInput.rectifiedBy = "";
-		jsonObjInput.assignedFromOff = cookieData.empDtls.LTEXTCL;
-		jsonObjInput.officeCodeToInspect = document.getElementById('officeName').value;
-		jsonObjInput.status = "ASSIGNED";
-		jsonObjInput.inspectedBy = "";
-		jsonObjInput.tkn = cookieData.tkn;
-		jsonObjInput.pageNm = "DASH";
-		jsonObjInput.ServType = 101;
-
-		alert("jsonObjInput in assignment: " + jsonObjInput);
-	}
-	else if (buttonId === 'searchBtn') {
-		alert("search assignment button clicked.");
-	}
-	else if (buttonId === 'inspSubmitBtn') {
-		inspSubmitflg = true;
-		alert("inspect submit button clicked");
-		var network_type = $('#network_type').val();
-		var asset_name = $('#asset_type').val();
-		var cookieData = JSON.parse(getCookie('empDtls'));
-		var tkn = getCookie('tkn');
-		var xUid = cookieData.xUid;
-		var costCenter = cookieData.empDtls.KST01CL;
-		//var costCenter = cookieData.empDtls.KST01CL;
-		xUidJson = enCrypt(xUid, "123456");
-		xUidEncrypted = xUidJson.User;
-		dUidEncrypted = xUidJson.Pwd;
-		jsonObjInput = {
-			"network_type": network_type,
-			"assetId": asset_name,
-			"pageNm": "DASH",
-			"ServType": "203",
-			"tkn": tkn,
-			"xUid": xUidEncrypted,
-			"dUid": dUidEncrypted,
-			"KST01CL": costCenter
-		};
-		console.log("json before ajax call in login.js: " + JSON.stringify(jsonObj));
-	}
-
 
 	$.ajax({
 		url: url, // replace with above Servlet URL
@@ -320,16 +268,6 @@ function handleButtonClick(event) {
 						alert("OTP resent. Please check your registered mobile number.");
 					}
 				}
-			}
-			else if (assignmentflg) {
-				if (response.ackMsgCode == '101') {
-					alert("new assignment successful");
-					window.location.href = 'assign_inspection.jsp';
-				}
-			}
-			else if (inspSubmitflg) {
-				alert("success in inspect");
-				alert(JSON.stringify(response));
 			}
 		}, error: function(xhr, status, error) {
 			//if server not get connected 

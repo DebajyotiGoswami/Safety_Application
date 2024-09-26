@@ -7,6 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Search Assigned Inspection</title>
 
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/BigInteger.js"></script>
+
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/inspection_navigation.css">
@@ -15,9 +19,7 @@
 
 <link rel="stylesheet" href="assets/fontAwesome/css/all.min.css">
 
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/BigInteger.js"></script>
+
 
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
@@ -67,12 +69,13 @@
 			<div class="card-header text-center custom-header">Inspection
 				Assigned By You</div>
 			<div class="card-body">
-			
+
 				<div id="noDataAlert" class="alert alert-info text-center"
 					role="alert" style="display: none;">No assignment data
 					available to show.</div>
-					
-				<div id="tableContainer" class="table-responsive" style="overflow-y: auto;">
+
+				<div id="tableContainer" class="table-responsive"
+					style="overflow-y: auto;">
 					<table
 						class="table table-striped table-hover table-sm small-font-table">
 						<thead>
@@ -119,6 +122,58 @@
 						name="assignedOffice" placeholder="Enter Office Name">
 				</div>
 			</div>
+
+			<!-- Modal for Confirmation -->
+			<!-- <div class="modal fade" id="confirmationModal" tabindex="-1"
+				aria-labelledby="confirmationModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="confirmationModalLabel">Confirm
+								Action</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Are you sure you want to delete this inspection?</p>
+							<div class="form-group">
+								<label for="comment">Please provide a comment:</label>
+								<textarea id="comment" class="form-control" rows="3"
+									placeholder="Enter comment"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">No</button>
+							<button type="button" class="btn btn-primary"
+								id="confirmDeleteBtn">Yes</button>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<!-- Modal -->
+			<div class="modal fade" id="confirmationModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Assignment Deletion</h5>
+							<button type="button" class="btn-close" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Provide the reason for assignment deletion</p>
+							<textarea id="commentField" placeholder="Within 20 characters"
+								class="form-control"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" id="noBtn">NO</button>
+							<button type="button" class="btn btn-primary" id="yesBtn">YES</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 		</div>
 	</div>
 

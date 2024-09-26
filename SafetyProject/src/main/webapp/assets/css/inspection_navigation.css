@@ -30,15 +30,15 @@ thead th {
 }
 
 /* Make the rightmost column fixed */
-tbody tr td:last-child, 
+/* tbody tr td:last-child, 
 thead tr th:last-child {
 	position: sticky;
-	right: 0; /* Fix to the right */
-	background-color: #f8f9fa; /* Background color of the right column */
-	z-index: 1; /* Make sure it is above other elements */
+	right: 0; Fix to the right
+	background-color: #f8f9fa; Background color of the right column
+	z-index: 1; Make sure it is above other elements
 	box-shadow: -2px 0 5px -2px #333;
-	/* Optional: add shadow for better visibility */
-}
+	Optional: add shadow for better visibility
+} */
 
 
 .filterSection{

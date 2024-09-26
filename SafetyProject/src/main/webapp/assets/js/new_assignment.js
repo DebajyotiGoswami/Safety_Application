@@ -131,13 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		// Loop through the officeList and append options
 		if (officeList && officeList.length > 0) {
-			officeList.forEach(function(office) {
-				//officeJSON= JSON.parse(office);
-				let option = document.createElement('option');
-				option.value = office.offCode;
-				option.text = office.offName + ' (' + office.offCode + ')';
-				officeDropdown.appendChild(option);
-			});
+			if(JSON.stringify(officeList)=== "[{}]"){
+				officeDropdown.innerHTML = '<option value="">No Office under you to assign</option>';
+			}
+			else{
+				officeDropdown.innerHTML = '<option value="">Select Office Name</option>';
+				officeList.forEach(function(office) {
+					//officeJSON= JSON.parse(office);
+					let option = document.createElement('option');
+					option.value = office.offCode;
+					option.text = office.offName + ' (' + office.offCode + ')';
+					officeDropdown.appendChild(option);
+				});
+			}
 		}
 	}
 	populateOfficeDropdown();
