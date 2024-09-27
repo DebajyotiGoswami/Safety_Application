@@ -1,6 +1,6 @@
-var url = 'http://10.251.37.170:8080/testSafety/testSafety'
+/*var url = 'http://10.251.37.170:8080/testSafety/testSafety'*/
 
-var KEY1 = bigInt("10953483997285864814773860729");
+/*var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
 function enCrypt(uid, pwd) {
@@ -34,9 +34,9 @@ function enCrypt(uid, pwd) {
 		"Pwd": enAuthCon
 	};
 	return jsonObj;
-}
+}*/
 
-function setCookie(name, value, minutes) {
+/*function setCookie(name, value, minutes) {
 	//value passed as object
 	let expires = "";
 	if (minutes) {
@@ -58,9 +58,9 @@ function getCookie(name) {
 		}
 	}
 	return null;
-}
+}*/
 
-const getCurrentDate = () => {
+/*const getCurrentDate = () => {
 	const date = new Date();
 	let year = String(date.getFullYear());
 
@@ -71,7 +71,7 @@ const getCurrentDate = () => {
 
 	//return `${year}-${day}-${month}`;
 	return year + "-" + day + "-" + month;
-}
+}*/
 
 /*function validateForm() {
 	alert("inside validate");
@@ -131,10 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		// Loop through the officeList and append options
 		if (officeList && officeList.length > 0) {
-			if(JSON.stringify(officeList)=== "[{}]"){
+			if (JSON.stringify(officeList) === "[{}]") {
 				officeDropdown.innerHTML = '<option value="">No Office under you to assign</option>';
 			}
-			else{
+			else {
 				officeDropdown.innerHTML = '<option value="">Select Office Name</option>';
 				officeList.forEach(function(office) {
 					//officeJSON= JSON.parse(office);
@@ -152,13 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('inspectionDateEnd').addEventListener('input', validateInspectionDates);
 
 	//get different value based on key of cookieData json
-	let xUid = getCookie("User");
+	/*let xUid = getCookie("User");
 	let xUidJson = enCrypt(xUid, "123456");
 	let xUidEncrypted = xUidJson.User;
-	let dUidEncrypted = xUidJson.Pwd;
+	let dUidEncrypted = xUidJson.Pwd;*/
 
 	//validateForm();
-	$('#assgnSubmitbtn').on('click', function() {
+	/*$('#assgnSubmitbtn1').on('click', function() {
+		alert("assignment page");
 		let tkn = getCookie('tkn'); //cookieData.tkn;
 		let jsonObject = {};
 		jsonObject["KST01CL"] = getCookie("costCenter");
@@ -214,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 			}
 		});
-	});
+	});*/
 });
 
 // Fetch employee list from localStorage
@@ -257,7 +258,6 @@ function updateERPFields() {
 	const erpIds = formatEmployeeData(JSON.parse(data)).empList;
 
 	for (let i = 1; i <= number; i++) {
-
 		const div = document.createElement('div');
 		div.className = 'mb-3 row';
 
@@ -284,10 +284,17 @@ function updateERPFields() {
 
 		// Populate the select dropdown with ERP IDs
 		erpIds.forEach(function(erpId) {
-			const option = document.createElement('option');
-			option.value = erpId;
-			option.textContent = erpId;
-			select.appendChild(option);
+			if (!erpId.includes(getCookie("User"))) {
+				//this if is to exclude the loged in user.
+				//i.e. user can not not assign to himself/ herself
+				const option = document.createElement('option');
+				option.value = erpId;
+				option.textContent = erpId;
+				select.appendChild(option);
+			}
+			else{
+				console.log(erpId);
+			}
 		});
 
 		// Append the select dropdown to the div
@@ -382,7 +389,7 @@ function validateInspectionDates() {
 			assgnSubmitbtn.disabled = true;
 		} else if ((endDate - startDate) / (1000 * 60 * 60 * 24) >= 7) {
 			errorDisplay.textContent = ""; // Clear previous error
-			errorDisplay.textContent = "End date";// cannot be more than 7 days from start date.";
+			errorDisplay.textContent = "End date cannot be more than 7 days from start date.";
 			endDateInput.classList.add('is-invalid');
 			errorDisplay.classList.add('text-danger');
 			assgnSubmitbtn.disabled = true;
