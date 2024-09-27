@@ -87,7 +87,6 @@ function startResendOtpTimer() {
 	const resendButton = document.getElementById('resendOtpBtn');
 	resendButton.disabled = true;
 	let countdown = 5;
-	//resendButton.textContent = "Resend OTP (" + String(countdown) + "s)";
 	resendButton.textContent = `Resend OTP (${String(countdown)}s)`;
 
 	const interval = setInterval(() => {
@@ -137,24 +136,19 @@ function getCurrentDate() {
 }
 
 $(document).ready(function() {
-	$('#loginbttn, #submitOtpBtn, #resendOtpBtn').on('click', handleButtonClick);
+	$('#loginbttn, #submitOtpBtn, #resendOtpBtn, #assgnSubmitbtn').on('click', handleButtonClick);
 });
 
 function handleButtonClick(event) {
 	const buttonId = event.target.id;
-	let loginflg = false;
-	let submitotpflg = false;
-	let resendotpflg = false;
 
 	if (buttonId === 'loginbttn') {
-		var User = $('#userId').val();
-		var Pwd = $('#password').val();
-		var userAgent = navigator.userAgent;
+		let User = $('#userId').val();
+		let Pwd = $('#password').val();
+		let userAgent = navigator.userAgent;
 		userAgent = userAgent.replace(/[^\w\s.]/g, " "); //replace all symbols with space
 
 		if (validateLoginAndSubmit(User, Pwd)) {
-			loginflg = true;
-
 			jsonObjInput = enCrypt(User, Pwd);
 			jsonObjInput["userAgent"] = userAgent;
 			jsonObjInput["pageNm"] = "LOGIN";
@@ -166,7 +160,8 @@ function handleButtonClick(event) {
 		}
 	}
 	else if ((buttonId === 'submitOtpBtn') || (buttonId === 'resendOtpBtn')) {
-		var otp = $('#otp').val();
+		let otp= $('#otp').val();
+		jsonObjInput = {};
 		jsonObjInput['otp'] = otp;
 		jsonObjInput["pageNm"] = "OTP";
 		jsonObjInput["xUid"] = xUidEncrypted;
@@ -175,7 +170,6 @@ function handleButtonClick(event) {
 		jsonObjInput["stell"] = jsonObjCookie.userRole;
 
 		if (buttonId === 'submitOtpBtn') {
-			submitotpflg = true;
 			if (validateOtpAndSubmit(otp)) {
 				startResendOtpTimer();
 			} else {
@@ -183,10 +177,48 @@ function handleButtonClick(event) {
 			}
 		}
 		else if (buttonId === 'resendOtpBtn') {
-			document.getElementById("otp").clear
+			document.getElementById("otp").value = '';
 			jsonObjInput["pageNm"] = "RESOTP";
-			resendotpflg = true;
 		}
+	}
+	else if (buttonId === 'assgnSubmitbtn') {
+		alert("login button page");
+		let tkn = getCookie('tkn'); //cookieData.tkn;
+		jsonObjInput = {};
+		jsonObjInput["KST01CL"] = getCookie("costCenter");
+		jsonObjInput.assignedDate = getCurrentDate();
+		jsonObjInput.inspectionFromDate = document.getElementById('inspectionDateStart').value;
+		jsonObjInput.inspectionToDate = document.getElementById('inspectionDateEnd').value;
+		jsonObjInput.remarks = document.getElementById('remarks').value;
+		jsonObjInput.inspectionId = "";
+
+		// Collect all ERP IDs
+		let erpIds = [];
+		$('.erp-select').each(function() {
+			let erpId = $(this).val();
+			if (erpId !== 'Select Team Member') {
+				let tempJson = {};
+				erpName = erpId.slice(0, erpId.indexOf("(") - 1);
+				erpId = erpId.slice(erpId.indexOf("(") + 1, erpId.length - 1);
+				tempJson.erpId = erpId;
+				tempJson.erpName = erpName;
+				erpIds.push(tempJson);
+			}
+		});
+		xUidJson= enCrypt(getCookie("User"), "123456");
+		jsonObjInput.xUid = xUidJson.User;
+		jsonObjInput.dUid = xUidJson.Pwd;
+		jsonObjInput.empAssignedTo = erpIds;
+		jsonObjInput.empAssignedBy = getCookie("User");
+		jsonObjInput.rectifiedBy = "";
+		jsonObjInput.assignedFromOff = getCookie("KST01CL");
+		jsonObjInput.officeCodeToInspect = document.getElementById('officeName').value;
+		jsonObjInput.status = "ASSIGNED";
+		jsonObjInput.inspectedBy = "";
+		jsonObjInput.tkn = tkn;
+		jsonObjInput.empAssignedByNm = getCookie("empName");
+		jsonObjInput.pageNm = "DASH";
+		jsonObjInput.ServType = 101;
 	}
 
 	$.ajax({
@@ -194,82 +226,89 @@ function handleButtonClick(event) {
 		type: 'POST',
 		data: JSON.stringify(jsonObjInput),
 		success: function(response) {
-			if (loginflg) {
-				if (response.ackMsgCode == '105') {
-					let xUid = response.xUid;
-					let empDtls = response.empDtls;
-					let xUidJson = enCrypt(xUid, "123456");
-					xUidEncrypted = xUidJson.User;
-					dUidEncrypted = xUidJson.Pwd;
-					// Show OTP section
-					$('#otpMessage').show();
-					$('#otpForm').show();
-					$('#otp').prop('disabled', false);
-					$('#submitOtpBtn').prop('disabled', false);
-					$('#loginbttn').prop('disabled', true);
-					startResendOtpTimer();
-					jsonObjCookie["xUid"] = xUid;
-					jsonObjCookie["empDtls"] = empDtls;
-				} else {
-					alert("Incorrect credentials. Please try again.");
+			if (response.ackMsgCode === '105') {
+				let xUid = response.xUid;
+				let empDtls = response.empDtls;
+				let xUidJson = enCrypt(xUid, "123456");
+				xUidEncrypted = xUidJson.User;
+				dUidEncrypted = xUidJson.Pwd;
+				// Show OTP section
+				$('#otpMessage').show();
+				$('#otpForm').show();
+				$('#otp').prop('disabled', false);
+				$('#submitOtpBtn').prop('disabled', false);
+				$('#loginbttn').prop('disabled', true);
+				startResendOtpTimer();
+				jsonObjCookie["xUid"] = xUid;
+				jsonObjCookie["empDtls"] = empDtls;
+			}
+			else if (response.ackMsgCode === "901") {
+				alert("Incorrect credentials. Please try again.");
+			}
+			else if (response.ackMsgCode === '100') {
+				let employee_list = JSON.stringify(response.empList.empList);
+				let office_list = JSON.stringify(response.offList.officeList);
+				let asset_list = response.assetList.assetDtls;
+				let new_asset_list = {};
+				for (let i = 0; i < asset_list.length; i++) {
+					let curr_asset = asset_list[i];
+					new_asset_list[curr_asset.networkType + curr_asset.assetDesc] = curr_asset.assetId;
+				}
+				setCookie("assetList", JSON.stringify(new_asset_list), 30);
+
+				window.location.href = 'dashboard.jsp';
+
+				jsonObjInput["tkn"] = response.tkn;
+				jsonObjCookie["tkn"] = response.tkn;
+
+				setCookie("empDtls", JSON.stringify(jsonObjCookie), 30); // this cookie variable store detailed data
+				//following cookie variables store individual data
+				setCookie("tkn", jsonObjCookie["tkn"], 30);
+				setCookie("empList", employee_list, 30);
+				setCookie("User", jsonObjCookie["User"], 30);
+				setCookie("userAgent", jsonObjCookie["userAgent"], 30);
+				setCookie("empName", jsonObjCookie.empDtls.EMNAMCL, 30);
+				setCookie("designation", jsonObjCookie.empDtls.STEXTCL, 30);
+				setCookie("userRole", jsonObjCookie.empDtls.STELLCL, 30);
+				setCookie("office", jsonObjCookie.empDtls.LTEXTCL, 30);
+				setCookie("KST01CL", jsonObjCookie.empDtls.KST01CL, 30);
+				setCookie("costCenter", jsonObjCookie.empDtls.KST01CL, 30);
+				setCookie("xUid", jsonObjCookie.xUid, 30);
+
+				// Store office list in localStorage
+				localStorage.setItem("officeList", office_list);  // Store full office list in localStorage
+				localStorage.setItem("empList", employee_list);  // Store full employee list in localStorage
+
+				localStorage.empListCount = JSON.parse(localStorage.getItem("empList")).length;
+				localStorage.officeListCount = JSON.parse(localStorage.getItem("officeList")).length;
+			}
+			else if (response.ackMsgCode === '902') {
+				alert("Incorrect OTP. Please check the OTP and try again.");
+			}
+			else if (response.ackMsgCode === "306") {
+				alert(`${response.ackMsg}`);
+			}
+			else if (response.ackMsgCode === '105') {
+				document.getElementById('resendOtpBtn').disabled = true;
+				startResendOtpTimer();
+			}
+			else if (response.ackMsgCode === "902") {
+				alert("OTP resent. Please check your registered mobile number.");
+			}
+			else if (response.ackMsgCode === "101") {
+				alert("login ajax page");
+				setCookie("tkn", response.tkn, 30);
+				alert(`${response.ackMsg}. Inspection ID: ${response.inspectionId}`);
+				if (response.ackMsgCode == '101') {
+					window.location.href = 'new_assignment.jsp';
 				}
 			}
-			else if (submitotpflg || resendotpflg) {
-				if (submitotpflg) {
-					if (response.ackMsgCode == '100') {
-						var employee_list = JSON.stringify(response.empList.empList);
-						var office_list = JSON.stringify(response.offList.officeList);
-						var asset_list = response.assetList.assetDtls;
-						let new_asset_list = {};
-						for (let i = 0; i < asset_list.length; i++) {
-							let curr_asset = asset_list[i];
-							new_asset_list[curr_asset.networkType + curr_asset.assetDesc] = curr_asset.assetId;
-						}
-						setCookie("assetList", JSON.stringify(new_asset_list), 30);
-
-						//window.location.href = 'dashboard.jsp';
-
-						jsonObjInput["tkn"] = response.tkn;
-
-						jsonObjCookie["tkn"] = response.tkn;
-
-						setCookie("empDtls", JSON.stringify(jsonObjCookie), 30); // this cookie variable store detailed data
-						//following cookie variables store individual data
-						setCookie("tkn", jsonObjCookie["tkn"], 30);
-						setCookie("empList", employee_list, 30);
-						setCookie("User", jsonObjCookie["User"], 30);
-						setCookie("userAgent", jsonObjCookie["userAgent"], 30);
-						setCookie("empName", jsonObjCookie.empDtls.EMNAMCL, 30);
-						setCookie("designation", jsonObjCookie.empDtls.STEXTCL, 30);
-						setCookie("userRole", jsonObjCookie.empDtls.STELLCL, 30);
-						setCookie("office", jsonObjCookie.empDtls.LTEXTCL, 30);
-						setCookie("KST01CL", jsonObjCookie.empDtls.KST01CL, 30);
-						setCookie("costCenter", jsonObjCookie.empDtls.KST01CL, 30);
-						/*if (getCookie("User") === "90012775") {
-							setCookie("KST01CL", "4300000", 30);
-							setCookie("costCenter", "4300000", 30);
-						}*/
-						setCookie("xUid", jsonObjCookie.xUid, 30);
-
-						// Store office list in localStorage
-						localStorage.setItem("officeList", office_list);  // Store full office list in localStorage
-						localStorage.setItem("empList", employee_list);  // Store full employee list in localStorage
-
-						localStorage.empListCount = JSON.parse(localStorage.getItem("empList")).length;
-						localStorage.officeListCount = JSON.parse(localStorage.getItem("officeList")).length;
-					} else {
-						alert("Incorrect OTP. Please check the OTP and try again.");
-					}
-				} else if (resendotpflg) {
-					if (response.ackMsgCode == '105') {
-						document.getElementById('resendOtpBtn').disabled = true;
-						startResendOtpTimer();
-					} else {
-						alert("OTP resent. Please check your registered mobile number.");
-					}
-				}
+			else if (response.ackMsgCode === "301"){
+				setCookie("tkn", response.tkn, 30);
+				alert(`${ackMsg}`);				
 			}
-		}, error: function(xhr, status, error) {
+		},
+		error: function(xhr, status, error) {
 			//if server not get connected 
 			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
