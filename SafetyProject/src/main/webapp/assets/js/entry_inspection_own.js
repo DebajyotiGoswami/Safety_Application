@@ -132,8 +132,20 @@ function populateDateDropdown(startDateStr, endDateStr) {
 
 
 $(document).ready(function() {
+
+	$('#resultsContainer').hide();
+	$('#additionalSection1').show();
+	$('#inspSubmitBtn').show();
 	// Initially disable the submit button
 	$('#inspSubmitBtn').prop('disabled', true);
+	
+	let dataFromDate= new Date();
+	let dataEndDate=  new Date();
+	dataFromDate.setDate(dataFromDate.getDate()- 7);
+	populateDateDropdown(dataFromDate, dataEndDate);
+	$('#inspection_id').val('Suo Moto Inspection');
+	$('#inspection_id').prop('disabled', true);
+	
 
 	// Function to check if all fields are valid
 	function checkFormValidity() {
@@ -163,10 +175,7 @@ $(document).ready(function() {
 		checkFormValidity();  // Check form validity
 	});
 
-
-	$('#resultsContainer').show();
-
-	var jsonObjectInput = {};
+/*	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
 	jsonObjectInput.ServType = "202";
 	var cookieData = JSON.parse(getCookie('empDtls'));
@@ -199,9 +208,10 @@ $(document).ready(function() {
 				$('#noDataAlert').show().text("No inspection task pending at you to show.");
 			}
 		}
-	});
+	});*/
 
 	$('#inspSubmitBtn, #inspSubmitBtn2').on('click', function() {
+		alert("inspect button clicked");
 		function disableMouseInteraction(className) {
 			var elements = document.querySelectorAll('.' + className);
 			elements.forEach(function(element) {
@@ -209,6 +219,7 @@ $(document).ready(function() {
 			});
 		}
 		if ($('#inspSubmitBtn').text() === 'NEXT') {
+			alert("next button clicked");
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
@@ -224,22 +235,23 @@ $(document).ready(function() {
 
 			var jsonObj = {
 				"network_type": network_type,
-				"assetId": asset_name,
 				"pageNm": "DASH",
 				"ServType": "203",
 				"tkn": tkn,
 				"xUid": xUidEncrypted,
 				"dUid": dUidEncrypted,
 				"KST01CL": costCenter,
-				"office_code_to_inspect": getCookie("office_code_to_inspect"),
+				"office_code_to_inspect": costCenter,
 				"assetId": assetList[network_type + asset_name]
 			};
 			//var jsonString = JSON.stringify(jsonObj);
+			console.log("request: "+ JSON.stringify(jsonObj));
 			$.ajax({
 				type: 'POST',
 				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
+					console.log("response: "+ JSON.stringify(response));
 					var problemContainer = $('#problem_list');
 					problemContainer.empty(); // Clear any existing options
 
@@ -508,7 +520,7 @@ $(document).ready(function() {
 				setCookie("tkn", newToken, 30);
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg}`);
-					window.location.href = 'new_inspection_test.jsp';
+					window.location.href = 'new_inspection_own.jsp';
 				}
 				else {
 					alert(`ERROR!! ${response.ackMsg}\nagainst Inspection Id: ${inspection_id}.`);

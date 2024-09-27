@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const office = cookieData.empDtls.LTEXTCL;
 	const userRole = cookieData.empDtls.STELLCL; //50032705
 
-	document.getElementById('floatingPlusBtn').addEventListener('click', function(event) {
+	/*document.getElementById('floatingPlusBtn').addEventListener('click', function(event) {
 		event.preventDefault(); // Prevent default anchor behavior
 
 		// Define the JSON object for the AJAX request
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.error('Error:', error);
 			}
 		});
-	});
+	});*/
 
 
 	//document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";

@@ -96,15 +96,22 @@
 							inspections. Also find a comprehensive inspection history for
 							reference and reporting.</p>
 						<div class="btn-container">
-							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Your
+							<a href="new_inspection_test.jsp" class="btn btn-primary btn-equal">Your
 								Pending Inspection</a> <a href="inspection_status.jsp"
 								class="btn btn-primary btn-equal">View All Inspections</a>
 						</div>
+
+						<!-- Modified button that links to new_inspection_test.jsp with a query parameter -->
+						<!-- <a href="new_inspection_test.jsp?type=suo_moto"
+							class="btn btn-primary btn-block-wide mt-3">Inspection
+							without Assignment</a> -->
+							
+						<!-- <a href="new_inspection_test.jsp?type=suo_moto" class="btn btn-primary btn-block-wide mt-3">Inspection without Assignment</a> -->
+						<a href="new_inspection_own.jsp" class="btn btn-primary btn-block-wide mt-3">Inspection without Assignment</a>
+						
+
+
 					</div>
-					<!-- Floating Plus Button inside the card -->
-					<a href="#" id="floatingPlusBtn" class="floating-btn"> <i
-						class="fas fa-plus"></i>
-					</a>
 				</div>
 			</div>
 
@@ -117,7 +124,7 @@
 						<p class="card-text">Enter the detailed information of
 							corrective actions which was taken after inspections.</p>
 						<div class="btn-container">
-							<a href="new_rectification.jsp" class="btn btn-primary btn-equal">Your
+							<a href="new_rectification_test.jsp" class="btn btn-primary btn-equal">Your
 								Pending Rectification</a> <a href="rectification_status.jsp"
 								class="btn btn-primary btn-equal">View All Rectifications</a>
 						</div>

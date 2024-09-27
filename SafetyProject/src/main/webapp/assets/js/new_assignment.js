@@ -99,7 +99,6 @@ function getCookie(name) {
 }*/
 
 document.addEventListener('DOMContentLoaded', () => {
-	alert("again again");
 	$('#assgnSubmitbtn').prop('disabled', true);
 	// Function to check if all fields are valid
 	function checkFormValidity() {

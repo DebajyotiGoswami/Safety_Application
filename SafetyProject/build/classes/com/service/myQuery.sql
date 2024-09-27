@@ -88,9 +88,7 @@ order by cr_dt;
 
 
 select * from safety_schema.inspectdtls 
-where inspection_id='3332000240923065708'
-and inspection_date >='2024-09-26'
-and location_remarks= 'New Testing';
+where inspection_id like '%Suo%'
 
 alter table safety_schema.inspectdtls add column severity varchar(20);
 

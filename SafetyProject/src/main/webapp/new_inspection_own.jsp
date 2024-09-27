@@ -79,16 +79,16 @@
 		<script src="assets/js/navbar.js"></script>
 	</nav>
 
-	<div class="card" id="resultsContainer" style="display: none;">
+	<!-- <div class="card" id="resultsContainer" style="display: none;">
 		<div class="card-header text-center custom-header">Inspection
 			Assigned To You</div>
 		<div class="card-body">
-			<!-- Alert message for no data, initially hidden -->
+			Alert message for no data, initially hidden
 			<div id="noDataAlert" class="alert alert-info text-center"
 				role="alert" style="display: none;">No inspection task pending
 				at you to show.</div>
 
-			<!-- Table for displaying inspection data -->
+			Table for displaying inspection data
 			<div class="table-responsive" id="tableContainer"
 				style="overflow-y: auto;">
 				<table class="table table-striped table-hover">
@@ -97,7 +97,7 @@
 							<th>Sl No.</th>
 							<th>Inspection ID</th>
 							<th>Assigned On</th>
-							<!-- <th>Assigned To</th> -->
+							<th>Assigned To</th>
 							<th>Office Name</th>
 							<th>From Date</th>
 							<th>To Date</th>
@@ -106,12 +106,12 @@
 						</tr>
 					</thead>
 					<tbody id="resultsTableBody">
-						<!-- Rows will be populated via JavaScript -->
+						Rows will be populated via JavaScript
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 
 
@@ -335,6 +335,6 @@
 		2024 IT&C Cell, WBSEDCL </footer>
 
 	<!-- JavaScript to handle LDAP authentication and OTP submission -->
-	<script src="assets/js/entry_inspection_test.js"></script>
+	<script src="assets/js/entry_inspection_own.js"></script>
 	<!-- <script src="assets/js/login.js"></script> -->
 </body>

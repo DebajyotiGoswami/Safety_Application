@@ -69,10 +69,26 @@ html, body {
 .btn-equal {
 	min-width: 100px; /* Set a minimum width for consistency */
 	text-align: center; /* Center text in button */
-	width: 40%; /* Ensure full width for stacked layout */
+	width: 45%; /* Ensure full width for stacked layout */
 	margin-bottom: 10px; /* Increased margin between buttons */
 	flex: 1; /* Allow buttons to take equal space */
-	margin-right: 5px; /* Add minimal margin for separation */
+	margin-right: 10px; /* Add minimal margin for separation */
+}
+
+.btn-block-wide {
+    width: 100%; /* This button spans the entire width below the other buttons */
+    padding: 5px; /* Add padding for a larger button */
+    font-size: 1.2rem; /* Increase font size for a larger button appearance */
+    text-align: center;
+    display: block;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px; /* Optional: Add some rounding to the corners */
+}
+
+.btn-block-wide:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
 
 /* Remove right margin for the last button */
