@@ -99,9 +99,7 @@ $(document).ready(function() {
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			console.log("response: " + JSON.stringify(response));
-			let newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
+			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "201") {
 				// If data is available, hide the no-data alert and show the table
 				var empList = response.assignEmpDtls.assignList;
@@ -116,6 +114,10 @@ $(document).ready(function() {
 				$('#filterSection').hide();
 				$('#noDataAlert').show().text("No assignment data available to show.");
 			}
+		},
+		error: function(xhr, status, error) {
+			setCookie("tkn", response.tkn, 30);
+			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
 
@@ -320,7 +322,7 @@ $(document).ready(function() {
 		string.forEach(word => newName.push(word[0].toUpperCase() + word.slice(1).toLowerCase()));
 		return newName.join(" ");
 	}
-	
+
 	function populateTable(data) {
 		var tableBody = document.getElementById('resultsTableBody');
 		var index = 1;
@@ -429,6 +431,7 @@ $(document).ready(function() {
 								window.location.href = response.redirectURL;
 							},
 							error: function(xhr, status, error) {
+								setCookie("tkn", response.tkn, 30);
 								console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 							},
 							complete: function() {

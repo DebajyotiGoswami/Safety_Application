@@ -102,8 +102,7 @@ $(document).ready(function() {
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			var newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
+			setCookie("tkn", response.tkn, 30);
 			var empList = response.inspectListEmp.assignList;
 
 			if (response.ackMsgCode === "204") {
@@ -122,6 +121,7 @@ $(document).ready(function() {
 		},
 		error: function(xhr, status, error) {
 			//if server not get connected 
+			setCookie("tkn", response.tkn, 30);
 			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
 	});

@@ -156,13 +156,16 @@ $(document).ready(function() {
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			var empList = response.assignEmpDtls.assignList;
-			var newToken = response.tkn;
+			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "202") {
 				populateTable(empList);
-				setCookie("tkn", newToken, 30);
 				//$('#additionalSection1').show();
 				//document.getElementById('additionalSection1').style.display = 'block';
 			}
+		},
+		error: function(xhr, status, error){
+			setCookie("tkn", response.tkn, 30);
+			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
 
@@ -205,6 +208,7 @@ $(document).ready(function() {
 				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
+					setCookie("tkn", response.tkn, 30);
 					//populate problem dropdown
 					var dropdown = $('#problem_list');
 					dropdown.empty(); // Clear any existing options
@@ -221,13 +225,9 @@ $(document).ready(function() {
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
-
-					let newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
 				},
 				error: function(xhr, status, error) {
-					let newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
+					setCookie("tkn", response.tkn, 30);
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
 			});
@@ -288,14 +288,14 @@ $(document).ready(function() {
 				//contentType: 'application/json',
 				data: JSON.stringify(jsonObjInput),
 				success: function(response) {
-					var newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
+					setCookie("tkn", response.tkn, 30);
 					if (response.ackMsgCode === "102") {
 						alert(`${response.ackMsg}\nwith Site Id: ${response.siteId}\nagainst Inspection Id: ${inspection_id}.`);
 						window.location.href = 'new_inspection.jsp';
 					}
 				},
 				error: function(xhr, status, error) {
+					setCookie("tkn", response.tkn, 30);
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
 			});

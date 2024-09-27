@@ -78,8 +78,7 @@ $(document).ready(function() {
 			data: JSON.stringify(jsonObjectInput),
 			success: function(response) {
 				var empList = response.assignEmpDtls.assignList;
-				var newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
+				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "202") {
 					$('#noDataAlert').hide();
 					$('#tableContainer').show();
@@ -88,6 +87,10 @@ $(document).ready(function() {
 					$('#tableContainer').hide();
 					$('#noDataAlert').show().text("No inspection task pending at you to show.");
 				}
+			},
+			error: function(xhr, status, error){
+				setCookie("tkn", response.tkn, 30);
+				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 			}
 		});
 	}

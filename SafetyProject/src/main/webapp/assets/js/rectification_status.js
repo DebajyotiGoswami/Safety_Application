@@ -97,8 +97,7 @@ $(document).ready(function() {
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			var empList = response.inspectListEmp.assignList;
-			let newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
+			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "207") {
 				// If data is available, hide the no-data alert and show the table
 				fullData = empList;
@@ -118,8 +117,7 @@ $(document).ready(function() {
 		},
 		error: function(xhr, status, error) {
 			//if server not get connected 
-			let newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
+			setCookie("tkn", response.tkn, 30);
 			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
 	});

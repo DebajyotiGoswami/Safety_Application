@@ -201,8 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			type: 'POST',
 			data: JSON.stringify(jsonObject),
 			success: function(response) {
-				let newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
+				setCookie("tkn", response.tkn, 30);
 				let ackMsg = response.ackMsg;
 				let ackMsgCode = response.ackMsgCode;
 				let inspectionId = response.inspectionId;
@@ -212,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 			},
 			error: function(xhr, status, error) {
+				setCookie("tkn", response.tkn, 30);
 				console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 			}
 		});

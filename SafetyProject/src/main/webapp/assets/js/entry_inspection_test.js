@@ -185,9 +185,8 @@ $(document).ready(function() {
 		type: 'POST',
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
+			setCookie("tkn", response.tkn, 30);
 			var empList = response.assignEmpDtls.assignList;
-			var newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
 			if (response.ackMsgCode === "202") {
 				// Hide the no data alert and show the table
 				$('#noDataAlert').hide();
@@ -198,6 +197,10 @@ $(document).ready(function() {
 				$('#tableContainer').hide();
 				$('#noDataAlert').show().text("No inspection task pending at you to show.");
 			}
+		},
+		error: function(xhr, status, error){
+			setCookie("tkn", response.tkn, 30);
+			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
 
@@ -321,12 +324,10 @@ $(document).ready(function() {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
 
-					let newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
+					setCookie("tkn", response.tkn, 30);
 				},
 				error: function(xhr, status, error) {
-					let newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
+					setCookie("tkn", response.tkn, 30);
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
 			});
@@ -504,8 +505,7 @@ $(document).ready(function() {
 			data: JSON.stringify(jsonObjInput),
 			success: function(response) {
 				console.log("Response: " + JSON.stringify(response));
-				var newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
+				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg}`);
 					window.location.href = 'new_inspection_test.jsp';
@@ -515,6 +515,7 @@ $(document).ready(function() {
 				}
 			},
 			error: function(xhr, status, error) {
+				setCookie("tkn", response.tkn, 30);
 				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 			}
 		});

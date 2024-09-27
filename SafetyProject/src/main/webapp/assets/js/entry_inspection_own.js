@@ -333,12 +333,10 @@ $(document).ready(function() {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
 
-					let newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
+					setCookie("tkn", response.tkn, 30);
 				},
 				error: function(xhr, status, error) {
-					let newToken = response.tkn;
-					setCookie("tkn", newToken, 30);
+					setCookie("tkn", response.tkn, 30);
 					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 				}
 			});
@@ -506,8 +504,6 @@ $(document).ready(function() {
 			"severityLevel": severityLevel
 		};
 
-		console.log("Request: " + JSON.stringify(jsonObjInput));
-
 		$.ajax({
 			url: 'http://10.251.37.170:8080/testSafety/testSafety',
 			//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
@@ -515,9 +511,7 @@ $(document).ready(function() {
 			//contentType: 'application/json',
 			data: JSON.stringify(jsonObjInput),
 			success: function(response) {
-				console.log("Response: " + JSON.stringify(response));
-				var newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
+				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg}`);
 					window.location.href = 'new_inspection_own.jsp';
@@ -527,6 +521,7 @@ $(document).ready(function() {
 				}
 			},
 			error: function(xhr, status, error) {
+				setCookie("tkn", response.tkn, 30);
 				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 			}
 		});

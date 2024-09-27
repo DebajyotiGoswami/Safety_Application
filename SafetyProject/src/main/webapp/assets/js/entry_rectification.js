@@ -131,12 +131,15 @@ $(document).ready(function() {
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			var empList = response.inspectListEmp.assignList;
-			var newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
+			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "205") {
 				fullData = empList;
 				populateTable(empList);
 			}
+		},
+		error: function(xhr, status, error){
+			setCookie("tkn", response.tkn, 30);
+			console.log(`xhr: ${xhr}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
 
@@ -181,8 +184,7 @@ $(document).ready(function() {
 			type: 'POST',
 			data: JSON.stringify(jsonObjInput),
 			success: function(response) {
-				var newToken = response.tkn;
-				setCookie("tkn", newToken, 30);
+				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "103") {
 					alert(`${response.ackMsg}\nwith Site Id: ${siteId}\nagainst Inspection Id: ${inspection_id}.`);
 					console.log(JSON.stringify(response));
@@ -190,6 +192,7 @@ $(document).ready(function() {
 				}
 			},
 			error: function(xhr, status, error) {
+				setCookie("tkn", response.tkn, 30);
 				console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 			}
 		});
@@ -312,8 +315,7 @@ $(document).ready(function() {
 						data: JSON.stringify(jsonObjInput),
 						success: function(response) {
 							console.log("rectify: " + JSON.stringify(response));
-							let newToken = response.tkn;
-							setCookie("tkn", newToken, 30);
+							setCookie("tkn", response.tkn, 30);
 							console.log(getCookie("tkn"));
 							if (response.ackMsgCode === "206") {
 								let inspectionData = response.inspectListEmp.assignList[0];
@@ -351,6 +353,7 @@ $(document).ready(function() {
 							}
 						},
 						error: function(xhr, status, error) {
+							setCookie("tkn", response.tkn, 30);
 							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 						}
 					});
