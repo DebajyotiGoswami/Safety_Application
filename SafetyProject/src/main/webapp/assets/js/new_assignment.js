@@ -99,6 +99,7 @@ function getCookie(name) {
 }*/
 
 document.addEventListener('DOMContentLoaded', () => {
+	alert("again again");
 	$('#assgnSubmitbtn').prop('disabled', true);
 	// Function to check if all fields are valid
 	function checkFormValidity() {
@@ -220,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Fetch employee list from localStorage
 
-function populateEmployeeDropdown() {
+/*function populateEmployeeDropdown() {
 	let empList = JSON.parse(localStorage.getItem('empList'));
 	let employeeDropdown = document.getElementById('empDetails');
 
@@ -237,7 +238,7 @@ function populateEmployeeDropdown() {
 			employeeDropdown.appendChild(option);
 		});
 	}
-}
+}*/
 
 
 function formatEmployeeData(inputData) {
@@ -330,11 +331,11 @@ function filterDropdownOptions() {
 		options.forEach(option => {
 			if (option.value !== 'Select Team Member') {
 				if (selectedValues.includes(option.value) && option.value !== currentSelection) {
-					//option.disabled = true;
-					option.style.display = 'none';
+					//option.style.display = 'none';
+					option.disabled= true;
 				} else {
-					//option.disabled = false;
-					option.style.display = 'block';
+					//option.style.display = 'block';
+					option.disabled= false;
 				}
 			}
 		});
