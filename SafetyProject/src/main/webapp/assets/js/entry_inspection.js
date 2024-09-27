@@ -155,9 +155,9 @@ $(document).ready(function() {
 		type: 'POST',
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			var empList = response.assignEmpDtls.assignList;
 			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "202") {
+				let empList = response.assignEmpDtls.assignList;
 				populateTable(empList);
 				//$('#additionalSection1').show();
 				//document.getElementById('additionalSection1').style.display = 'block';

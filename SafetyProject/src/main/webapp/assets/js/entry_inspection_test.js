@@ -186,8 +186,8 @@ $(document).ready(function() {
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			setCookie("tkn", response.tkn, 30);
-			var empList = response.assignEmpDtls.assignList;
 			if (response.ackMsgCode === "202") {
+				let empList = response.assignEmpDtls.assignList;
 				// Hide the no data alert and show the table
 				$('#noDataAlert').hide();
 				$('#tableContainer').show();

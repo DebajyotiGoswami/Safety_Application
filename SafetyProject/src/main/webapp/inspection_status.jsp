@@ -89,7 +89,7 @@
 							<tr>
 								<th>Sl No.</th>
 								<th>Inspection ID</th>
-								<th>Office Name</th>
+								<th>Assigned Office</th>
 								<th>Location</th>
 								<th>Problem Name</th>
 								<th>Problem Details</th>

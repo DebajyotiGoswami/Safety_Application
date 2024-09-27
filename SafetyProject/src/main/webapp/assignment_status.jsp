@@ -14,12 +14,8 @@
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/inspection_navigation.css">
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
- -->
 
 <link rel="stylesheet" href="assets/fontAwesome/css/all.min.css">
-
-
 
 <!-- jQuery -->
 <script src="assets/js/jquery.min.js"></script>
@@ -123,47 +119,20 @@
 				</div>
 			</div>
 
-			<!-- Modal for Confirmation -->
-			<!-- <div class="modal fade" id="confirmationModal" tabindex="-1"
-				aria-labelledby="confirmationModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="confirmationModalLabel">Confirm
-								Action</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<p>Are you sure you want to delete this inspection?</p>
-							<div class="form-group">
-								<label for="comment">Please provide a comment:</label>
-								<textarea id="comment" class="form-control" rows="3"
-									placeholder="Enter comment"></textarea>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">No</button>
-							<button type="button" class="btn btn-primary"
-								id="confirmDeleteBtn">Yes</button>
-						</div>
-					</div>
-				</div>
-			</div> -->
 			<!-- Modal -->
 			<div class="modal fade" id="confirmationModal" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Assignment Deletion</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Assignment
+								Deletion</h5>
 							<button type="button" class="btn-close" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<p>Provide the reason for assignment deletion</p>
 							<textarea id="commentField" placeholder="Within 20 characters"
-								class="form-control"></textarea>
+								class="form-control" maxlength="20"></textarea>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" id="noBtn">NO</button>

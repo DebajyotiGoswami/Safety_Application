@@ -77,9 +77,9 @@ $(document).ready(function() {
 			type: 'POST',
 			data: JSON.stringify(jsonObjectInput),
 			success: function(response) {
-				var empList = response.assignEmpDtls.assignList;
 				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "202") {
+					let empList = response.assignEmpDtls.assignList;
 					$('#noDataAlert').hide();
 					$('#tableContainer').show();
 					populateTable(empList);

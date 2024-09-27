@@ -168,9 +168,9 @@ $(document).ready(function() {
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			var empList = response.inspectListEmp.assignList;
 			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "205") {
+				let empList = response.inspectListEmp.assignList;
 				fullData = empList;
 				populateTable(empList);
 				// Hide the no data alert and show the table

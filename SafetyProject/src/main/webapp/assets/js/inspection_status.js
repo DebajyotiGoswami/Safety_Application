@@ -103,9 +103,8 @@ $(document).ready(function() {
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			setCookie("tkn", response.tkn, 30);
-			var empList = response.inspectListEmp.assignList;
-
 			if (response.ackMsgCode === "204") {
+				let empList = response.inspectListEmp.assignList;
 				// If data is available, hide the no-data alert and show the table
 				$('#noDataAlert').hide();
 				$('#tableContainer').show();

@@ -102,7 +102,7 @@ $(document).ready(function() {
 			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "201") {
 				// If data is available, hide the no-data alert and show the table
-				var empList = response.assignEmpDtls.assignList;
+				let empList = response.assignEmpDtls.assignList;
 				fullData = empList;
 				populateTable(empList);
 				$('#noDataAlert').hide();
@@ -316,6 +316,33 @@ $(document).ready(function() {
 		});
 	}*/
 
+	document.getElementById('commentField').addEventListener('input', function() {
+		var comment = this.value;
+		var yesBtn = document.getElementById('yesBtn');
+		var maxLength = 20;
+		var minLength = 4;
+		var currentLength = comment.length;
+		var remaining = maxLength - currentLength;
+
+		// Update character count feedback
+		/*var charCount = document.getElementById('charCount');
+		charCount.textContent = remaining + ' characters remaining';*/
+
+		// Enable or disable the yesBtn based on the input length
+		if (currentLength >= minLength) {
+			yesBtn.disabled = false;  // Enable the button
+		} else {
+			yesBtn.disabled = true;   // Disable the button
+		}
+
+		// Optional: change character count text color if limit is reached
+		/*if (remaining === 0) {
+			charCount.style.color = 'red';
+		} else {
+			charCount.style.color = 'gray';
+		}*/
+	});
+
 	function capitalize(string) {
 		let newName = [];
 		string = string.trim().replace("  ", " ").split(" ");
@@ -378,6 +405,16 @@ $(document).ready(function() {
 			statusCell.textContent = item.status;
 			row.appendChild(statusCell);
 
+			// Change row background color based on status
+			if (item.inspection_id === '3520000240910095054') {
+				row.style.backgroundColor = 'red';  // Change row to red if status is CANCELLED
+			} else if (item.status === 'ASSIGNED') {
+				row.style.backgroundColor = 'lightgreen';  // Optional: Add other conditions
+			} else {
+				row.style.backgroundColor = '';  // Default to no background (or grey/white striping)
+			}
+
+
 			// Create a column for the anchor tag
 			if (item.status === "ASSIGNED") {
 				var actionCell = document.createElement('td');
@@ -394,6 +431,7 @@ $(document).ready(function() {
 
 					// Clear the previous comment and ensure no multiple event listeners
 					document.getElementById('commentField').value = '';
+					document.getElementById('yesBtn').disabled = true;
 
 					// Remove old event listeners before adding new ones
 					const yesBtn = document.getElementById('yesBtn');

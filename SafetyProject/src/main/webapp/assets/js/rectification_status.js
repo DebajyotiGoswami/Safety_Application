@@ -96,10 +96,10 @@ $(document).ready(function() {
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
-			var empList = response.inspectListEmp.assignList;
 			setCookie("tkn", response.tkn, 30);
 			if (response.ackMsgCode === "207") {
 				// If data is available, hide the no-data alert and show the table
+				let empList = response.inspectListEmp.assignList;
 				fullData = empList;
 				populateTable(empList);
 				$('#noDataAlert').hide();
@@ -122,7 +122,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#fromDate, #toDate, #problemName, #locationName').on('change', function() {
+	$('#fromDate, #toDate, #problemName, #locationName').on('input', function() {
 		filterAndDisplayData();
 	});
 
