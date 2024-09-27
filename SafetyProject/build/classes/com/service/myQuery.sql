@@ -76,7 +76,8 @@ ALTER TABLE safety_schema.inspectdtls
 ALTER COLUMN post_image TYPE TEXT
 
 
-select * from safety_schema.team_assignment;
+select * from safety_schema.teamassign
+where assigned_date>='2024-09-27';
 
 
 select inspection_id, emp_assigned_by, emp_assigned_to,office_code_to_inspect, inspection_from_date, inspection_to_date, status from safety_schema.team_assignment where inspection_from_date<= now() and emp_assigned_to= '90012775'
