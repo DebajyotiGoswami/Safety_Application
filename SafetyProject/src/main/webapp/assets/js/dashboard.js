@@ -60,6 +60,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	const office = cookieData.empDtls.LTEXTCL;
 	const userRole = cookieData.empDtls.STELLCL; //50032705
 
+	document.getElementById('floatingPlusBtn').addEventListener('click', function(event) {
+		event.preventDefault(); // Prevent default anchor behavior
+
+		// Define the JSON object for the AJAX request
+		let jsonInput = {
+			"action": "triggerNewAction", // Add your necessary key-value pairs for the server
+			"tkn": getCookie("tkn")
+		};
+
+		// Make the AJAX call
+		$.ajax({
+			url: 'yourAjaxEndpointUrl', // Replace with your actual endpoint
+			type: 'POST',
+			data: JSON.stringify(jsonInput),
+			success: function(response) {
+				console.log('Success:', response);
+				alert('AJAX call made successfully');
+			},
+			error: function(xhr, status, error) {
+				console.error('Error:', error);
+			}
+		});
+	});
+
+
 	//document.getElementById("cookieDisplay").innerText = cookieData ?name+ ", "+ designation+" (ERP ID: "+ erp_id+ ") " : "Cookie not found.";
 
 	/*if (userRole === "50032662" || userRole === "50032705") {

@@ -11,6 +11,7 @@
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/dashboard_navigation.css">
+<link rel="stylesheet" href="assets/fontAwesome/css/all.min.css">
 <script src="assets/js/jquery.min.js"></script>
 <!-- <script src="assets/js/login.js"></script> -->
 <script src="assets/js/dashboard.js"></script>
@@ -86,6 +87,7 @@
 			<%-- <%=str %>  --%>
 
 			<!-- Inspection Entry section -->
+
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -95,15 +97,17 @@
 							reference and reporting.</p>
 						<div class="btn-container">
 							<a href="new_inspection.jsp" class="btn btn-primary btn-equal">Your
-								Pending Inspection</a>
-							<!-- <button type= "button" id="showInspectionReport" name="showInspectionReport" class="btn btn-primary btn-equal">View
-								All Inspections</button> -->
-							<a href="inspection_status.jsp" class="btn btn-primary btn-equal">View
-								All Inspections</a>
+								Pending Inspection</a> <a href="inspection_status.jsp"
+								class="btn btn-primary btn-equal">View All Inspections</a>
 						</div>
 					</div>
+					<!-- Floating Plus Button inside the card -->
+					<a href="#" id="floatingPlusBtn" class="floating-btn"> <i
+						class="fas fa-plus"></i>
+					</a>
 				</div>
 			</div>
+
 
 			<!-- Enter Rectification Data section -->
 			<div class="col-md-6 mb-4">
