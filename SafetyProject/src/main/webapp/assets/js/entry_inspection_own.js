@@ -138,14 +138,14 @@ $(document).ready(function() {
 	$('#inspSubmitBtn').show();
 	// Initially disable the submit button
 	$('#inspSubmitBtn').prop('disabled', true);
-	
-	let dataFromDate= new Date();
-	let dataEndDate=  new Date();
-	dataFromDate.setDate(dataFromDate.getDate()- 7);
+
+	let dataFromDate = new Date();
+	let dataEndDate = new Date();
+	dataFromDate.setDate(dataFromDate.getDate() - 7);
 	populateDateDropdown(dataFromDate, dataEndDate);
-	$('#inspection_id').val('Suo Moto Inspection');
+	$('#inspection_id').val('SUO_MOTO_INSP');
 	$('#inspection_id').prop('disabled', true);
-	
+
 
 	// Function to check if all fields are valid
 	function checkFormValidity() {
@@ -154,10 +154,19 @@ $(document).ready(function() {
 		var image = $('#base64Output').val();
 		var networkType = $('#network_type').val();
 		var assetType = $('#asset_type').val();
+		var asset_name = $('#asset_type').val();
 
 		// Check if all fields are non-empty
 		if (inspectionDate && location && image && networkType && assetType) {
-			$('#inspSubmitBtn').prop('disabled', false);  // Enable the button
+			/*$('#inspSubmitBtn').prop('disabled', false);  // Enable the button*/
+			let assetList = JSON.parse(getCookie("assetList"));
+			if (assetList[networkType + asset_name] === undefined) {
+				alert(`No problems found in ${networkType} network and ${asset_name} asset combination`);
+				$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
+			}
+			else {
+				$('#inspSubmitBtn').prop('disabled', false);  // Enable the button
+			}
 		} else {
 			$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
 		}
@@ -175,43 +184,82 @@ $(document).ready(function() {
 		checkFormValidity();  // Check form validity
 	});
 
-/*	var jsonObjectInput = {};
-	jsonObjectInput.pageNm = "DASH";
-	jsonObjectInput.ServType = "202";
-	var cookieData = JSON.parse(getCookie('empDtls'));
-	var tkn = getCookie('tkn');
-	var xUid = getCookie("User");
-	var costCenter = cookieData.empDtls.KST01CL;
-	xUidJson = enCrypt(xUid, "123456");
-	xUidEncrypted = xUidJson.User;
-	dUidEncrypted = xUidJson.Pwd;
-	jsonObjectInput.xUid = xUidEncrypted;
-	jsonObjectInput.dUid = dUidEncrypted;
-	jsonObjectInput.tkn = tkn;
-	jsonObjectInput["KST01CL"] = costCenter;
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: JSON.stringify(jsonObjectInput),
-		success: function(response) {
-			var empList = response.assignEmpDtls.assignList;
-			var newToken = response.tkn;
-			setCookie("tkn", newToken, 30);
-			if (response.ackMsgCode === "202") {
-				// Hide the no data alert and show the table
-				$('#noDataAlert').hide();
-				$('#tableContainer').show();
-				populateTable(empList);
-			} else {
-				// Hide the table and show the no data alert
-				$('#tableContainer').hide();
-				$('#noDataAlert').show().text("No inspection task pending at you to show.");
-			}
+	const problemList = document.getElementById("problem_list");
+	const difficultyRadios = document.getElementsByName("difficulty");
+	const officeNameSelect = document.getElementById("office_name");
+	const submitButton = document.getElementById("inspSubmitBtn");
+
+	// Function to check if at least one problem is selected
+	function isProblemSelected() {
+		return problemList.children.length > 0;
+	}
+
+	function isDifficultySelected() {
+		return Array.from(difficultyRadios).some(radio => radio.checked);
+	}
+
+	function isOfficeSelected() {
+		return officeNameSelect.value !== "Select Office";
+	}
+
+	// Function to enable or disable the button
+	function updateButtonState() {
+		if (isProblemSelected() && isDifficultySelected() && isOfficeSelected()) {
+			submitButton.disabled = false;
+		} else {
+			submitButton.disabled = true;
 		}
-	});*/
+	}
+
+	// Observe changes in the problem list using MutationObserver
+	const observer = new MutationObserver(updateButtonState);
+	observer.observe(problemList, { childList: true, subtree: true });
+
+	// Event listeners for other form fields
+	Array.from(difficultyRadios).forEach(radio =>
+		radio.addEventListener("change", updateButtonState)
+	); // For radio button changes
+	officeNameSelect.addEventListener("change", updateButtonState); // For office selection changes
+
+	// Initially call the updateButtonState function in case the fields are already filled
+	updateButtonState();
+
+	/*	var jsonObjectInput = {};
+		jsonObjectInput.pageNm = "DASH";
+		jsonObjectInput.ServType = "202";
+		var cookieData = JSON.parse(getCookie('empDtls'));
+		var tkn = getCookie('tkn');
+		var xUid = getCookie("User");
+		var costCenter = cookieData.empDtls.KST01CL;
+		xUidJson = enCrypt(xUid, "123456");
+		xUidEncrypted = xUidJson.User;
+		dUidEncrypted = xUidJson.Pwd;
+		jsonObjectInput.xUid = xUidEncrypted;
+		jsonObjectInput.dUid = dUidEncrypted;
+		jsonObjectInput.tkn = tkn;
+		jsonObjectInput["KST01CL"] = costCenter;
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: JSON.stringify(jsonObjectInput),
+			success: function(response) {
+				var empList = response.assignEmpDtls.assignList;
+				var newToken = response.tkn;
+				setCookie("tkn", newToken, 30);
+				if (response.ackMsgCode === "202") {
+					// Hide the no data alert and show the table
+					$('#noDataAlert').hide();
+					$('#tableContainer').show();
+					populateTable(empList);
+				} else {
+					// Hide the table and show the no data alert
+					$('#tableContainer').hide();
+					$('#noDataAlert').show().text("No inspection task pending at you to show.");
+				}
+			}
+		});*/
 
 	$('#inspSubmitBtn, #inspSubmitBtn2').on('click', function() {
-		alert("inspect button clicked");
 		function disableMouseInteraction(className) {
 			var elements = document.querySelectorAll('.' + className);
 			elements.forEach(function(element) {
@@ -219,7 +267,6 @@ $(document).ready(function() {
 			});
 		}
 		if ($('#inspSubmitBtn').text() === 'NEXT') {
-			alert("next button clicked");
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
@@ -245,13 +292,13 @@ $(document).ready(function() {
 				"assetId": assetList[network_type + asset_name]
 			};
 			//var jsonString = JSON.stringify(jsonObj);
-			console.log("request: "+ JSON.stringify(jsonObj));
+			console.log("request: " + JSON.stringify(jsonObj));
 			$.ajax({
 				type: 'POST',
 				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
-					console.log("response: "+ JSON.stringify(response));
+					console.log("response: " + JSON.stringify(response));
 					var problemContainer = $('#problem_list');
 					problemContainer.empty(); // Clear any existing options
 
@@ -329,6 +376,7 @@ $(document).ready(function() {
 					var dropdown = $('#office_name');
 					dropdown.empty(); // Clear any existing options
 					// Assuming response is a JSON array
+					dropdown.append($('<option></option>').attr('value', "Select Office").text("Select Office"));
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
 						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 					});
@@ -513,8 +561,9 @@ $(document).ready(function() {
 			success: function(response) {
 				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "102") {
-					alert(`${response.ackMsg}`);
+					alert(`${response.ackMsg} with Inspection Id ${response.inspectionId}`);
 					window.location.href = 'new_inspection_own.jsp';
+					console.log("response: "+ JSON.stringify(response));
 				}
 				else {
 					alert(`ERROR!! ${response.ackMsg}\nagainst Inspection Id: ${inspection_id}.`);
@@ -529,7 +578,14 @@ $(document).ready(function() {
 
 	// Event listener for the RESET button
 	$('#resetInspBtn').on('click', function() {
-		location.reload();  // This will reload the entire page
+		//location.reload();  // This will reload the entire page
+		$('#confirmationModal').modal('hide'); // Close the modal when the RESET button is clicked
+	});
+
+	// Event listener for the "X" button
+	$('#btn-close').on('click', function() {
+		//location.reload();  // This will reload the entire page
+		$('#confirmationModal').modal('hide'); // Close the modal when the X button is clicked
 	});
 
 	function populateTable(data) {

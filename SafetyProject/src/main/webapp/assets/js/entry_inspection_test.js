@@ -46,6 +46,7 @@ function enCrypt(uid, pwd) {
 function uploadImage() {
 	var input = document.getElementById('imageInput');
 	var file = input.files[0];
+	const MAX_SIZE = 300;
 
 	if (!file) {
 		alert('Please select an image file.');
@@ -53,8 +54,8 @@ function uploadImage() {
 	}
 
 	// Validate file size (max 250 KB)
-	if (file.size > 250 * 1024) {
-		alert('File size must be less than 250 KB.');
+	if (file.size > MAX_SIZE * 1024) {
+		alert(`File size must be less than ${MAX_SIZE} KB.`);
 		return;
 	}
 
@@ -142,10 +143,18 @@ $(document).ready(function() {
 		var image = $('#base64Output').val();
 		var networkType = $('#network_type').val();
 		var assetType = $('#asset_type').val();
+		var asset_name = $('#asset_type').val();
 
 		// Check if all fields are non-empty
 		if (inspectionDate && location && image && networkType && assetType) {
-			$('#inspSubmitBtn').prop('disabled', false);  // Enable the button
+			let assetList = JSON.parse(getCookie("assetList"));
+			if (assetList[networkType + asset_name] === undefined) {
+				alert(`No problems found in ${networkType} network and ${asset_name} asset combination`);
+				$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
+			}
+			else {
+				$('#inspSubmitBtn').prop('disabled', false);  // Enable the button
+			}
 		} else {
 			$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
 		}
@@ -163,6 +172,45 @@ $(document).ready(function() {
 		checkFormValidity();  // Check form validity
 	});
 
+	const problemList = document.getElementById("problem_list");
+	const difficultyRadios = document.getElementsByName("difficulty");
+	const officeNameSelect = document.getElementById("office_name");
+	const submitButton = document.getElementById("inspSubmitBtn");
+
+	// Function to check if at least one problem is selected
+	function isProblemSelected() {
+		return problemList.children.length > 0;
+	}
+
+	function isDifficultySelected() {
+		return Array.from(difficultyRadios).some(radio => radio.checked);
+	}
+
+	function isOfficeSelected() {
+		return officeNameSelect.value !== "Select Office";
+	}
+
+	// Function to enable or disable the button
+	function updateButtonState() {
+		if (isProblemSelected() && isDifficultySelected() && isOfficeSelected()) {
+			submitButton.disabled = false;
+		} else {
+			submitButton.disabled = true;
+		}
+	}
+
+	// Observe changes in the problem list using MutationObserver
+	const observer = new MutationObserver(updateButtonState);
+	observer.observe(problemList, { childList: true, subtree: true });
+
+	// Event listeners for other form fields
+	Array.from(difficultyRadios).forEach(radio =>
+		radio.addEventListener("change", updateButtonState)
+	); // For radio button changes
+	officeNameSelect.addEventListener("change", updateButtonState); // For office selection changes
+
+	// Initially call the updateButtonState function in case the fields are already filled
+	updateButtonState();
 
 	$('#resultsContainer').show();
 
@@ -198,7 +246,7 @@ $(document).ready(function() {
 				$('#noDataAlert').show().text("No inspection task pending at you to show.");
 			}
 		},
-		error: function(xhr, status, error){
+		error: function(xhr, status, error) {
 			setCookie("tkn", response.tkn, 30);
 			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
@@ -223,11 +271,10 @@ $(document).ready(function() {
 			xUidJson = enCrypt(xUid, "123456");
 			xUidEncrypted = xUidJson.User;
 			dUidEncrypted = xUidJson.Pwd;
-			let assetList = JSON.parse(getCookie("assetList"));
 
+			let assetList = JSON.parse(getCookie("assetList"));
 			var jsonObj = {
 				"network_type": network_type,
-				"assetId": asset_name,
 				"pageNm": "DASH",
 				"ServType": "203",
 				"tkn": tkn,
@@ -298,6 +345,7 @@ $(document).ready(function() {
 								input.hide();
 							}
 						});
+						$('#inspSubmitBtn').prop('disabled', true);
 
 						// Append both columns to the row
 						row.append(checkboxCol, inputCol);
@@ -320,8 +368,29 @@ $(document).ready(function() {
 					var dropdown = $('#office_name');
 					dropdown.empty(); // Clear any existing options
 					// Assuming response is a JSON array
+					dropdown.append($('<option></option>').attr('value', "Select Office").text("Select Office"));
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
-						dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+						if(network_type=== "HT"){
+							if(item.offCode.slice(-3)=== "000"){
+								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+							}
+							else{
+								//do nothing
+								console.log("not eligible: "+ item.offCode);
+							}
+						}
+						else{
+							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+						}
+						/*if(network_type=== "HT" && item.offCode.slice(-3)=== "000"){
+							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+						}
+						else if(network_type=== "HT" && item.offCode.slice(-3)!== "000"){
+							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+						}
+						else{
+							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+						}*/
 					});
 
 					setCookie("tkn", response.tkn, 30);
@@ -523,7 +592,14 @@ $(document).ready(function() {
 
 	// Event listener for the RESET button
 	$('#resetInspBtn').on('click', function() {
-		location.reload();  // This will reload the entire page
+		//location.reload();  // This will reload the entire page
+		$('#confirmationModal').modal('hide'); // Close the modal when the RESET button is clicked
+	});
+
+	// Event listener for the "X" button
+	$('#btn-close').on('click', function() {
+		//location.reload();  // This will reload the entire page
+		$('#confirmationModal').modal('hide'); // Close the modal when the X button is clicked
 	});
 
 	function populateTable(data) {

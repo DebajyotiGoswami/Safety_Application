@@ -108,7 +108,7 @@ $(document).ready(function() {
 				$('#noDataAlert').hide();
 				$('#tableContainer').show();
 			}
-			else if (response.ackMsgCode === "501") {
+			else {
 				// If no data is found, show the no-data alert and hide the table
 				$('#tableContainer').hide();
 				$('#filterSection').hide();
@@ -405,16 +405,6 @@ $(document).ready(function() {
 			statusCell.textContent = item.status;
 			row.appendChild(statusCell);
 
-			// Change row background color based on status
-			if (item.inspection_id === '3520000240910095054') {
-				row.style.backgroundColor = 'red';  // Change row to red if status is CANCELLED
-			} else if (item.status === 'ASSIGNED') {
-				row.style.backgroundColor = 'lightgreen';  // Optional: Add other conditions
-			} else {
-				row.style.backgroundColor = '';  // Default to no background (or grey/white striping)
-			}
-
-
 			// Create a column for the anchor tag
 			if (item.status === "ASSIGNED") {
 				var actionCell = document.createElement('td');
@@ -453,9 +443,10 @@ $(document).ready(function() {
 							"remarks": comment,
 							"xUid": xUidJson.User,
 							"dUid": xUidJson.Pwd,
-							"status": "CANCELLED",
+							/*"status": "CANCELLED",*/
 							"pageNm": "DASH",
-							"ServType": "208"
+							"ServType": "104",
+							"KST01CL": getCookie("costCenter")
 						};
 
 						// Make the AJAX call
@@ -466,7 +457,7 @@ $(document).ready(function() {
 							success: function(response) {
 								console.log("success");
 								setCookie("tkn", response.tkn, 30);
-								window.location.href = response.redirectURL;
+								window.location.href = 'assignment_status.jsp';
 							},
 							error: function(xhr, status, error) {
 								setCookie("tkn", response.tkn, 30);

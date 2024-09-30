@@ -27,8 +27,6 @@
 		<div class="container-fluid">
 			<!-- Left side: Welcome message -->
 			<div id="cookieDisplay"></div>
-			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
-			</span> --%>
 			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
 			<!-- Right side: Navigation links -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -44,12 +42,6 @@
 					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
 					</li>
 					<li class="nav-item">
-						<!-- Logout form --> <!-- <form action="LogoutServlet" method="POST"
-						onsubmit="clearLocalStorage()" style="display: inline;">
-						<button type="submit" id="logOutSubmit" name="logOutSubmit"
-							class="btn btn-outline-light ml-2">Logout</button>
-					</form> -->
-
 						<form style="display: inline;">
 							<button type="submit" id="logOutSubmit" name="logOutSubmit"
 								class="btn btn-outline-light ml-2">Logout</button>
@@ -111,8 +103,8 @@
 				<div class="mb-3 row">
 					<label for="remarks" class="col-sm-3 col-form-label">Remarks</label>
 					<div class="col-sm-9">
-						<textarea class="form-control" id="remarks" rows="3" maxlength="100"
-							placeholder="Enter remarks(Max 100 characters)"></textarea>
+						<textarea class="form-control" id="remarks" rows="3"
+							maxlength="100" placeholder="Enter remarks(Max 100 characters)"></textarea>
 					</div>
 				</div>
 				<div class="mb-3 row">

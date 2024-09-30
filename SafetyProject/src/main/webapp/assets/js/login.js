@@ -182,7 +182,6 @@ function handleButtonClick(event) {
 		}
 	}
 	else if (buttonId === 'assgnSubmitbtn') {
-		alert("login button page");
 		let tkn = getCookie('tkn'); //cookieData.tkn;
 		jsonObjInput = {};
 		jsonObjInput["KST01CL"] = getCookie("costCenter");
@@ -296,7 +295,6 @@ function handleButtonClick(event) {
 				alert("OTP resent. Please check your registered mobile number.");
 			}
 			else if (response.ackMsgCode === "101") {
-				alert("login ajax page");
 				setCookie("tkn", response.tkn, 30);
 				alert(`${response.ackMsg}. Inspection ID: ${response.inspectionId}`);
 				if (response.ackMsgCode == '101') {

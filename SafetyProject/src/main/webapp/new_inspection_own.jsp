@@ -136,7 +136,7 @@
 							<div class="col-sm-6 form-group">
 								<label for="location" class="form-label required-label">Location
 									Details</label> <input type="text" class="form-control" id="location"
-									name="location" required>
+									name="location" placeholder="Type location details" required>
 							</div>
 
 							<div class="col-sm-6 form-group image-upload-section">
@@ -224,11 +224,11 @@
 						<label for="difficulty" class="form-label required-label">Severity
 							Level</label>
 						<div class="col-sm-9">
-							<div class="form-check form-check-inline">
+							<!-- <div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" id="lowOption"
 									name="difficulty" value="none" checked> <label
 									class="form-check-label" for="noneOption">No Option</label>
-							</div>
+							</div> -->
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" id="lowOption"
 									name="difficulty" value="low"> <label
@@ -278,8 +278,8 @@
 							<div class="modal-header">
 								<h5 class="modal-title" id="confirmationModalLabel"
 									align="center">Check and confirm the submission</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
+								<button type="button" class="btn-close" id="btn-close"
+									data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<!-- Dynamic content will be populated here with JavaScript -->
@@ -309,9 +309,20 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-primary" id="resetInspBtn"
-									data-bs-dismiss="modal">RESET</button>
+									data-bs-dismiss="modal">Cancel</button>
 								<button type="button" class="btn btn-primary"
 									id="finalSubmitBtn">Submit</button>
+								<!-- <button type="button" class="btn" id="resetInspBtn"
+									data-bs-dismiss="modal"
+									style="background-color: #ff6b6b; color: white;">Cancel</button>
+								<button type="button" class="btn btn-primary"
+									id="finalSubmitBtn">Submit</button> -->
+								<!-- <button type="button" class="btn btn-secondary"
+									id="resetInspBtn" data-bs-dismiss="modal"
+									style="background-color: #ff6b6b; color: white; width: 150px;">Cancel</button>
+								<button type="button" class="btn btn-primary"
+									id="finalSubmitBtn" style="width: 150px;">Submit</button> -->
+
 							</div>
 						</div>
 					</div>

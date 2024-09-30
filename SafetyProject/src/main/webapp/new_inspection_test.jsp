@@ -45,8 +45,6 @@
 		<div class="container-fluid">
 			<!-- Left side: Welcome message -->
 			<div id="cookieDisplay"></div>
-			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
-			</span> --%>
 			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
 			<!-- Right side: Navigation links -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -62,12 +60,6 @@
 					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
 					</li>
 					<li class="nav-item">
-						<!-- Logout form --> <!-- <form action="LogoutServlet" method="POST"
-						onsubmit="clearLocalStorage()" style="display: inline;">
-						<button type="submit" id="logOutSubmit" name="logOutSubmit"
-							class="btn btn-outline-light ml-2">Logout</button>
-					</form> -->
-
 						<form style="display: inline;">
 							<button type="submit" id="logOutSubmit" name="logOutSubmit"
 								class="btn btn-outline-light ml-2">Logout</button>
@@ -113,9 +105,6 @@
 		</div>
 	</div>
 
-
-
-
 	<div class="container mt-5">
 		<div class="form-container">
 			<form id="inspectionForm" enctype="multipart/form-data">
@@ -136,7 +125,7 @@
 							<div class="col-sm-6 form-group">
 								<label for="location" class="form-label required-label">Location
 									Details</label> <input type="text" class="form-control" id="location"
-									name="location" required>
+									name="location" placeholder="Type location details" required>
 							</div>
 
 							<div class="col-sm-6 form-group image-upload-section">
@@ -212,23 +201,15 @@
 						</div>
 
 					</div>
-					<!-- <div class="row form-row">
-						<div class="col-sm-12 form-group">
-							<label for="problem_details" class="form-label required-label">Problem
-								Details</label>
-							<textarea class="form-control" id="problem_details"
-								name="problem_details" rows="3" required></textarea>
-						</div>
-					</div> -->
 					<div class="mb-3 row">
 						<label for="difficulty" class="form-label required-label">Severity
 							Level</label>
 						<div class="col-sm-9">
-							<div class="form-check form-check-inline">
+							<!-- <div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" id="lowOption"
 									name="difficulty" value="none" checked> <label
 									class="form-check-label" for="noneOption">No Option</label>
-							</div>
+							</div> -->
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" id="lowOption"
 									name="difficulty" value="low"> <label
@@ -246,21 +227,8 @@
 							</div>
 						</div>
 					</div>
-					<!-- <div class="row form-row">
-						<div class="col-sm-12 form-group image-upload-section">
-							<label for="imageInput" class="form-label">Upload Image</label> <input
-								type="file" id="imageInput" name="imageInput"
-								accept=".jpg, .jpeg, .png" onchange="uploadImage()" /> <input
-								type="text" id="base64Output" name="base64Output"
-								style="display: none" readonly />
-						</div>
-					</div> -->
 					<div class="row form-row">
 						<div class="col-sm-6 form-group">
-							<!-- <label for="office_name" class="form-label required-label">Concerned
-								Office Name</label> <input type="text" class="form-control"
-								id="office_name" name="office_name" required> -->
-
 							<label for="office_name" class="form-label required-label">Concerned
 								Office Name</label> <select class="form-control" id="office_name"
 								name="office_name" required>
@@ -278,7 +246,7 @@
 							<div class="modal-header">
 								<h5 class="modal-title" id="confirmationModalLabel"
 									align="center">Check and confirm the submission</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
+								<button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal"
 									aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
@@ -309,7 +277,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-primary" id="resetInspBtn"
-									data-bs-dismiss="modal">RESET</button>
+									data-bs-dismiss="modal">Cancel</button>
 								<button type="button" class="btn btn-primary"
 									id="finalSubmitBtn">Submit</button>
 							</div>

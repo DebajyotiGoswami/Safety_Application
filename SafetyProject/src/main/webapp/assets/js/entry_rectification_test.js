@@ -71,15 +71,15 @@ function getCookie(name) {
 function uploadImage() {
 	var input = document.getElementById('rectificationImage');
 	var file = input.files[0];
-
+	const MAX_SIZE= 300;
 	if (!file) {
 		alert('Please select an image file.');
 		return;
 	}
 
 	// Validate file size (max 250 KB)
-	if (file.size > 250 * 1024) {
-		alert('File size must be less than 250 KB.');
+	if (file.size > MAX_SIZE * 1024) {
+		alert(`File size must be less than ${MAX_SIZE} KB.`);
 		return;
 	}
 
@@ -192,7 +192,6 @@ $(document).ready(function() {
 
 	$('#rectifySubmitBtn').on('click', function() {
 		if (wipCheckbox.checked) {
-			alert("WIP");
 			let inspection_id = $('#inspection_id').val();
 			let rectification_date = $('#rectification_date').val();
 			let rectification_remarks = $('#rectification_remarks').val();
@@ -211,12 +210,12 @@ $(document).ready(function() {
 			var jsonObjInput = {
 				"inspectionId": inspection_id,
 				//"rectificationDate": rectification_date,
-				"targetDate": rectification_date,
+				"rectificationDate": rectification_date,
 				//"rectificationRemarks": rectification_remarks,
-				"problemRemarks": rectification_remarks,
+				"rectificationRemarks": rectification_remarks,
 				"rectifiedBy": rectified_by,
 				"postImage": image1,
-				"ServType": "104",  //integer
+				"ServType": "103",  //integer
 				"latitude": 0.0, //double
 				"longitude": 0.0, //double
 				"gisId": "NA",
@@ -247,7 +246,6 @@ $(document).ready(function() {
 			});
 		}
 		else {
-			alert("RECTIFICATION");
 			let inspection_id = $('#inspection_id').val();
 			let rectification_date = $('#rectification_date').val();
 			let rectification_remarks = $('#rectification_remarks').val();
