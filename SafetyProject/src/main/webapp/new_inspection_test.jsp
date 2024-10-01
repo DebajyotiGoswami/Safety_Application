@@ -136,6 +136,7 @@
 									readonly />
 							</div>
 						</div>
+						<p id="errorMessage"></p>
 					</div>
 
 					<div class="row form-row">

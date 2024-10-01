@@ -83,7 +83,7 @@
 								<th>Sl No.</th>
 								<th>Inspection ID</th>
 								<th>Inspected On</th>
-								<th>Inspected By</th>
+								<!-- <th>Inspected By</th> -->
 								<th>Problem Name</th>
 								<th>Problem Details</th>
 								<th>Location</th>

@@ -88,7 +88,7 @@ order by cr_dt;
 
 
 select * from safety_schema.inspectdtls 
-where inspection_id like '%3332000240927050340%'
+
 
 alter table safety_schema.inspectdtls add column severity varchar(20);
 

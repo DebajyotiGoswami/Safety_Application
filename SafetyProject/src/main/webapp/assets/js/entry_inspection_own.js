@@ -156,6 +156,11 @@ $(document).ready(function() {
 		var assetType = $('#asset_type').val();
 		var asset_name = $('#asset_type').val();
 
+		if (location.length < 10 || location.length > 50) {
+			alert("Location should be at least 10 characters and at most 50 characters");
+			location = false;
+		}
+
 		// Check if all fields are non-empty
 		if (inspectionDate && location && image && networkType && assetType) {
 			/*$('#inspSubmitBtn').prop('disabled', false);  // Enable the button*/
@@ -563,7 +568,7 @@ $(document).ready(function() {
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg} with Inspection Id ${response.inspectionId}`);
 					window.location.href = 'new_inspection_own.jsp';
-					console.log("response: "+ JSON.stringify(response));
+					console.log("response: " + JSON.stringify(response));
 				}
 				else {
 					alert(`ERROR!! ${response.ackMsg}\nagainst Inspection Id: ${inspection_id}.`);

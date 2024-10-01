@@ -214,7 +214,9 @@
 							style="display: none" readonly />
 					</div>
 				</div>
-
+				
+				<div id="errorMessage" class="alert alert-danger" style="display:none;"></div>
+				
 				<!-- Submit Button -->
 				<div class="form-row text-center">
 					<div class="col-sm-12">

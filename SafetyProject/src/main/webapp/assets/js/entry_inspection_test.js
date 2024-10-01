@@ -131,6 +131,19 @@ function populateDateDropdown(startDateStr, endDateStr) {
 	}
 }
 
+function isDateinFuture(date) {
+	let inspDate = new Date(date);
+	let today = new Date();
+	return inspDate > today;
+}
+
+function showError(message) {
+    $('#errorMessage').text(message).show();
+}
+
+function hideError() {
+    $('#errorMessage').hide();
+}
 
 $(document).ready(function() {
 	// Initially disable the submit button
@@ -144,6 +157,36 @@ $(document).ready(function() {
 		var networkType = $('#network_type').val();
 		var assetType = $('#asset_type').val();
 		var asset_name = $('#asset_type').val();
+		let errorMessage = document.getElementById("errorMessage");
+
+		if (isDateinFuture(inspectionDate)) {
+			alert(`Possibly wrong assignment. Inspection Date can not be in future.`);
+			inspectionDate = false;
+		}
+
+		/*let errorMessage = document.getElementById("errorMessage");
+		if (location.length < 10 || location.length > 50) {
+			errorMessage.textContent = "Location should be at least 10 characters and at most 50 characters";
+			//alert("Location should be at least 10 characters and at most 50 characters");
+			location = false;
+		}
+		else {
+			errorMessage.textContent = "";
+		}*/
+
+		if (location && (location.length < 10)) {
+			showError()
+			errorMessage.textContent = "Location should be at least 10 characters.";
+			location = false;
+		}
+		else if(location && location.length> 50){
+			errorMessage.textContent = "Location should be not more than 50 characters";
+			location= false;
+		}
+		else {
+			errorMessage.textContent = "";
+			location = true;
+		}
 
 		// Check if all fields are non-empty
 		if (inspectionDate && location && image && networkType && assetType) {
@@ -162,7 +205,7 @@ $(document).ready(function() {
 
 	// Attach event listeners to form fields
 	$('#dateDropdown').on('change', checkFormValidity);
-	$('#location').on('input', checkFormValidity);
+	$('#location').on('change', checkFormValidity);
 	$('#network_type').on('change', checkFormValidity);
 	$('#asset_type').on('change', checkFormValidity);
 
@@ -370,16 +413,16 @@ $(document).ready(function() {
 					// Assuming response is a JSON array
 					dropdown.append($('<option></option>').attr('value', "Select Office").text("Select Office"));
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
-						if(network_type=== "HT"){
-							if(item.offCode.slice(-3)=== "000"){
+						if (network_type === "HT") {
+							if (item.offCode.slice(-3) === "000") {
 								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 							}
-							else{
+							else {
 								//do nothing
-								console.log("not eligible: "+ item.offCode);
+								console.log("not eligible: " + item.offCode);
 							}
 						}
-						else{
+						else {
 							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 						}
 						/*if(network_type=== "HT" && item.offCode.slice(-3)=== "000"){

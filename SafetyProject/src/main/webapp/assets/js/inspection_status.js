@@ -264,7 +264,8 @@ $(document).ready(function() {
 						"office_code": getCookie("KST01CL"),
 						"tkn": getCookie("tkn"),
 						"page_id": "401",
-						"auth": "INSP_PRTL"
+						"auth": "INSP_PRTL",
+						"roll_name": "INSPECTOR"
 					}
 
 					$.ajax({

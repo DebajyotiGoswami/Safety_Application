@@ -71,7 +71,7 @@ function getCookie(name) {
 function uploadImage() {
 	var input = document.getElementById('rectificationImage');
 	var file = input.files[0];
-	const MAX_SIZE= 300;
+	const MAX_SIZE = 300;
 	if (!file) {
 		alert('Please select an image file.');
 		return;
@@ -98,10 +98,16 @@ function uploadImage() {
 	reader.readAsDataURL(file);
 }
 
+function showError(message) {
+    $('#errorMessage').text(message).show();
+}
+
+function hideError() {
+    $('#errorMessage').hide();
+}
 
 
 $(document).ready(function() {
-
 	const wipCheckbox = document.getElementById('wipCheckbox');
 	const rectificationDateLabel = document.querySelector('label[for="rectification_date"]');
 	const rectificationRemarksLabel = document.querySelector('label[for="rectification_remarks"]');
@@ -109,6 +115,120 @@ $(document).ready(function() {
 	const rectificationRemarksInput = document.getElementById('rectification_remarks');
 	const rectificationImage = document.getElementById('rectificationImage');
 	const rectifySubmitBtn = document.getElementById('rectifySubmitBtn');
+
+	//rectifySubmitBtn.disabled = true;
+
+	function validateForm() {
+		const inspectionDate = new Date($('#inspection_date').val());
+		const targetDate = new Date(rectificationDateInput.value);
+		console.log("target Date: " + JSON.stringify(targetDate));
+		console.log(typeof (targetDate));
+		const today = new Date();
+		const problemRemarks = rectificationRemarksInput.value.trim();
+		const isImageUploaded = rectificationImage.files.length > 0;
+
+		// Helper function to compare dates
+		function isDateInFuture(date) {
+			return date >= today;
+		}
+
+		function isDateInvalid(date) {
+			//return JSON.stringify(date) === "null";
+			return isNaN(date.getTime());  //better way without JSON handling
+		}
+
+		function isDateWithinSixMonths(date) {
+			const sixMonthsFromToday = new Date();
+			sixMonthsFromToday.setMonth(sixMonthsFromToday.getMonth() + 6);
+			return date <= sixMonthsFromToday;
+		}
+
+
+		// Clear previous errors
+		//rectifySubmitBtn.disabled = true;
+
+		if (wipCheckbox.checked) {
+			// WIP Checked Validations
+			if (targetDate < inspectionDate) {
+				//alert(`Target date must be after the inspection date ${inspectionDate}.`);
+				showError(`Target date must be after the inspection date ${inspectionDate}.`);
+				return false;
+			}
+
+			if (isDateInvalid(targetDate)) {
+				//alert("Invalid Date. Enter proper target date.");
+				showError("Invalid Date. Enter proper target date.");
+				return false;
+			}
+
+			if (!isDateInFuture(targetDate)) {
+				//alert('Target date must be in the future.');
+				showError('Target date must be in the future.');
+				return false;
+			}
+			if (!isDateWithinSixMonths(targetDate)) {
+				//alert('Target date should not be more than 6 months from today.');
+				showError('Target date should not be more than 6 months from today.')
+				return false;
+			}
+			if (problemRemarks.length < 10) {
+				//alert('Problem remarks should be at least 10 characters long.');
+				showError('Problem remarks should be at least 10 characters long.');
+				return false;
+			}
+			if (problemRemarks.length > 50) {
+				//alert('Problem remarks should be no more than 50 characters long.');
+				showError('Problem remarks should be no more than 50 characters long.');
+				return false;
+			}
+
+			// Image not required for WIP, so skip image validation
+			//rectifySubmitBtn.disabled = false;
+		} else {
+			// WIP Unchecked Validations
+			if (targetDate < inspectionDate) {
+				//alert(`Rectification date must be after the inspection date ${inspectionDate}.`);
+				showError(`Rectification date must be after the inspection date ${inspectionDate}.`);
+				return false;
+			}
+
+			if (isDateInvalid(targetDate)) {
+				//alert("Invalid Date. Enter proper rectification date.");
+				showError("Invalid Date. Enter proper rectification date.");
+				return false;
+			}
+
+			if (isDateInFuture(targetDate)) {
+				//alert('Rectification date can not be in the future.');
+				showError('Rectification date can not be in the future.');
+				return false;
+			}
+			if (problemRemarks.length < 5) {
+				//alert('Rectification remarks should be at least 5 characters long.');
+				showError('Rectification remarks should be at least 5 characters long.');
+				return false;
+			}
+			if (problemRemarks.length > 50) {
+				//alert('Rectification remarks should be no more than 20 characters long.');
+				showError('Rectification remarks should be no more than 50 characters long.');
+				return false;
+			}
+			if (!isImageUploaded) {
+				//alert('Please upload a rectification image.');
+				showError('Please upload a rectification image.');
+				return false;
+			}
+
+			//rectifySubmitBtn.disabled = false;
+		}
+		hideError();
+		return true;
+	}
+
+	rectificationDateInput.addEventListener('change', validateForm);
+	rectificationRemarksInput.addEventListener('change', validateForm);
+	rectificationImage.addEventListener('change', validateForm);
+
 
 	// Add event listener to the checkbox
 	wipCheckbox.addEventListener('change', function() {
@@ -126,7 +246,7 @@ $(document).ready(function() {
 			rectificationImage.disabled = true;
 
 			// Change the submit button text
-			rectifySubmitBtn.textContent = "SUBMIT PENDING";
+			rectifySubmitBtn.textContent = "Submit WIP";
 		} else {
 			// Revert the label changes
 			rectificationDateLabel.textContent = "Rectification Date";
@@ -138,7 +258,19 @@ $(document).ready(function() {
 			// Revert the submit button text
 			rectifySubmitBtn.textContent = "Submit Rectification";
 		}
+
+		//rectifySubmitBtn.disabled = true;
+		//validateForm(); // Re-validate the form when checkbox changes
 	});
+
+	// Enable submit button if form is valid
+	/*$('#rectifySubmitBtn').on('click', function(event) {
+		if (!validateForm()) {
+			event.preventDefault(); // Prevent form submission if validation fails
+		}
+	});*/
+
+
 	$('#resultsContainer').show();
 	var fullData = [];
 
@@ -184,20 +316,20 @@ $(document).ready(function() {
 				$('#noDataAlert').show().text("No rectification task pending at you to show.");
 			}
 		},
-		error: function(xhr, status, error){
+		error: function(xhr, status, error) {
 			setCookie("tkn", response.tkn, 30);
 			console.log(`xhr: ${xhr}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
 
 	$('#rectifySubmitBtn').on('click', function() {
-		if (wipCheckbox.checked) {
+		/*if (wipCheckbox.checked) {
 			let inspection_id = $('#inspection_id').val();
 			let rectification_date = $('#rectification_date').val();
 			let rectification_remarks = $('#rectification_remarks').val();
 			let site_id = $('#site_id').val();
 			let rectified_by = getCookie("User");
-			let image1 = ""; //no image is required WIP entry
+			let image1 = wipCheckbox.checked? "": $('#base64Output').val(); //no image is required WIP entry
 			let User = getCookie("User");
 
 			xUidJson = enCrypt(User, "123456");
@@ -289,6 +421,67 @@ $(document).ready(function() {
 					if (response.ackMsgCode === "103") {
 						alert(`${response.ackMsg}\nwith Site Id: ${site_id}\nagainst Inspection Id: ${inspection_id}.`);
 						window.location.href = 'new_rectification.jsp';
+					}
+				},
+				error: function(xhr, status, error) {
+					setCookie("tkn", response.tkn, 30);
+					console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+				}
+			});
+		}*/
+
+		if (!validateForm()) {
+			event.preventDefault(); // Prevent form submission if validation fails
+		}
+		else {
+			hideError();
+			let inspection_id = $('#inspection_id').val();
+			let rectification_date = $('#rectification_date').val();
+			let rectification_remarks = $('#rectification_remarks').val();
+			let site_id = $('#site_id').val();
+			let rectified_by = getCookie("User");
+			let image1 = wipCheckbox.checked ? "" : $('#base64Output').val(); //no image is required WIP entry
+			let User = getCookie("User");
+
+			xUidJson = enCrypt(User, "123456");
+			xUidEncrypted = xUidJson.User;
+			dUidEncrypted = xUidJson.Pwd;
+			let tkn = getCookie('tkn');
+			let xUid = cookieData.xUid;
+			let costCenter = getCookie("KST01CL");
+			let presentStatus = wipCheckbox.checked ? "WIP" : "RECTIFIED";
+
+			var jsonObjInput = {
+				"inspectionId": inspection_id,
+				"rectificationDate": rectification_date,
+				"rectificationRemarks": rectification_remarks,
+				"rectifiedBy": rectified_by,
+				"postImage": image1,
+				"ServType": "103",  //integer
+				"latitude": 0.0, //double
+				"longitude": 0.0, //double
+				"gisId": "NA",
+				"siteId": site_id,
+				"presentStatus": presentStatus,
+				"pageNm": "DASH",
+				"tkn": tkn,
+				"xUid": xUidEncrypted,
+				"dUid": dUidEncrypted,
+				"KST01CL": costCenter,
+				"solutionId": "NA"
+			};
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: JSON.stringify(jsonObjInput),
+				success: function(response) {
+					setCookie("tkn", response.tkn, 30);
+					if (response.ackMsgCode === "103") {
+						alert(`${response.ackMsg}\nwith Site Id: ${site_id}\nagainst Inspection Id: ${inspection_id}.`);
+						window.location.href = 'new_rectification.jsp';
+					}
+					if(response.ackMsgCode === '999'){
+						alert(`${response.ackMsg}`);
 					}
 				},
 				error: function(xhr, status, error) {

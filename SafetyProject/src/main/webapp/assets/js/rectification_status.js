@@ -191,23 +191,23 @@ $(document).ready(function() {
 			row.appendChild(inspectionDateCell);
 
 			//Inspected By
-			var inspectedByCell = document.createElement('td');
+			/*var inspectedByCell = document.createElement('td');
 			inspectedByCell.textContent = item.inspection_by;
-			row.appendChild(inspectedByCell);
+			row.appendChild(inspectedByCell);*/
 
 			//problem name
 			var problemNameCell = document.createElement('td');
-			problemNameCell.textContent = item.problem_id;
+			problemNameCell.textContent = item.problem_id.slice(0, 20);
 			row.appendChild(problemNameCell);
 
 			//problem details
 			var problemDetailsCell = document.createElement('td');
-			problemDetailsCell.textContent = item.problem_remarks;
+			problemDetailsCell.textContent = item.problem_remarks.slice(0, 25);
 			row.appendChild(problemDetailsCell);
 
 			//location details
 			var locationCell = document.createElement('td');
-			locationCell.textContent = item.location_remarks;
+			locationCell.textContent = item.location_remarks.slice(0, 25);
 			row.appendChild(locationCell);
 
 			var rectifiedOn = document.createElement('td');
@@ -215,7 +215,7 @@ $(document).ready(function() {
 			row.appendChild(rectifiedOn);
 
 			var rectifyRemarks = document.createElement('td');
-			rectifyRemarks.textContent = item.rectification_remarks;
+			rectifyRemarks.textContent = item.rectification_remarks.slice(0, 25);
 			row.appendChild(rectifyRemarks);
 
 			var statusCell = document.createElement('td');
@@ -243,7 +243,8 @@ $(document).ready(function() {
 						"office_code": getCookie("KST01CL"),
 						"tkn": getCookie("tkn"),
 						"page_id": "401",
-						"auth": "INSP_PRTL"
+						"auth": "INSP_PRTL",
+						"roll_name": "INSPECTOR"
 					}
 
 					$.ajax({

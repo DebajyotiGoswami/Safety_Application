@@ -148,7 +148,7 @@ footer {
     width: 100%;
     background-color: #28a745; Bright green color
      */
-	padding: 10px 20px;
+	padding: 5px 10px;
 	background: #012466;
 	background: -moz-linear-gradient(top, #012466 0, #065cac 100%);
 	background: -webkit-gradient(left top, left bottom, color-stop(0, #012466),
@@ -162,11 +162,11 @@ footer {
 	/* background-color: #007bff; Primary color
 	color: #ffffff; White text */
 	text-align: center;
-	padding: 10px 0;
+	padding: 5px 0;
 	position: fixed;
 	width: 100%;
 	bottom: 0;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .disabled-card {

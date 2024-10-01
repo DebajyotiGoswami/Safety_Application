@@ -32,7 +32,8 @@ function portalAllView() {
 		"office_code": getCookie("KST01CL"),
 		"tkn": getCookie("tkn"),
 		"page_id": "403",
-		"auth": "INSP_PRTL"
+		"auth": "INSP_PRTL",
+		"roll_name": "INSPECTOR"
 	}
 
 	$.ajax({
