@@ -94,3 +94,5 @@ alter table safety_schema.inspectdtls add column severity varchar(20);
 
 select * from safety_schema.problems;
 
+ALTER TABLE safety_schema.teamassign
+ALTER COLUMN inspected_by TYPE VARCHAR(50)

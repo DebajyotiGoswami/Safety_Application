@@ -39,7 +39,7 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					<li class="nav-item"><a class="nav-link" href="contacts.jsp">Contact</a>
 					</li>
 					<li class="nav-item">
 						<form style="display: inline;">

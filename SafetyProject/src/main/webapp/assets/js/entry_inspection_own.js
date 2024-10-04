@@ -179,7 +179,7 @@ $(document).ready(function() {
 
 	// Attach event listeners to form fields
 	$('#dateDropdown').on('change', checkFormValidity);
-	$('#location').on('input', checkFormValidity);
+	$('#location').on('change', checkFormValidity);
 	$('#network_type').on('change', checkFormValidity);
 	$('#asset_type').on('change', checkFormValidity);
 

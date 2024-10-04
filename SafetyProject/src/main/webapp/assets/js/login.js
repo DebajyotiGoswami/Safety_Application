@@ -303,7 +303,7 @@ function handleButtonClick(event) {
 			}
 			else if (response.ackMsgCode === "301"){
 				setCookie("tkn", response.tkn, 30);
-				alert(`${ackMsg}`);				
+				alert(`${response.ackMsg}`);				
 			}
 		},
 		error: function(xhr, status, error) {

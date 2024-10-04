@@ -57,7 +57,7 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					<li class="nav-item"><a class="nav-link" href="contacts.jsp">Contact</a>
 					</li>
 					<li class="nav-item">
 						<form style="display: inline;">
@@ -247,8 +247,8 @@
 							<div class="modal-header">
 								<h5 class="modal-title" id="confirmationModalLabel"
 									align="center">Check and confirm the submission</h5>
-								<button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
+								<button type="button" class="btn-close" id="btn-close"
+									data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<!-- Dynamic content will be populated here with JavaScript -->

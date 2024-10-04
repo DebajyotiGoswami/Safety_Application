@@ -58,7 +58,7 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					<li class="nav-item"><a class="nav-link" href="contacts.jsp">Contact</a>
 					</li>
 					<li class="nav-item">
 						<form style="display: inline;">
@@ -76,13 +76,14 @@
 	<div class="card" id="resultsContainer" style="display: none;">
 		<div class="card-header text-center custom-header">Rectification
 			Pending At You</div>
-			
+
 		<div id="noDataAlert" class="alert alert-info text-center"
 			role="alert" style="display: none;">No rectification task
 			pending at you to show.</div>
-			
+
 		<div class="card-body">
-			<div id="tableContainer" class="table-responsive" style="overflow-y: auto;">
+			<div id="tableContainer" class="table-responsive"
+				style="overflow-y: auto;">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -214,9 +215,10 @@
 							style="display: none" readonly />
 					</div>
 				</div>
-				
-				<div id="errorMessage" class="alert alert-danger" style="display:none;"></div>
-				
+
+				<div id="errorMessage" class="alert alert-danger"
+					style="display: none;"></div>
+
 				<!-- Submit Button -->
 				<div class="form-row text-center">
 					<div class="col-sm-12">

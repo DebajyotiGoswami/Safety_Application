@@ -28,8 +28,6 @@
 		<div class="container-fluid">
 			<!-- Left side: Welcome message -->
 			<div id="cookieDisplay"></div>
-			<%-- <span class="navbar-text"><%= username %> (ERP ID: <%= erpId %>, <%= designation %>)
-			</span> --%>
 			<span class="navbar-text"><div id="cookieDisplay"></div> </span>
 			<!-- Right side: Navigation links -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -42,15 +40,9 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="dashboard.jsp">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="contacts.html">Contact</a>
+					<li class="nav-item"><a class="nav-link" href="contacts.jsp">Contact</a>
 					</li>
 					<li class="nav-item">
-						<!-- Logout form --> <!-- <form action="LogoutServlet" method="POST"
-						onsubmit="clearLocalStorage()" style="display: inline;">
-						<button type="submit" id="logOutSubmit" name="logOutSubmit"
-							class="btn btn-outline-light ml-2">Logout</button>
-					</form> -->
-
 						<form style="display: inline;">
 							<button type="submit" id="logOutSubmit" name="logOutSubmit"
 								class="btn btn-outline-light ml-2">Logout</button>
@@ -82,8 +74,6 @@
 					</div>
 				</div>
 			</div>
-			<%-- <%String str= request.getSession().getAttribute("empDtls").toString(); %> --%>
-			<%-- <%=str %>  --%>
 
 			<!-- Inspection Entry section -->
 
@@ -95,21 +85,16 @@
 							inspections. Also find a comprehensive inspection history for
 							reference and reporting.</p>
 						<div class="btn-container">
-							<a href="new_inspection_test.jsp" class="btn btn-primary btn-equal">Your
-								Pending Inspection</a> <a href="inspection_status.jsp"
-								class="btn btn-primary btn-equal">View All Inspections</a>
+							<a href="new_inspection_test.jsp"
+								class="btn btn-primary btn-equal">Your Pending Inspection</a> <a
+								href="inspection_status.jsp" class="btn btn-primary btn-equal">View
+								All Inspections</a>
 						</div>
 
-						<!-- Modified button that links to new_inspection_test.jsp with a query parameter -->
-						<!-- <a href="new_inspection_test.jsp?type=suo_moto"
-							class="btn btn-primary btn-block-wide mt-3">Inspection
-							without Assignment</a> -->
-							
 						<!-- <a href="new_inspection_test.jsp?type=suo_moto" class="btn btn-primary btn-block-wide mt-3">Inspection without Assignment</a> -->
-						<a href="new_inspection_own.jsp" class="btn btn-primary btn-block-wide mt-3">Inspection without Assignment</a>
-						
-
-
+						<a href="new_inspection_own.jsp"
+							class="btn btn-primary btn-block-wide mt-3">Inspection
+							without Assignment</a>
 					</div>
 				</div>
 			</div>
@@ -123,8 +108,9 @@
 						<p class="card-text">Enter the detailed information of
 							corrective actions which was taken after inspections.</p>
 						<div class="btn-container">
-							<a href="new_rectification_test.jsp" class="btn btn-primary btn-equal">Your
-								Pending Rectification</a> <a href="rectification_status.jsp"
+							<a href="new_rectification_test.jsp"
+								class="btn btn-primary btn-equal">Your Pending Rectification</a>
+							<a href="rectification_status.jsp"
 								class="btn btn-primary btn-equal">View All Rectifications</a>
 						</div>
 					</div>
@@ -153,14 +139,6 @@
 	<footer class="text-center mt-auto">
 		<div class="text-center p-3">© 2024 IT&C Cell, WBSEDCL</div>
 	</footer>
-	<!-- <script src="assets/js/new_login.js"></script> -->
-	<!-- Above script might not be required as it was only for jewel report page
-	before CE(Safety) meeting -->
-
-	<!-- Link to Bootstrap JS -->
-	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
 
 </body>
 </html>

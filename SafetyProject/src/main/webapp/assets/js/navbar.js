@@ -1,8 +1,5 @@
-function clearLocalStorage() {
-	alert("this function is not required.");
-	localStorage.clear();
-	console.log("Local Storage Cleared.");
-}
+const baseURL = "http://10.251.37.170:8080/SafetyProject/";
+
 function getCookie(name) {
 	const nameEQ = name + "=";
 	const ca = document.cookie.split(';');
@@ -17,66 +14,52 @@ function getCookie(name) {
 }
 
 function preventBack() {
-	// Add a state to the history
-	history.pushState(null, null, window.location.href);
-
-	// Listen for the popstate event to detect back button usage
-	window.onpopstate = function() {
-		// Push state again to prevent navigating back
-		history.pushState(null, null, window.location.href);
-		// Inform the user that the back button is disabled
-		alert("Back button is disabled.");
-	};
+    history.pushState(null, null, window.location.href);
+    window.onpopstate = function() {
+        history.pushState(null, null, window.location.href);
+        alert("The back button is disabled on this page.");
+    };
 }
 
-// Call preventBack() when the page loads
-window.onload = preventBack;
+window.addEventListener('load', preventBack);
+
 try {
 	const cookieData = JSON.parse(getCookie('empDtls'));
-	const name = cookieData.empDtls.EMNAMCL;
-	//const erp_id = cookieData.xUid.slice(0, 8);
-	const erp_id = cookieData.User;
-	const designation = cookieData.empDtls.STEXTCL;
+	if (cookieData) {
+		const employeeName = cookieData.empDtls.EMNAMCL;
+		const employeeId = cookieData.User;
+		const employeeDesignation = cookieData.empDtls.STEXTCL;
+		document.getElementById("cookieDisplay").innerText = `${employeeName}, ${employeeDesignation} (ERP ID: ${employeeId})`;
+	} else {
+		throw new Error("Cookie data not found.");
+	}
+} catch (e) {
+	console.error("Session error: ", e.message);
+	alert("Session is inactive. Redirecting to login page.");
+	window.location.href = baseURL;
+}
 
-	document.getElementById("cookieDisplay").innerText = cookieData ? name
-		+ ", " + designation + " (ERP ID: " + erp_id + ") "
-		: "Cookie not found.";
-}
-catch (e) {
-	window.location.href="http://10.251.37.170:8080/SafetyProject/"
-	console.error("not an active session." + e);
-}
 //$("#logOutSubmit").on('click', handleLogout);
 
-document.getElementById('logOutSubmit').addEventListener('click', handleLogout);
+/*document.getElementById('logOutSubmit').addEventListener('click', handleLogout);*/
+document.getElementById('logOutSubmit').addEventListener('click', function(event) {
+	event.preventDefault(); // Prevent form submission
+	if (confirm("You will be logged out from Safety Portal. Sure?")) {
+		handleLogout();
+	}
+});
 
+function deleteAllCookies() {
+	document.cookie.split(";").forEach(cookie => {
+		document.cookie = cookie.replace(/^ +/, "")
+			.replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/");
+	});
+}
 
 function handleLogout() {
 	localStorage.clear();
 	sessionStorage.clear();
-	// Function to delete all cookies
-	function deleteAllCookies() {
-		const cookies = document.cookie.split(";");
-		for (let i = 0; i < cookies.length; i++) {
-			const cookie = cookies[i];
-			const eqPos = cookie.indexOf("=");
-			const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-			document.cookie = name
-				+ "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-		}
-	}
-
 	deleteAllCookies();
-
-	//alert("before");
-	// Get the application's context path
-	var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
-
-	// Redirect to the login page with the context path
-	//window.location.href = contextPath + '/login.jsp';
-	window.location.href="http://10.251.37.170:8080/SafetyProject/"
-
-	//window.location.href = '/login.jsp';
-	//alert("after");
+	window.location.href = baseURL; // Base URL already defined
 	return;
 }
