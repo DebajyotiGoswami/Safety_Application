@@ -106,6 +106,8 @@
 	</div>
 
 	<div class="container mt-5">
+		<h2 class="text-center">Inspection Entry</h2>
+		<!-- You can use any heading level like h2, h3 etc. -->
 		<div class="form-container">
 			<form id="inspectionForm" enctype="multipart/form-data">
 				<!-- Initial visible sections -->
@@ -136,7 +138,7 @@
 									readonly />
 							</div>
 						</div>
-						<p id="errorMessage"></p>
+
 					</div>
 
 					<div class="row form-row">
@@ -191,6 +193,7 @@
 						</div>
 					</div>
 				</div>
+				<p id="errorMessage"></p>
 
 				<!-- Hidden sections initially -->
 				<div id="additionalSection2" class="additional-section2">

@@ -9,12 +9,12 @@ $(document).ready(function() {
 			url: 'searchAssignmentServlet',
 			data: { fromDate: fromDate, toDate: toDate, erpId: erpId },
 			success: function(response) {
-				alert(response);
+				//alert(response);
 				var responseJson=JSON.parse(response);
 				var jsonArray = responseJson.assignments;
 				var msg=responseJson.msg;
-				alert(jsonArray);
-				alert(msg);
+				//alert(jsonArray);
+				//alert(msg);
 				if(msg=='success'){
 					populateTable(jsonArray);
 				}

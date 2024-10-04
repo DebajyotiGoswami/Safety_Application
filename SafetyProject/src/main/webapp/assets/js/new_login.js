@@ -51,7 +51,7 @@ $(document).ready(function() {
 		};
 		//following ajx call is attempted when login button is clicked. 
 		$.ajax({
-			url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
+			url: 'http://10.252.37.170:8080/prodSafety/prodSafety', // replace with above Servlet URL
 			type: 'POST',
 			data: JSON.stringify(jsonobj),
 			success: function(response) {
@@ -117,7 +117,7 @@ $('#submitOtpBtn').on('click', function() {
 	};
 	console.log("otp jsonobj is: ", jsonobjOtp);
 	$.ajax({
-		url: 'http://10.251.37.170:8080/testSafety/testSafety', // replace with above Servlet URL
+		url: 'http://10.252.37.170:8080/prodSafety/prodSafety', // replace with above Servlet URL
 		type: 'POST',
 		data: JSON.stringify(jsonobjOtp),
 		success: function(data) {

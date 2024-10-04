@@ -1,7 +1,7 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -43,9 +43,11 @@ function enCrypt(uid, pwd) {
 	return jsonObj;
 }
 
-function uploadImage() {
+function uploadImage(callback) {
+	//alert("image upload");
 	var input = document.getElementById('imageInput');
 	var file = input.files[0];
+	const MAX_SIZE = 300;
 
 	if (!file) {
 		alert('Please select an image file.');
@@ -53,8 +55,8 @@ function uploadImage() {
 	}
 
 	// Validate file size (max 250 KB)
-	if (file.size > 250 * 1024) {
-		alert('File size must be less than 250 KB.');
+	if (file.size > MAX_SIZE * 1024) {
+		alert(`File size must be less than ${MAX_SIZE} KB.`);
 		return;
 	}
 
@@ -69,6 +71,10 @@ function uploadImage() {
 	reader.onload = function(event) {
 		var base64String = event.target.result.split(',')[1]; // Get Base64 string
 		document.getElementById('base64Output').value = base64String;
+
+		if (callback) {
+			callback();
+		}
 	};
 	reader.readAsDataURL(file);
 }
@@ -130,6 +136,15 @@ function populateDateDropdown(startDateStr, endDateStr) {
 	}
 }
 
+function showError(message) {
+	$('#errorMessage').text(message).show();
+	$('#errorMessage').addClass('text-danger');
+}
+
+function hideError() {
+	$('#errorMessage').hide();
+	$('#errorMessage').removeClass('text-danger');
+}
 
 $(document).ready(function() {
 
@@ -155,10 +170,13 @@ $(document).ready(function() {
 		var networkType = $('#network_type').val();
 		var assetType = $('#asset_type').val();
 		var asset_name = $('#asset_type').val();
+		//let errorMessage = document.getElementById("errorMessage");
 
 		if (location.length < 10 || location.length > 50) {
-			alert("Location should be at least 10 characters and at most 50 characters");
-			location = false;
+			showError("Location should be at least 10 characters and at most 50 characters");
+		}
+		else {
+			hideError();
 		}
 
 		// Check if all fields are non-empty
@@ -166,7 +184,7 @@ $(document).ready(function() {
 			/*$('#inspSubmitBtn').prop('disabled', false);  // Enable the button*/
 			let assetList = JSON.parse(getCookie("assetList"));
 			if (assetList[networkType + asset_name] === undefined) {
-				alert(`No problems found in ${networkType} network and ${asset_name} asset combination`);
+				showError(`No problems found in ${networkType} network and ${asset_name} asset combination`);
 				$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
 			}
 			else {
@@ -179,14 +197,30 @@ $(document).ready(function() {
 
 	// Attach event listeners to form fields
 	$('#dateDropdown').on('change', checkFormValidity);
-	$('#location').on('change', checkFormValidity);
+	$('#location').on('input', checkFormValidity);
 	$('#network_type').on('change', checkFormValidity);
 	$('#asset_type').on('change', checkFormValidity);
 
 	// For image upload, trigger the check when the image is uploaded
-	$('#imageInput').on('change', function() {
+	/*$('#imageInput').on('change', function() {
 		uploadImage();  // Call the existing uploadImage function
 		checkFormValidity();  // Check form validity
+	});*/
+	$('#imageInput').on('input', function() {
+		//alert("Image input function triggered");
+
+		// Call the uploadImage function and pass checkFormValidity as a callback
+		uploadImage(function() {
+			//alert("Image processing completed, now validating form");
+			checkFormValidity();  // Check form validity after the image is processed
+			//alert("Form validation completed");
+		});
+
+		//alert("Input function end (waiting for image upload completion)");
+		/*alert("input function");
+		uploadImage();  // Call the existing uploadImage function
+		checkFormValidity();  // Check form validity
+		alert("input function end");*/
 	});
 
 	const problemList = document.getElementById("problem_list");
@@ -196,11 +230,14 @@ $(document).ready(function() {
 
 	// Function to check if at least one problem is selected
 	function isProblemSelected() {
-		return problemList.children.length > 0;
+		const selectedProblems = problemList.querySelectorAll('input[type="checkbox"]:checked');
+		return selectedProblems.length > 0;  // Returns true if at least one problem is selected
 	}
 
 	function isDifficultySelected() {
-		return Array.from(difficultyRadios).some(radio => radio.checked);
+		//severity / difficulty level is not mandatory
+		return true;
+		/*return Array.from(difficultyRadios).some(radio => radio.checked);*/
 	}
 
 	function isOfficeSelected() {
@@ -272,6 +309,7 @@ $(document).ready(function() {
 			});
 		}
 		if ($('#inspSubmitBtn').text() === 'NEXT') {
+			$('#additionalSection1').find('input, select, textarea, button').prop('disabled', true);
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
@@ -297,13 +335,13 @@ $(document).ready(function() {
 				"assetId": assetList[network_type + asset_name]
 			};
 			//var jsonString = JSON.stringify(jsonObj);
-			console.log("request: " + JSON.stringify(jsonObj));
+			//console.log("request: " + JSON.stringify(jsonObj));
 			$.ajax({
 				type: 'POST',
 				url: url,
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
-					console.log("response: " + JSON.stringify(response));
+					//console.log("response: " + JSON.stringify(response));
 					var problemContainer = $('#problem_list');
 					problemContainer.empty(); // Clear any existing options
 
@@ -558,7 +596,7 @@ $(document).ready(function() {
 		};
 
 		$.ajax({
-			url: 'http://10.251.37.170:8080/testSafety/testSafety',
+			url: 'http://10.252.37.170:8080/prodSafety/prodSafety',
 			//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
 			type: 'POST',
 			//contentType: 'application/json',
@@ -568,7 +606,7 @@ $(document).ready(function() {
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg} with Inspection Id ${response.inspectionId}`);
 					window.location.href = 'new_inspection_own.jsp';
-					console.log("response: " + JSON.stringify(response));
+					//console.log("response: " + JSON.stringify(response));
 				}
 				else {
 					alert(`ERROR!! ${response.ackMsg}\nagainst Inspection Id: ${inspection_id}.`);

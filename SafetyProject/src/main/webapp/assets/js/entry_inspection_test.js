@@ -1,7 +1,7 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -43,7 +43,8 @@ function enCrypt(uid, pwd) {
 	return jsonObj;
 }
 
-function uploadImage() {
+function uploadImage(callback) {
+	//alert("image upload");
 	var input = document.getElementById('imageInput');
 	var file = input.files[0];
 	const MAX_SIZE = 300;
@@ -70,6 +71,10 @@ function uploadImage() {
 	reader.onload = function(event) {
 		var base64String = event.target.result.split(',')[1]; // Get Base64 string
 		document.getElementById('base64Output').value = base64String;
+
+		if (callback) {
+			callback();
+		}
 	};
 	reader.readAsDataURL(file);
 }
@@ -138,11 +143,13 @@ function isDateinFuture(date) {
 }
 
 function showError(message) {
-    $('#errorMessage').text(message).show();
+	$('#errorMessage').text(message).show();
+	$('#errorMessage').addClass('text-danger');
 }
 
 function hideError() {
-    $('#errorMessage').hide();
+	$('#errorMessage').hide();
+	$('#errorMessage').removeClass('text-danger');
 }
 
 $(document).ready(function() {
@@ -157,62 +164,67 @@ $(document).ready(function() {
 		var networkType = $('#network_type').val();
 		var assetType = $('#asset_type').val();
 		var asset_name = $('#asset_type').val();
-		let errorMessage = document.getElementById("errorMessage");
+		//let errorMessage = document.getElementById("errorMessage");
+		//console.log(`inspectionDate ${inspectionDate}\nlocation ${location}\nimage ${image.slice(0, 10)}\nnetworkType ${networkType}\nassetType ${assetType}`);
 
 		if (isDateinFuture(inspectionDate)) {
 			alert(`Possibly wrong assignment. Inspection Date can not be in future.`);
 			inspectionDate = false;
 		}
 
-		/*let errorMessage = document.getElementById("errorMessage");
-		if (location.length < 10 || location.length > 50) {
-			errorMessage.textContent = "Location should be at least 10 characters and at most 50 characters";
-			//alert("Location should be at least 10 characters and at most 50 characters");
-			location = false;
-		}
-		else {
-			errorMessage.textContent = "";
-		}*/
-
 		if (location && (location.length < 10)) {
-			showError()
-			errorMessage.textContent = "Location should be at least 10 characters.";
-			location = false;
+			showError("Location should be at least 10 characters.");
 		}
-		else if(location && location.length> 50){
-			errorMessage.textContent = "Location should be not more than 50 characters";
-			location= false;
+		else if (location && location.length > 50) {
+			showError("Location should be not more than 50 characters");
 		}
 		else {
-			errorMessage.textContent = "";
-			location = true;
+			hideError();
 		}
 
 		// Check if all fields are non-empty
 		if (inspectionDate && location && image && networkType && assetType) {
+			//alert("in if");
 			let assetList = JSON.parse(getCookie("assetList"));
+			//alert(assetList[networkType + asset_name]);
 			if (assetList[networkType + asset_name] === undefined) {
-				alert(`No problems found in ${networkType} network and ${asset_name} asset combination`);
+				//alert("in if if");
+				showError(`No problems found in ${networkType} network and ${asset_name} asset combination`);
 				$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
 			}
 			else {
+				//alert("in if else");
 				$('#inspSubmitBtn').prop('disabled', false);  // Enable the button
+				//hideError();
 			}
 		} else {
+			//alert("in else");
 			$('#inspSubmitBtn').prop('disabled', true);   // Keep it disabled
 		}
 	}
 
 	// Attach event listeners to form fields
 	$('#dateDropdown').on('change', checkFormValidity);
-	$('#location').on('change', checkFormValidity);
+	$('#location').on('input', checkFormValidity);
 	$('#network_type').on('change', checkFormValidity);
 	$('#asset_type').on('change', checkFormValidity);
 
 	// For image upload, trigger the check when the image is uploaded
-	$('#imageInput').on('change', function() {
+	$('#imageInput').on('input', function() {
+		//alert("Image input function triggered");
+
+		// Call the uploadImage function and pass checkFormValidity as a callback
+		uploadImage(function() {
+			//alert("Image processing completed, now validating form");
+			checkFormValidity();  // Check form validity after the image is processed
+			//alert("Form validation completed");
+		});
+
+		//alert("Input function end (waiting for image upload completion)");
+		/*alert("input function");
 		uploadImage();  // Call the existing uploadImage function
 		checkFormValidity();  // Check form validity
+		alert("input function end");*/
 	});
 
 	const problemList = document.getElementById("problem_list");
@@ -222,11 +234,15 @@ $(document).ready(function() {
 
 	// Function to check if at least one problem is selected
 	function isProblemSelected() {
-		return problemList.children.length > 0;
+		const selectedProblems = problemList.querySelectorAll('input[type="checkbox"]:checked');
+		return selectedProblems.length > 0;  // Returns true if at least one problem is selected
+		//return problemList.children.length > 0;
 	}
 
 	function isDifficultySelected() {
-		return Array.from(difficultyRadios).some(radio => radio.checked);
+		//severity / difficulty level is not mandatory
+		return true;
+		/*return Array.from(difficultyRadios).some(radio => radio.checked);*/
 	}
 
 	function isOfficeSelected() {
@@ -246,10 +262,13 @@ $(document).ready(function() {
 	const observer = new MutationObserver(updateButtonState);
 	observer.observe(problemList, { childList: true, subtree: true });
 
+	problemList.addEventListener('change', updateButtonState);
+	difficultyRadios.forEach(radio => radio.addEventListener('change', updateButtonState));
+
 	// Event listeners for other form fields
-	Array.from(difficultyRadios).forEach(radio =>
+	/*Array.from(difficultyRadios).forEach(radio =>
 		radio.addEventListener("change", updateButtonState)
-	); // For radio button changes
+	); */// For radio button changes
 	officeNameSelect.addEventListener("change", updateButtonState); // For office selection changes
 
 	// Initially call the updateButtonState function in case the fields are already filled
@@ -303,6 +322,8 @@ $(document).ready(function() {
 			});
 		}
 		if ($('#inspSubmitBtn').text() === 'NEXT') {
+			$('#additionalSection1').find('input, select, textarea, button').prop('disabled', true);
+			//console.log("found1");
 			// Collect values from the input fields
 			var network_type = $('#network_type').val();
 			var asset_name = $('#asset_type').val();
@@ -414,12 +435,15 @@ $(document).ready(function() {
 					dropdown.append($('<option></option>').attr('value', "Select Office").text("Select Office"));
 					$.each(response.rectifyOfficeDtls.officeList, function(index, item) {
 						if (network_type === "HT") {
-							if (item.offCode.slice(-3) === "000") {
-								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
-							}
-							else {
+							if (item.offCode.slice(-3) !== "000") { //i.e. not division but HT
 								//do nothing
-								console.log("not eligible: " + item.offCode);
+								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+								//console.log("not eligible: " + item.offCode);
+								let divCode= item.offCode.slice(0,4);
+								//alert(divCode);
+							}
+							else { //i.e. division and HT
+								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 							}
 						}
 						else {
@@ -432,6 +456,19 @@ $(document).ready(function() {
 							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 						}
 						else{
+							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+						}*/
+						/*if(network_type=== "HT"){
+							if (item.offCode.slice(-3) === "000"){
+								//inspection office is division
+								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+							}
+							else{
+								//inspection office is CCC
+								dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
+							}
+						}
+						else{ //LT
 							dropdown.append($('<option></option>').attr('value', item.offCode).text(item.offName));
 						}*/
 					});
@@ -456,7 +493,7 @@ $(document).ready(function() {
 			$('#confirmAssignedOffice').text($('#office_name').val());
 			$('#confirmAssignedOffice').text($('#office_name option:selected').text());
 			$('#confirmInspectionDate').text($('#dateDropdown').val());
-			$('#confirmSeverityLevel').text($('input[name="difficulty"]:checked').val());
+			$('#confirmSeverityLevel').text($('input[name="difficulty"]:checked').val() || "No Option");
 
 			var problemDetailsArray = [];
 			$('#problem_list input[type="checkbox"]:checked').each(function() {
@@ -604,19 +641,19 @@ $(document).ready(function() {
 			"xUid": xUidEncrypted,
 			"dUid": dUidEncrypted,
 			"KST01CL": getCookie("costCenter"),
-			"severityLevel": severityLevel
+			"severityLevel": severityLevel || "none"
 		};
 
-		console.log("Request: " + JSON.stringify(jsonObjInput));
+		//console.log("Request: " + JSON.stringify(jsonObjInput));
 
 		$.ajax({
-			url: 'http://10.251.37.170:8080/testSafety/testSafety',
+			url: 'http://10.252.37.170:8080/prodSafety/prodSafety',
 			//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
 			type: 'POST',
 			//contentType: 'application/json',
 			data: JSON.stringify(jsonObjInput),
 			success: function(response) {
-				console.log("Response: " + JSON.stringify(response));
+				//console.log("Response: " + JSON.stringify(response));
 				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "102") {
 					alert(`${response.ackMsg}`);

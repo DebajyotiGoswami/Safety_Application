@@ -1,4 +1,4 @@
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
 
 var xUidEncrypted = "";
 var dUidEncrypted = "";
@@ -86,7 +86,7 @@ function enableResendButton() {
 function startResendOtpTimer() {
 	const resendButton = document.getElementById('resendOtpBtn');
 	resendButton.disabled = true;
-	let countdown = 5;
+	let countdown = 30;
 	resendButton.textContent = `Resend OTP (${String(countdown)}s)`;
 
 	const interval = setInterval(() => {

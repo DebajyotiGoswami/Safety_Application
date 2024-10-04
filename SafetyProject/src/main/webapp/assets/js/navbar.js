@@ -1,4 +1,4 @@
-const baseURL = "http://10.251.37.170:8080/SafetyProject/";
+const baseURL = "http://10.252.37.170:8080/SafetyProject/";
 
 function getCookie(name) {
 	const nameEQ = name + "=";

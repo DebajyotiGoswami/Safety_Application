@@ -1,7 +1,7 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/testSafety/testSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -187,7 +187,7 @@ $(document).ready(function() {
 				setCookie("tkn", response.tkn, 30);
 				if (response.ackMsgCode === "103") {
 					alert(`${response.ackMsg}\nwith Site Id: ${siteId}\nagainst Inspection Id: ${inspection_id}.`);
-					console.log(JSON.stringify(response));
+					//console.log(JSON.stringify(response));
 					window.location.href = 'new_rectification.jsp';
 				}
 			},
@@ -276,7 +276,7 @@ $(document).ready(function() {
 				btn.setAttribute('data-problem-details', item.problem_remarks);
 				btn.setAttribute('data-location', item.location_remarks);
 				btn.setAttribute('data-site-id', item.site_id);
-				console.log("1: " + item.site_id);
+				//console.log("1: " + item.site_id);
 
 				//btn.setAttribute('data-image', item.image);
 
@@ -308,15 +308,15 @@ $(document).ready(function() {
 						"dUid": dUidEncrypted,
 						"KST01CL": costCenter
 					};
-					console.log("Request: "+ JSON.stringify(jsonObjInput));
+					//console.log("Request: "+ JSON.stringify(jsonObjInput));
 					$.ajax({
 						url: url,
 						type: 'POST',
 						data: JSON.stringify(jsonObjInput),
 						success: function(response) {
-							console.log("rectify: " + JSON.stringify(response));
+							//console.log("rectify: " + JSON.stringify(response));
 							setCookie("tkn", response.tkn, 30);
-							console.log(getCookie("tkn"));
+							//console.log(getCookie("tkn"));
 							if (response.ackMsgCode === "206") {
 								let inspectionData = response.inspectListEmp.assignList[0];
 								let latitude = inspectionData.latitude

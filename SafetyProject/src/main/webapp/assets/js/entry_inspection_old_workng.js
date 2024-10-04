@@ -63,9 +63,9 @@ $(document).ready(function() {
 			"pageLoadFlag": pageLoadFlag
 		}),
 		success: function(response) {
-			console.log(response);
+			//console.log(response);
 			const jsonObject = JSON.parse(response);
-			console.log(jsonObject.inspectionIdList);
+			//console.log(jsonObject.inspectionIdList);
 			var jsonArray = jsonObject.inspectionIdList;
 			alert(JSON.stringify(jsonArray));
 			populateDropdown(jsonArray);
@@ -105,8 +105,8 @@ $(document).ready(function() {
 
 						// Assuming response is a JSON array
 						$.each(response.problems, function(index, item) {
-							console.log("item.key: ", item.problem_id);
-							console.log("item.value: ", item.description);
+							//console.log("item.key: ", item.problem_id);
+							//console.log("item.value: ", item.description);
 							dropdown.append($('<option></option>').attr('value', item.problem_id).text(item.description));
 						});
 					},
@@ -115,7 +115,7 @@ $(document).ready(function() {
 						console.error('Error:', error);
 					}
 				});
-			console.log("outside of ")
+			//console.log("outside of ")
 			disableMouseInteraction('initial-section');
 			$('#additionalSection').show(); // Show additional sections
 			$('#submitBtn').text('SUBMIT'); // Change button text to 'SUBMIT'
@@ -155,13 +155,13 @@ $(document).ready(function() {
 			alert("jsonobj: ", jsonObj);
 
 			$.ajax({
-				url: 'http://10.251.37.170:8080/testSafety/testSafety',
+				url: 'http://10.252.37.170:8080/testSafety/testSafety',
 				//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
 				type: 'POST',
 				//contentType: 'application/json',
 				data: JSON.stringify(jsonObj),
 				success: function(response) {
-					console.log(response);
+					//console.log(response);
 					console.log("successful conn");
 				},
 				error: function(xhr, status, error) {

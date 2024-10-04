@@ -1,7 +1,7 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -121,8 +121,8 @@ $(document).ready(function() {
 	function validateForm() {
 		const inspectionDate = new Date($('#inspection_date').val());
 		const targetDate = new Date(rectificationDateInput.value);
-		console.log("target Date: " + JSON.stringify(targetDate));
-		console.log(typeof (targetDate));
+		//console.log("target Date: " + JSON.stringify(targetDate));
+		//console.log(typeof (targetDate));
 		const today = new Date();
 		const problemRemarks = rectificationRemarksInput.value.trim();
 		const isImageUploaded = rectificationImage.files.length > 0;
@@ -317,8 +317,9 @@ $(document).ready(function() {
 			}
 		},
 		error: function(xhr, status, error) {
-			setCookie("tkn", response.tkn, 30);
+			//setCookie("tkn", response.tkn, 30);
 			console.log(`xhr: ${xhr}\nstatus: ${status}\nerror: ${error}`);
+			setCookie("tkn", response.tkn, 30);
 		}
 	});
 

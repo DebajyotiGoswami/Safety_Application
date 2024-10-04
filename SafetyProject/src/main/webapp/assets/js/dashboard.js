@@ -35,21 +35,25 @@ function portalAllView() {
 		"auth": "INSP_PRTL",
 		"roll_name": "INSPECTOR"
 	}
-
+	console.log(JSON.stringify(jsonInput));
 	$.ajax({
-		url: "http://10.251.37.170:8080/SafetyReportView/frmprtl",
+		url: "http://10.252.37.170:8080/SafetyReportView/frmprtl",
 		type: 'POST',
+		contentType: "application/json",
 		data: JSON.stringify(jsonInput),
 		success: function(response) {
+			//console.log("success");
 			console.log("success");
-			//alert("success");
-			window.location.href = response.redirectURL;
+			console.log(JSON.stringify(response));
+			//window.location.href = response.redirectURL;
+			var newJspUrl = response.newJspUrl;
+			window.open(newJspUrl, '_blank'); // Open the new JSP in a new tab
 		},
 		error: function(xhr, status, error) {
 			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 		}
 	});
-	console.log("button click function ends");
+	//console.log("button click function ends");
 }
 
 document.addEventListener('DOMContentLoaded', () => {

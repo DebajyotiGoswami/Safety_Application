@@ -284,7 +284,8 @@ function updateERPFields() {
 
 		// Populate the select dropdown with ERP IDs
 		erpIds.forEach(function(erpId) {
-			if (!erpId.includes(getCookie("User"))){
+			//if (!erpId.includes(getCookie("User")))
+			if(true){
 				//this if is to exclude the loged in user.
 				//i.e. user can not not assign to himself/ herself
 				const option = document.createElement('option');
@@ -292,9 +293,9 @@ function updateERPFields() {
 				option.textContent = erpId;
 				select.appendChild(option);
 			}
-			else{
+			/*else{
 				console.log(erpId);
-			}
+			}*/
 		});
 
 		// Append the select dropdown to the div

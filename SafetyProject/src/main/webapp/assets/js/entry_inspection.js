@@ -1,7 +1,7 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/testSafety/testSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -282,7 +282,7 @@ $(document).ready(function() {
 				"KST01CL": costCenter
 			};
 			$.ajax({
-				url: 'http://10.251.37.170:8080/testSafety/testSafety',
+				url: 'http://10.252.37.170:8080/testSafety/testSafety',
 				//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
 				type: 'POST',
 				//contentType: 'application/json',

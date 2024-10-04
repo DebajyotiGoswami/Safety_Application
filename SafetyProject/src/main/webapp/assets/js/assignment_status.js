@@ -1,7 +1,7 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -138,8 +138,8 @@ $(document).ready(function() {
 			var itemAssignedTo = item.emp_assigned_to_Nm.toLowerCase();
 			var itemAssignedOffice = item.office_code_to_inspect.toLowerCase();
 
-			console.log("office_code: " + itemAssignedOffice);
-			console.log("hello " + assignedOffice);
+			//console.log("office_code: " + itemAssignedOffice);
+			//console.log("hello " + assignedOffice);
 
 			let officeList = JSON.parse(localStorage.getItem("officeList"));
 			let officeName = "";
@@ -150,8 +150,8 @@ $(document).ready(function() {
 			});
 
 			itemAssignedOffice = officeName.toLowerCase(); //toLowerCase not required
-			console.log("after tolower: " + itemAssignedOffice);
-			console.log(assignedTo + "-" + assignedOffice + "-" + itemAssignedOffice);
+			//console.log("after tolower: " + itemAssignedOffice);
+			//console.log(assignedTo + "-" + assignedOffice + "-" + itemAssignedOffice);
 
 			// Check if the current item matches the filter criteria
 			var match = true;
@@ -165,7 +165,7 @@ $(document).ready(function() {
 			if (assignedTo && !itemAssignedTo.includes(assignedTo)) {
 				match = false;
 			}
-			console.log("last check: " + assignedOffice + itemAssignedOffice);
+			//console.log("last check: " + assignedOffice + itemAssignedOffice);
 			if (assignedOffice && !itemAssignedOffice.includes(assignedOffice)) {
 				match = false;
 			}
@@ -281,7 +281,7 @@ $(document).ready(function() {
 							type: 'POST',
 							data: JSON.stringify(jsonInput),
 							success: function(response) {
-								console.log("success");
+								//console.log("success");
 								setCookie("tkn", response.tkn, 30);
 								window.location.href = response.redirectURL;
 							},
@@ -455,7 +455,7 @@ $(document).ready(function() {
 							type: 'POST',
 							data: JSON.stringify(jsonInput),
 							success: function(response) {
-								console.log("success");
+								//console.log("success");
 								setCookie("tkn", response.tkn, 30);
 								window.location.href = 'assignment_status.jsp';
 							},
