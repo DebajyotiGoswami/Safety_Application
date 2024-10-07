@@ -82,12 +82,11 @@
 					<div class="card-body">
 						<h5 class="card-title">Inspection Entry</h5>
 						<p class="card-text">Enter the data collected during
-							inspections. Also find a comprehensive inspection history for
-							reference and reporting.</p>
+							inspections and view history</p>
 						<div class="btn-container">
 							<a href="new_inspection_test.jsp"
-								class="btn btn-primary btn-equal">Your Pending Inspection</a> <a
-								href="inspection_status.jsp" class="btn btn-primary btn-equal">View
+								class="btn btn-primary btn-equal">Pending Works</a> <a
+								href="inspection_status.jsp" class="btn btn-primary btn-equal">
 								All Inspections</a>
 						</div>
 

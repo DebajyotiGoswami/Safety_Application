@@ -37,7 +37,7 @@ function portalAllView() {
 	}
 	console.log(JSON.stringify(jsonInput));
 	$.ajax({
-		url: "http://10.252.37.170:8080/SafetyReportView/frmprtl",
+		url: "frmprtl",
 		type: 'POST',
 		contentType: "application/json",
 		data: JSON.stringify(jsonInput),
@@ -46,7 +46,7 @@ function portalAllView() {
 			console.log("success");
 			console.log(JSON.stringify(response));
 			//window.location.href = response.redirectURL;
-			var newJspUrl = response.newJspUrl;
+			var newJspUrl = response.redirectURL;
 			window.open(newJspUrl, '_blank'); // Open the new JSP in a new tab
 		},
 		error: function(xhr, status, error) {

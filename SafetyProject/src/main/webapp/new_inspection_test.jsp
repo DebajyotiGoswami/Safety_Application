@@ -106,9 +106,9 @@
 	</div>
 
 	<div class="container mt-5">
-		<h2 class="text-center">Inspection Entry</h2>
+		<h3 class="text-center">Inspection Entry</h3>
 		<!-- You can use any heading level like h2, h3 etc. -->
-		<div class="form-container">
+		<div class="form-container my-3">
 			<form id="inspectionForm" enctype="multipart/form-data">
 				<!-- Initial visible sections -->
 				<div id="additionalSection1" class="additional-section1">

@@ -1,4 +1,5 @@
-var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
+//var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "/prodSafety/prodSafety";
 
 var xUidEncrypted = "";
 var dUidEncrypted = "";

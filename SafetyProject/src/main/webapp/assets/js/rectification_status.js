@@ -1,7 +1,8 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
+//var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -242,13 +243,13 @@ $(document).ready(function() {
 						"designation": getCookie("designation"),
 						"office_code": getCookie("KST01CL"),
 						"tkn": getCookie("tkn"),
-						"page_id": "401",
+						"page_id": "402",
 						"auth": "INSP_PRTL",
-						"roll_name": "INSPECTOR"
+						"role_name": "INSPECTOR"
 					}
 
 					$.ajax({
-						url: "http://10.252.37.170:8080/SafetyReportView/frmprtl",
+						url: "frmprtl",
 						type: 'POST',
 						contentType: "application/json",
 						data: JSON.stringify(jsonInput),

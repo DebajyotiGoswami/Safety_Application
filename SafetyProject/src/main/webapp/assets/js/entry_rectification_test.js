@@ -1,7 +1,8 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
+//var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -479,7 +480,7 @@ $(document).ready(function() {
 					setCookie("tkn", response.tkn, 30);
 					if (response.ackMsgCode === "103") {
 						alert(`${response.ackMsg}\nwith Site Id: ${site_id}\nagainst Inspection Id: ${inspection_id}.`);
-						window.location.href = 'new_rectification.jsp';
+						window.location.href = 'new_rectification_test.jsp';
 					}
 					if(response.ackMsgCode === '999'){
 						alert(`${response.ackMsg}`);

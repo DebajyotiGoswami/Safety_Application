@@ -98,7 +98,7 @@ html, body {
 }
 
 /* Style for the main h2 heading */
-.container h2 {
+.container h3 {
 	font-size: 2.5rem; /* Larger font size */
 	font-weight: 800; /* Bolder font weight */
 	color: #007bff; /* Primary color */

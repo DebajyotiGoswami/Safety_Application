@@ -1,7 +1,8 @@
 var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
-var url = "http://10.252.37.170:8080/prodSafety/prodSafety";
+//var url = "http://10.251.37.170:8080/testSafety/testSafety";
+var url = "/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -647,7 +648,7 @@ $(document).ready(function() {
 		//console.log("Request: " + JSON.stringify(jsonObjInput));
 
 		$.ajax({
-			url: 'http://10.252.37.170:8080/prodSafety/prodSafety',
+			url: url,
 			//url: 'http://localhost:8080/MyWebApp/entryInspectionServlet', // replace with above Servlet URL
 			type: 'POST',
 			//contentType: 'application/json',

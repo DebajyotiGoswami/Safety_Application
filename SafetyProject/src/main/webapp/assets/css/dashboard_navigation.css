@@ -105,6 +105,7 @@ html, body {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 	border-radius: 8px; /* Rounded corners for smoother look */
 	position: relative;
+	width: auto;
 	/* Set position to relative so that the floating button can be positioned within the card */
 }
 

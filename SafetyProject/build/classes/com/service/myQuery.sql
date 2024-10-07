@@ -89,6 +89,8 @@ order by cr_dt;
 
 select * from safety_schema.inspectdtls 
 
+select * from safety_schema.login;
+
 
 alter table safety_schema.inspectdtls add column severity varchar(20);
 
@@ -96,3 +98,10 @@ select * from safety_schema.problems;
 
 ALTER TABLE safety_schema.teamassign
 ALTER COLUMN inspected_by TYPE VARCHAR(50)
+
+
+update safety_schema.stell
+
+select * from safety_schema.teamassign
+
+delete from safety_schema.inspectdtls;
