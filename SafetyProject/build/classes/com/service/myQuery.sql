@@ -12,6 +12,15 @@
 --);
 
 --drop table safety_schema.login;
+select * from safety_schema.dev_otp where xuuid like '90008282%';
+
+select * from safety_schema.roles;
+
+select * from safety_schema.stell;
+
+update safety_schema.stell
+set stell='50031511'
+where stell_desc='ADDL CHIEF ENGINEER';
 
 --insert into safety_schema.vulnerabilities 
 --(site_id, inspection_id, inspection_by, problem_id, location_remarks,
@@ -88,6 +97,15 @@ order by cr_dt;
 
 
 select * from safety_schema.inspectdtls 
+where inspection_by='90015419'
+
+select * from  safety_schema.teamassign 
+where emp_assigned_by='90006788';
+
+select latitude, longitude, count(distinct site_id)
+from safety_schema.inspectdtls 
+where inspection_by='90010101'
+group by latitude, longitude
 
 select * from safety_schema.login;
 
@@ -102,6 +120,44 @@ ALTER COLUMN inspected_by TYPE VARCHAR(50)
 
 update safety_schema.stell
 
-select * from safety_schema.teamassign
+select emp_assigned_by, count(distinct inspection_id) 
+from safety_schema.teamassign
+group by emp_assigned_by
 
-delete from safety_schema.inspectdtls;
+select * from safety_schema.inspectdtls where site_id='354110224091700';
+
+UPDATE safety_schema.inspectdtls
+SET inspection_by_name= 'Debajyoti Goswami'
+where site_id='354110224091700';
+
+
+select inspection_by, count(distinct inspection_id) 
+from safety_schema.inspectdtls
+group by inspection_by
+
+
+select * from safety_schema.hq_office_list;
+
+select 
+CASE 
+WHEN substr(office_name, length(office_name)- 2, 3) = 'CCC' then 'CCC'
+WHEN substr(office_name, length(office_name)- 5, 6) = 'REGION' then 'REGION'
+WHEN substr(office_name, length(office_name)- 7, 8) = 'DIVISION' then 'DIVISION'
+WHEN substr(office_name, length(office_name)- 3, 4) = 'ZONE' then 'ZONE'
+ELSE 'OTHER'
+END, count(distinct office_code) 
+from safety_schema.office
+--where substr(office_name, length(office_name)- 2, 3) <> 'CCC'
+group by CASE 
+WHEN substr(office_name, length(office_name)- 2, 3) = 'CCC' then 'CCC'
+WHEN substr(office_name, length(office_name)- 5, 6) = 'REGION' then 'REGION'
+WHEN substr(office_name, length(office_name)- 7, 8) = 'DIVISION' then 'DIVISION'
+WHEN substr(office_name, length(office_name)- 3, 4) = 'ZONE' then 'ZONE'
+ELSE 'OTHER'
+END
+
+SELECT * FROM SAFETY_SCHEMA.OFFICE
+WHERE SUBSTR(OFFICE_NAME, LENGTH(OFFICE_NAME)- 7, 8) = 'DIVISION'
+
+SELECT * FROM SAFETY_SCHEMA.OFFICE
+WHERE SUBSTR(OFFICE_NAME, LENGTH(OFFICE_NAME)- 2, 3) = 'CCC'
