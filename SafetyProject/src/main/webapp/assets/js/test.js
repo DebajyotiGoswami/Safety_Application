@@ -311,12 +311,14 @@ $(document).ready(function() {
 						url: url,
 						data: JSON.stringify(jsonObjectInput),
 						success: function(response) {
+							console.log(`Response: ${JSON.stringify(response)}`);
 							setCookie("tkn", response.tkn, 30);
 							if (response.ackMsgCode === "206") {
 								let probDtls = response.inspectListEmp.assignList[0];
-								console.log(`Response: ${JSON.stringify(probDtls)}`);
+								//console.log(`Response: ${JSON.stringify(probDtls)}`);
 								localStorage.setItem("currProb", JSON.stringify(probDtls));
-								window.open('view_test.jsp', '_blank');
+								//window.open('view_test.jsp');
+								window.location.href = 'view_test.jsp';
 							} else {
 								// If no data is found, show the no-data alert and hide the table
 								alert(`Message found from server: ${response.ackMsg}`);

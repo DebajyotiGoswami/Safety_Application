@@ -16,7 +16,18 @@ select * from safety_schema.dev_otp where xuuid like '90008282%';
 
 select * from safety_schema.roles;
 
+insert into safety_schema.roles
+values ('A', '90012775', CURRENT_TIMESTAMP, 'ADMIN_ACCESS', 'ALL ACCESS');
+
 select * from safety_schema.stell;
+
+INSERT INTO safety_schema.stell
+(ROLE_VALID_FLAG, STELL_VALID_FLAG, CREATE_ON, CREATE_BY, ROLE_DESCRIPTION,
+ROLE_ID, STELL_DESC, STELL)
+VALUES ('A', 'A', CURRENT_TIMESTAMP, '90012775', 'ALL ACCESS', '7', 'DIRECTOR(GENERATION)', '50032592');
+
+INSERT INTO safety_schema.stell (ROLE_VALID_FLAG, STELL_VALID_FLAG, CREATE_ON, CREATE_BY, ROLE_DESCRIPTION, ROLE_ID, STELL_DESC, STELL) VALUES ('A', 'A', CURRENT_TIMESTAMP, '90012775', 'ALL ACCESS', '7', 'Testald0','555');
+
 
 update safety_schema.stell
 set stell='50031511'
@@ -161,3 +172,46 @@ WHERE SUBSTR(OFFICE_NAME, LENGTH(OFFICE_NAME)- 7, 8) = 'DIVISION'
 
 SELECT * FROM SAFETY_SCHEMA.OFFICE
 WHERE SUBSTR(OFFICE_NAME, LENGTH(OFFICE_NAME)- 2, 3) = 'CCC'
+
+
+SELECT * FROM SAFETY_SCHEMA.STELL
+where stell= '50031511';
+
+
+
+select * from safety_schema.inspectdtls
+where inspection_id= '3534000241023053339'
+and site_id= '3532410230533390';
+
+select * from safety_schema.images
+
+select * from safety_schema.inspectdtls
+
+select count(*) from safety_schema.inspectdtls
+
+select * from safety_schema.inspectdtls i , safety_schema.images i2, 
+safety_schema.office o, safety_schema.insprobmaster i3 , safety_schema.asset_type at2
+where i.inspection_id = i2.inspection_id 
+and i.site_id = i2.site_id 
+and i.assigned_office_code =o.office_code
+and i.inspection_id = '3153402240910094609'
+and i.problem_id = i3.problem_id 
+and i3.asset_type_id = at2.asset_type_id
+
+select * from safety_schema.inspectdtls
+where inspection_id
+in
+( select inspection_id from safety_schema.images)
+
+select * from safety_schema.office
+where office_type = '';
+
+select distinct office_type from safety_schema.office;
+
+select count(*)
+from safety_schema.office
+
+
+
+
+
