@@ -1,0 +1,272 @@
+.navbar {
+	/* background-color: #007bff; */ /* Bright blue color */
+	padding: 10px 20px;
+	background: #012466;
+	background: -moz-linear-gradient(top, #012466 0, #065cac 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0, #012466),
+		color-stop(100%, #065cac));
+	background: -webkit-linear-gradient(top, #012466 0, #065cac 100%);
+	background: -o-linear-gradient(top, #012466 0, #065cac 100%);
+	background: -ms-linear-gradient(top, #012466 0, #065cac 100%);
+	background: linear-gradient(to bottom, #012466 0, #065cac 100%);
+	background-size: cover;
+	color: white;
+}
+
+.table-responsive {
+	overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.small-font-table td {
+	white-space: nowrap; /* Prevent wrapping of text */
+}
+
+/* Make the table header fixed */
+thead th {
+	position: sticky;
+	top: 0; /* Fix to the top */
+	background-color: #f8f9fa; /* Background color of the header */
+	z-index: 1; /* Make sure it's on top of other rows */
+}
+
+/* Make the rightmost column fixed */
+/* tbody tr td:last-child, 
+thead tr th:last-child {
+	position: sticky;
+	right: 0; Fix to the right
+	background-color: #f8f9fa; Background color of the right column
+	z-index: 1; Make sure it is above other elements
+	box-shadow: -2px 0 5px -2px #333;
+	Optional: add shadow for better visibility
+} */
+
+
+.filterSection{
+	padding-bottom: 10px;
+}
+.navbar .navbar-brand, .navbar .nav-link {
+	color: #ffffff; /* White text */
+}
+
+/* .small-font-table {
+	font-size: 0.8rem; Adjust the font size as needed
+} */
+
+/* Reduce padding in table cells */
+.small-font-table th, .small-font-table td {
+	padding: 0.3rem; /* Adjust this value to change row height */
+}
+
+/* Optionally, reduce line height */
+.small-font-table th, .small-font-table td {
+	line-height: 1; /* Adjust line height for more compact rows */
+}
+
+.navbar .nav-link.active {
+	color: #ffc107; /* Bright orange color for active link */
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Make the container take all the remaining space to push the footer to the bottom */
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Add this to your existing CSS file or style tag */
+.btn-container {
+	display: flex;
+	justify-content: space-between;
+	/* justify-content: flex-start; */ /* Align buttons to the start */
+	gap: 10px; /* Adjust the gap as needed */
+}
+
+/* Custom styles to make buttons the same size and stack vertically */
+.btn-equal {
+	min-width: 100px; /* Set a minimum width for consistency */
+	text-align: center; /* Center text in button */
+	width: 40%; /* Ensure full width for stacked layout */
+	margin-bottom: 10px; /* Increased margin between buttons */
+	flex: 1; /* Allow buttons to take equal space */
+	margin-right: 5px; /* Add minimal margin for separation */
+	padding: 10px;
+}
+
+/* Remove right margin for the last button */
+.btn-equal:last-child {
+	margin-right: 0;
+}
+/* Ensure all cards have the same size */
+.card {
+	height: 800px; /* Fixed height to ensure uniformity */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 10px; /* Padding for more space inside card */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+	border-radius: 8px; /* Rounded corners for smoother look */
+}
+
+/* Style for the main h2 heading */
+.container h2 {
+	font-size: 2.5rem; /* Larger font size */
+	font-weight: 800; /* Bolder font weight */
+	color: #007bff; /* Primary color */
+	text-transform: uppercase; /* Uppercase text for impact */
+	letter-spacing: 2px; /* Increased spacing between letters */
+	margin-bottom: 50px; /* More space below the heading */
+	border-bottom: 3px solid #007bff; /* Bottom border for separation */
+	display: inline-block;
+	padding-bottom: 10px; /* Increased padding for visual separation */
+	position: relative;
+}
+
+/* .container h2::after {
+    content: '';
+    display: block;
+    width: 80px; Width of decorative line
+    height: 3px; Height of decorative line
+    background-color: #28a745; Accent color
+    margin: 8px auto 0; Centered below heading
+}
+ */
+/* Style for the h5 headings inside cards */
+.card h5 {
+	font-size: 1.5rem; /* Larger font size for emphasis */
+	font-weight: 600; /* Semi-bold for distinction */
+	color: #333; /* Darker color for contrast */
+	margin-bottom: 15px; /* Margin below the heading */
+	text-transform: capitalize; /* Capitalize headings */
+}
+
+/* Footer should be at the bottom */
+footer {
+	/* color: #ffffff; White text
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    background-color: #28a745; Bright green color
+     */
+	padding: 5px 10px;
+	background: #012466;
+	background: -moz-linear-gradient(top, #012466 0, #065cac 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0, #012466),
+		color-stop(100%, #065cac));
+	background: -webkit-linear-gradient(top, #012466 0, #065cac 100%);
+	background: -o-linear-gradient(top, #012466 0, #065cac 100%);
+	background: -ms-linear-gradient(top, #012466 0, #065cac 100%);
+	background: linear-gradient(to bottom, #012466 0, #065cac 100%);
+	background-size: cover;
+	color: white;
+	/* background-color: #007bff; Primary color
+	color: #ffffff; White text */
+	text-align: center;
+	padding: 5px 0;
+	position: fixed;
+	width: 100%;
+	height: 5%;
+	bottom: 0;
+	font-size: 14px;
+}
+
+.form-container {
+	padding: 10px;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+	margin-top: 5px;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+.form-label {
+	font-size: 1.25rem; /* Increase label size */
+}
+
+.form-control {
+	font-size: 1.1rem; /* Increase input text size */
+}
+
+.btn-primary {
+	padding: 10px 24px;
+	font-size: 1.25rem;
+	margin-bottom: 10px;
+}
+
+.navbar, footer {
+	background-color: #012466;
+	color: white;
+}
+
+.navbar-text {
+	font-size: 1.5rem; /* Increase the font size of the navbar text */
+}
+
+/* footer {
+	position: fixed;
+	width: 100%;
+	bottom: 0; Ensure footer stays at the bottom
+} */
+
+.form-row {
+	align-items: center;
+}
+
+.form-row label {
+	margin-bottom: 0;
+}
+
+.form-row .form-control {
+	margin-bottom: 5px;
+}
+
+.form-row .form-group {
+	margin-bottom: 0;
+}
+
+.btn-center {
+	display: flex;
+	justify-content: center;
+}
+
+.heading-container {
+	text-align: center;
+	margin-bottom: 5px;
+}
+
+.required-label::after {
+	content: '*';
+	color: red;
+	margin-left: 5px;
+}
+
+.table-responsive {
+	position: relative;
+	max-height: 557px;
+	overflow-y: auto;
+}
+
+thead.thead-fixed th {
+	position: sticky;
+	top: 0;
+	background-color: white; /* Change to your desired background color */
+	z-index: 10;
+	box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+.custom-header {
+	font-weight: bold; /* Makes the text bold */
+	font-size: 1.5em; /* Increases the font size */
+	background-color: #ADD8E6; /* Light blue background color */
+	padding: 10px; /* Adds some padding for better spacing */
+	border-radius: 5px; /* Optional: Adds slightly rounded corners */
+}

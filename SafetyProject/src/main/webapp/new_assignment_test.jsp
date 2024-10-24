@@ -11,6 +11,7 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/BigInteger.js"></script>
 <script src="assets/js/BigInteger.min.js"></script>
+<script src="assets/js/config.js"></script>
 
 <script>function preventBack() {
             history.pushState(null, null, location.href);

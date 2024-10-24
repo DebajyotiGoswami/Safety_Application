@@ -5,6 +5,7 @@ var KEY2 = bigInt("37997636186218092599949125647");
 //var url = "/prodSafety/prodSafety";
 //import { API_URL } from './config';
 var url = API_URL;
+
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};

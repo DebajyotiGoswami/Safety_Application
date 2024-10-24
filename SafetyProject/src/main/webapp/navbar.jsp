@@ -39,6 +39,7 @@
 			</ul>
 		</div>
 	</div>
+	<script src="assets/js/config.js"></script>
 	<script src="assets/js/navbar.js"></script>
 </nav>
 

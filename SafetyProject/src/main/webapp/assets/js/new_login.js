@@ -10,7 +10,8 @@ var desig = "";
 var office_name = "";
 
 //var url = "http://10.251.37.170:8080/testSafety/testSafety";
-var url = "/prodSafety/prodSafety";
+//var url = "/prodSafety/prodSafety";
+var url= API_URL;
 
 /*var url1= "";
 var url2= ""*/

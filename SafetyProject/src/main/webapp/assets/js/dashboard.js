@@ -19,41 +19,32 @@ function getCookie(name) {
 }
 
 function portalAllView() {
-	//window.location.href = 'http://10.251.37.170:8080/SafetyReportView';
-	//window.open('http://10.251.37.170:8080/SafetyReportView', '_blank');
-	//alert("clicked");
 	let jsonInput = {
-		"role_id": "1",
-		//"inspection_id": "3332000240923065708",
-		"emp_name": getCookie("empName"),
-		"erp_id": getCookie("User"),
-		"office_name": getCookie("office"),
-		"designation": getCookie("designation"),
-		"office_code": getCookie("KST01CL"),
-		"tkn": getCookie("tkn"),
-		"page_id": "403",
-		"auth": "INSP_PRTL",
-		"roll_name": "INSPECTOR"
-	}
-	console.log(JSON.stringify(jsonInput));
+        "role_id": "1",
+        "emp_name": getCookie("empName"),
+        "erp_id": getCookie("User"),
+        "office_name": getCookie("office"),
+        "designation": getCookie("designation"),
+        "office_code": getCookie("KST01CL"),
+        "tkn": getCookie("tkn"),
+        "page_id": "403",
+        "auth": "INSP_PRTL",
+        "role_name": "INSPECTOR"
+    }
+    console.log(JSON.stringify(jsonInput));
 	$.ajax({
-		url: "frmprtl",
-		type: 'POST',
-		contentType: "application/json",
-		data: JSON.stringify(jsonInput),
-		success: function(response) {
-			//console.log("success");
-			console.log("success");
-			console.log(JSON.stringify(response));
-			//window.location.href = response.redirectURL;
-			var newJspUrl = response.redirectURL;
-			window.open(newJspUrl, '_blank'); // Open the new JSP in a new tab
-		},
-		error: function(xhr, status, error) {
-			console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
-		}
-	});
-	//console.log("button click function ends");
+        url: "reportServlet", // Make sure this URL maps to your MyServlet servlet
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(jsonInput),
+        success: function(response) {
+            console.log("success");
+            window.open("newhome.jsp", '_blank');
+        },
+        error: function(xhr, status, error) {
+            console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

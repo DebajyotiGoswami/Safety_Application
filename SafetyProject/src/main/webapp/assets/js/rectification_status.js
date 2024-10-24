@@ -2,7 +2,9 @@ var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
 //var url = "http://10.251.37.170:8080/testSafety/testSafety";
-var url = "/prodSafety/prodSafety";
+//var url = "/prodSafety/prodSafety";
+//import { API_URL } from './config';
+var url=API_URL;
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -224,7 +226,7 @@ $(document).ready(function() {
 			row.appendChild(statusCell);
 
 			// Create a column for the anchor tag
-			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED") {
+			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED" || item.status !== "WIP") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
 				//anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
@@ -234,7 +236,7 @@ $(document).ready(function() {
 
 				// Attach an onclick event to the anchor
 				anchor.onclick = function(event) {
-					let jsonInput = {
+					/*let jsonInput = {
 						"role_id": "1",
 						"inspection_id": item.inspection_id,
 						"emp_name": getCookie("empName"),
@@ -255,14 +257,57 @@ $(document).ready(function() {
 						data: JSON.stringify(jsonInput),
 						success: function(response) {
 							//console.log("success");
-							window.location.href = response.redirectURL;
+							//window.location.href = response.redirectURL;
+							var newJspUrl = response.redirectURL;
+							window.open(newJspUrl, '_blank'); // Open the new JSP in a new tab
 						},
 						error: function(xhr, status, error) {
 							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 						}
+					});*/
+					
+					let User = getCookie("User");
+					xUidJson = enCrypt(User, "123456");
+					xUidEncrypted = xUidJson.User;
+					dUidEncrypted = xUidJson.Pwd;
+
+					let jsonObjectInput = {
+						"inspectId": item.inspection_id,
+						"siteId": item.site_id,
+						"problemId": item.problem_id,
+						"ServType": "206",
+						"pageNm": "DASH",
+						"tkn": getCookie("tkn"),
+						"xUid": xUidEncrypted,
+						"dUid": dUidEncrypted,
+						"KST01CL": getCookie("KST01CL")
+					};
+					console.log(`Data to Server: ${JSON.stringify(jsonObjectInput)}`);
+					$.ajax({
+						type: 'POST',
+						url: url,
+						data: JSON.stringify(jsonObjectInput),
+						success: function(response) {
+							console.log(`Response: ${JSON.stringify(response)}`);
+							setCookie("tkn", response.tkn, 30);
+							if (response.ackMsgCode === "206") {
+								let probDtls = response.inspectListEmp.assignList[0];
+								//console.log(`Response: ${JSON.stringify(probDtls)}`);
+								localStorage.setItem("currProb", JSON.stringify(probDtls));
+								//window.open('view_test.jsp');
+								window.location.href = 'view_test.jsp';
+							} else {
+								// If no data is found, show the no-data alert and hide the table
+								console.log(`Message found from server: ${response.ackMsg}`);
+							}
+						},
+						error: function(xhr, status, error) {
+							//if server not get connected 
+							setCookie("tkn", response.tkn, 30);
+							console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+						}
 					});
 				};
-
 
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);

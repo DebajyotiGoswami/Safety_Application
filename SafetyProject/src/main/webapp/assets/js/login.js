@@ -1,10 +1,13 @@
 //var url = "http://10.251.37.170:8080/testSafety/testSafety";
-var url = "/prodSafety/prodSafety";
+//import { API_URL } from './config';
+//var url = "/prodSafety/prodSafety";
+var url = API_URL;
 
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var jsonObjInput = {};
 var jsonObjCookie = {};
+var empDtlsTemp;
 
 function enCrypt(uid, pwd) {
 	let uidConver = [];
@@ -167,6 +170,7 @@ function handleButtonClick(event) {
 		jsonObjInput["pageNm"] = "OTP";
 		jsonObjInput["xUid"] = xUidEncrypted;
 		jsonObjInput["dUid"] = dUidEncrypted;
+		empDtlsTemp= jsonObjCookie.empDtls;
 		jsonObjInput["empDtls"] = jsonObjCookie.empDtls;
 		jsonObjInput["stell"] = jsonObjCookie.userRole;
 
@@ -240,7 +244,16 @@ function handleButtonClick(event) {
 				$('#loginbttn').prop('disabled', true);
 				startResendOtpTimer();
 				jsonObjCookie["xUid"] = xUid;
-				jsonObjCookie["empDtls"] = empDtls;
+				//following if else is to handle empDtls
+				//105 code is returned for both login and resend
+				//but in resend no empdtls is received from server
+				//so previous empdtls was saved in global empDtlsTemp
+				if(empDtls){
+					jsonObjCookie["empDtls"] = empDtls;
+				}
+				else{
+					jsonObjCookie["empDtls"] = empDtlsTemp;
+				}
 			}
 			else if (response.ackMsgCode === "901") {
 				alert("Incorrect credentials. Please try again.");
@@ -305,6 +318,10 @@ function handleButtonClick(event) {
 			else if (response.ackMsgCode === "301"){
 				setCookie("tkn", response.tkn, 30);
 				alert(`${response.ackMsg}`);				
+			}
+			else if (response.ackMsgCode === "999"){
+				setCookie("tkn", response.tkn, 30);
+				alert(`${response.ackMsg}`);
 			}
 		},
 		error: function(xhr, status, error) {

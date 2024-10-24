@@ -2,9 +2,7 @@ var KEY1 = bigInt("10953483997285864814773860729");
 var KEY2 = bigInt("37997636186218092599949125647");
 
 //var url = "http://10.251.37.170:8080/testSafety/testSafety";
-//var url = "/prodSafety/prodSafety";
-//import { API_URL } from './config';
-var url = API_URL;
+var url = "/prodSafety/prodSafety";
 var xUidEncrypted = "";
 var dUidEncrypted = "";
 var xUidJson = {};
@@ -74,18 +72,15 @@ function getCookie(name) {
 $(document).ready(function() {
 	var fullData = [];
 
-	//$('#searchBtn, #allAssignedByMeBtn').click(function() {
-
-	$('#resultsContainer').show();
-
 	var fromDate = $('#fromDate').val();
 	var toDate = $('#toDate').val();
 	var assignedTo = $('#assignedTo').val();
 	//var pendingAssignments = document.querySelector("#pendingAssignments").checked;
+	var assignedOffice = $('#assignedOffice').val();
 
 	var jsonObjectInput = {};
 	jsonObjectInput.pageNm = "DASH";
-	jsonObjectInput.ServType = "204";
+	jsonObjectInput.ServType = "207";
 	var cookieData = JSON.parse(getCookie('empDtls'));
 	var tkn = getCookie('tkn');
 	var xUid = cookieData.xUid;
@@ -97,30 +92,28 @@ $(document).ready(function() {
 	jsonObjectInput.dUid = dUidEncrypted;
 	jsonObjectInput.tkn = tkn;
 	jsonObjectInput["KST01CL"] = costCenter;
-
-	//alert("before calling populate table");
-	//populateTable(data);
-	//import { API_URL } from './config.js';
-	//var url=API_URL;
 	$.ajax({
 		type: 'POST',
 		url: url,
 		data: JSON.stringify(jsonObjectInput),
 		success: function(response) {
 			setCookie("tkn", response.tkn, 30);
-			if (response.ackMsgCode === "204") {
-				let empList = response.inspectListEmp.assignList;
+			if (response.ackMsgCode === "207") {
 				// If data is available, hide the no-data alert and show the table
+				let empList = response.inspectListEmp.assignList;
+				fullData = empList;
+				populateTable(empList);
 				$('#noDataAlert').hide();
 				$('#tableContainer').show();
 
 				fullData = empList;
-				populateTable(empList);
-			} else {
+				populateTable(empList)
+			}
+			else {
 				// If no data is found, show the no-data alert and hide the table
 				$('#tableContainer').hide();
 				$('#filterSection').hide();
-				$('#noDataAlert').show().text("No inspection data available to show.");
+				$('#noDataAlert').show().text("No rectification data available to show.");
 			}
 		},
 		error: function(xhr, status, error) {
@@ -129,47 +122,34 @@ $(document).ready(function() {
 			console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
 		}
 	});
-	//});
 
-	$('#fromDate, #toDate, #probName, #officeName').on('input', function() {
+	$('#fromDate, #toDate, #problemName, #locationName').on('input', function() {
 		filterAndDisplayData();
 	});
 
 	function filterAndDisplayData() {
 		var fromDate = $('#fromDate').val();
 		var toDate = $('#toDate').val();
-		var problemName = $('#probName').val().trim().toLowerCase();
-		var assignedOffice = $('#officeName').val().trim().toLowerCase();
+		var problemName = $('#problemName').val().trim().toLowerCase();
+		var locationName = $('#locationName').val().trim().toLowerCase();
 
 		var filteredData = fullData.filter(function(item) {
-			var itemInspDate = new Date(item.inspection_date);
-			//var itemDateTo = new Date(item.inspection_to_date);
+			var itemInspectionDate = new Date(item.inspection_date);
+			var itemProblemName = item.problem_remarks.toLowerCase() + item.problem_id.toLowerCase();
+			var itemLocationName = item.location_remarks.toLowerCase();
 
-			var itemProblemName = item.problem_id.toLowerCase() + item.problem_remarks.toLowerCase();
-			var itemAssignedOffice = item.assigned_office_code;
-
-			let officeList = JSON.parse(localStorage.getItem("officeList"));
-			let officeName = "";
-			officeList.forEach((office) => {
-				if (office.offCode === itemAssignedOffice) {
-					officeName = office.offName;
-				}
-			});
-			itemAssignedOffice = officeName.toLowerCase(); //toLowerCase not required
-
-			// Check if the current item matches the filter criteria
 			var match = true;
 
-			if (fromDate && itemInspDate < new Date(fromDate)) {
+			if (fromDate && itemInspectionDate < new Date(fromDate)) {
 				match = false;
 			}
-			if (toDate && itemInspDate > new Date(toDate)) {
+			if (toDate && itemInspectionDate > new Date(toDate)) {
 				match = false;
 			}
 			if (problemName && !itemProblemName.includes(problemName)) {
 				match = false;
 			}
-			if (assignedOffice && !itemAssignedOffice.includes(assignedOffice)) {
+			if (locationName && !itemLocationName.includes(locationName)) {
 				match = false;
 			}
 
@@ -177,13 +157,6 @@ $(document).ready(function() {
 		});
 
 		populateTable(filteredData); // Display the filtered data
-	}
-
-	function capitalize(string) {
-		let newName = [];
-		string = string.trim().replace("  ", " ").split(" ");
-		string.forEach(word => newName.push(word[0].toUpperCase() + word.slice(1).toLowerCase()));
-		return newName.join(" ");
 	}
 
 
@@ -199,6 +172,7 @@ $(document).ready(function() {
 		data.forEach(function(item) {
 			var row = document.createElement('tr');
 
+			//Serial Number
 			var serialNumber = document.createElement('td');
 			serialNumber.textContent = index++;
 			row.appendChild(serialNumber);
@@ -206,55 +180,56 @@ $(document).ready(function() {
 			//row.append($('<td>').text(index++));
 
 			// Create columns for each field
+
+			//Inspection Id
 			var inspectionIdCell = document.createElement('td');
 			inspectionIdCell.textContent = item.inspection_id;
 			row.appendChild(inspectionIdCell);
 
-			//office name
-			var officeCodeCell = document.createElement('td');
-			let officeCode = item.assigned_office_code;
-			let officeList = JSON.parse(localStorage.getItem("officeList"));
-			let officeName = "";
-			officeList.forEach((office) => {
-				if (office.offCode === officeCode) {
-					officeName = office.offName;
-				}
-			});
-			officeName = officeName === "" ? officeCode : officeName;
-			officeCodeCell.textContent = officeName;
-			row.appendChild(officeCodeCell);
+			//Inspection Date
+			var inspectionDateCell = document.createElement('td');
+			inspectionDateCell.textContent = item.inspection_date;
+			row.appendChild(inspectionDateCell);
 
-			//location
-			var probLocationCell = document.createElement('td');
-			probLocationCell.textContent = item.location_remarks.slice(0, 20);
-			row.appendChild(probLocationCell);
+			//Inspected By
+			/*var inspectedByCell = document.createElement('td');
+			inspectedByCell.textContent = item.inspection_by;
+			row.appendChild(inspectedByCell);*/
 
-			//problem code/name
-			var probCodeCell = document.createElement('td');
-			probCodeCell.textContent = item.problem_id;
-			row.appendChild(probCodeCell);
+			//problem name
+			var problemNameCell = document.createElement('td');
+			problemNameCell.textContent = item.problem_id.slice(0, 20);
+			row.appendChild(problemNameCell);
 
 			//problem details
-			var probDetailsCell = document.createElement('td');
-			probDetailsCell.textContent = item.problem_remarks.slice(0, 20);
-			row.appendChild(probDetailsCell);
+			var problemDetailsCell = document.createElement('td');
+			problemDetailsCell.textContent = item.problem_remarks.slice(0, 25);
+			row.appendChild(problemDetailsCell);
 
-			//inspection date
-			var inspDateCell = document.createElement('td');
-			inspDateCell.textContent = item.inspection_date;
-			row.appendChild(inspDateCell);
+			//location details
+			var locationCell = document.createElement('td');
+			locationCell.textContent = item.location_remarks.slice(0, 25);
+			row.appendChild(locationCell);
+
+			var rectifiedOn = document.createElement('td');
+			rectifiedOn.textContent = item.rectification_date;
+			row.appendChild(rectifiedOn);
+
+			var rectifyRemarks = document.createElement('td');
+			rectifyRemarks.textContent = item.rectification_remarks.slice(0, 25);
+			row.appendChild(rectifyRemarks);
 
 			var statusCell = document.createElement('td');
 			statusCell.textContent = item.present_status;
 			row.appendChild(statusCell);
 
 			// Create a column for the anchor tag
-			if (item.present_status === "INSPECTED" || item.present_status === "RECTIFIED") {
+			if (item.status !== "INSPECTED" || item.status !== "RECTIFIED") {
 				var actionCell = document.createElement('td');
 				var anchor = document.createElement('a');
 				//anchor.href = "#"; //"detailsPage.jsp?inspectionId=" + item.inspection_id; // Dynamic URL
-				anchor.innerHTML = '<i class="fas fa-eye" title="View Data"></i>'; // Use Font Awesome icon
-				//anchor.textContent = "View Inspection"; // Anchor text
+				anchor.innerHTML = '<i class="fas fa-eye fa-lg" title="View Data"></i>'; // Use Font Awesome icon
+				//anchor.textContent = "MODIFY"; // Anchor text
 				//anchor.className = "btn btn-primary"; // Optional: Bootstrap button styling
 
 				// Attach an onclick event to the anchor
@@ -271,9 +246,9 @@ $(document).ready(function() {
 						"page_id": "401",
 						"auth": "INSP_PRTL",
 						"role_name": "INSPECTOR"
-					}*/
+					}
 
-					/*$.ajax({
+					$.ajax({
 						url: "frmprtl",
 						type: 'POST',
 						contentType: "application/json",
@@ -288,14 +263,53 @@ $(document).ready(function() {
 							console.log(`xhr: ${JSON.stringify(xhr)}\nstatus: ${status}\nerror: ${error}`);
 						}
 					});*/
+
+					let User = getCookie("User");
+					xUidJson = enCrypt(User, "123456");
+					xUidEncrypted = xUidJson.User;
+					dUidEncrypted = xUidJson.Pwd;
+
+					let jsonObjectInput = {
+						"inspectId": item.inspection_id,
+						"siteId": item.site_id,
+						"problemId": item.problem_id,
+						"ServType": "206",
+						"pageNm": "DASH",
+						"tkn": getCookie("tkn"),
+						"xUid": xUidEncrypted,
+						"dUid": dUidEncrypted,
+						"KST01CL": getCookie("KST01CL")
+					};
+					console.log(`Data to Server: ${JSON.stringify(jsonObjectInput)}`);
+					$.ajax({
+						type: 'POST',
+						url: url,
+						data: JSON.stringify(jsonObjectInput),
+						success: function(response) {
+							console.log(`Response: ${JSON.stringify(response)}`);
+							setCookie("tkn", response.tkn, 30);
+							if (response.ackMsgCode === "206") {
+								let probDtls = response.inspectListEmp.assignList[0];
+								//console.log(`Response: ${JSON.stringify(probDtls)}`);
+								localStorage.setItem("currProb", JSON.stringify(probDtls));
+								//window.open('view_test.jsp');
+								window.location.href = 'view_test.jsp';
+							} else {
+								// If no data is found, show the no-data alert and hide the table
+								alert(`Message found from server: ${response.ackMsg}`);
+							}
+						},
+						error: function(xhr, status, error) {
+							//if server not get connected 
+							setCookie("tkn", response.tkn, 30);
+							console.error("xhr: " + JSON.stringify(xhr) + "\nstatus: " + status + "\nerror: " + error);
+						}
+					});
 				};
 
 
 				actionCell.appendChild(anchor);
 				row.appendChild(actionCell);
-
-
-				//anchor.textContent = "MODIFY"; // Anchor text
 			} else {
 				// If status is not "INSPECTED", just add an empty cell
 				var emptyCell = document.createElement('td');
@@ -306,4 +320,4 @@ $(document).ready(function() {
 			tableBody.appendChild(row);
 		});
 	}
-});
+});	

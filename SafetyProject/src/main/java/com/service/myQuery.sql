@@ -175,7 +175,7 @@ WHERE SUBSTR(OFFICE_NAME, LENGTH(OFFICE_NAME)- 2, 3) = 'CCC'
 
 
 SELECT * FROM SAFETY_SCHEMA.STELL
-where stell= '50031511';
+where stell= '50032737';
 
 
 
@@ -210,6 +210,12 @@ select distinct office_type from safety_schema.office;
 
 select count(*)
 from safety_schema.office
+
+select * from safety_schema.hq_office_list;
+
+insert into safety_schema.hq_office_list
+(office_level, office_name, flag, office_code)
+values ('DIVISION', 'KALYANI DIVISION', 'A', '3332000');
 
 
 
